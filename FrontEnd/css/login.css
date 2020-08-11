@@ -35,8 +35,9 @@
 }
 
 .login_form input{
-    width:100%;
+    width:490px;
     height:60px;
+    padding:0 5px 0 5px;
     margin-bottom:5px;
     border-radius:12px;
     border:1px solid gray;
@@ -54,6 +55,7 @@
 }
 
 #login_btn, #register_btn{
+    width:500px;
     padding:10px 0 10px 0;
     margin-bottom:2px;
     text-align:center;
