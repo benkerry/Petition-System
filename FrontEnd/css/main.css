@@ -1,0 +1,93 @@
+html{
+    -ms-user-select:none; 
+    -moz-user-select:-moz-none; 
+    -webkit-user-select:none; 
+    -khtml-user-select:none; 
+    user-select:none;
+}
+
+body{
+    margin:0;
+}
+
+.content{
+    float:left;
+}
+
+.sidebar{
+    width:250px;
+    height:1000px;
+    float:right;
+    background-color:#CEF7F4;
+}
+
+.profile{
+    width:90%;
+    margin:0px auto 20px auto;
+    padding-bottom:15px;
+    border-bottom:1px solid gray;
+}
+
+.profile_image{
+    width:150px;
+    height:150px;
+
+    padding:50px 50px 10px 50px;
+}
+
+.profile_image img{
+    width:90%;
+    height:90%;
+    border-radius:70%;
+}
+
+.profile_infos_non_login{
+    width:100%;
+    text-align:center;
+}
+
+#login{
+    width:25%;
+    padding:5px 10px 5px 10px;
+    margin-left:auto;
+    margin-right:auto;
+
+    cursor:pointer;
+    background-color:#E3FEFC;
+    border:1px solid gray;
+    border-radius:10%;
+}
+
+#login:hover{
+    background-color:#A4C1C5;
+}
+
+#login:active{
+    background-color:gray;
+}
+
+.profile_infos_login{
+    width:100%;
+    text-align:center;
+    display:none;
+}
+
+.profile_hello{
+    padding-bottom:10px;
+}
+
+#myInfo{
+    width:60px;
+    padding:5px 10px 5px 10px;
+    margin-left:auto;
+    margin-right:auto;
+
+    cursor:pointer;
+    background-color:#E3FEFC;
+    border:1px solid gray;
+    border-radius:10%;
+}
+
+.navigator{
+    padding-left:30px;
+}

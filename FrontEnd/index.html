@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/login.css">
+        <title>국원청원 시스템</title>
+    </head>
+    <body class="index_page">
+        <div class="page_contents">
+            <div class="content" id="content">
+                <!-- Contents -->
+            </div>
+            <div class="sidebar">
+                <div class="profile">
+                    <div class="profile_image">
+                        <img src="resources/default_profile.png" alt="Default Progile Image. Mark of Gukwon High School.">
+                    </div>
+                    <div class="profile_infos">
+                        <div class="profile_infos_non_login">
+                            <div class="login_or_register">
+                                <div id="login">로그인</div>
+                            </div>
+                        </div>
+                        <div class="profile_infos_login">
+                            <div class="profile_infos_name">
+                                <div class="profile_hello">
+                                    <div class="name" id="nickname"><!-- 이름 여기 들어감 --></div>님, 반갑습니다!
+                                </div>
+                                <div id="myInfo">내 정보</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="navigator" id="navigator">
+                    <!-- 게시판 리스트 추가 -->
+                </div>
+            </div>
+        </div>
+        <div id="login_modal">
+            <div class="login_modal_content">
+                <h2>로그인</h2>
+                <div class="login_form">
+                    <input type="text" id="id" placeholder="아이디(ID)"><br>
+                    <input type="password"  id="pwd" placeholder="비밀번호(PWD)"><br>
+                    <div id="login_btn">로그인</div>
+                    <div id="register_btn">회원가입</div>
+                </div>
+            </div>
+            <div class="login_modal_layer"></div>
+        </div>
+        <script src="js/index.js"></script>
+    </body>
+</html>
