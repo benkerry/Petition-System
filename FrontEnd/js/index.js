@@ -2,7 +2,26 @@ document.querySelector("#login").addEventListener("click", () => {
     document.querySelector("#login_modal").style.display = "block";
 });
 
-document.querySelector("html").addEventListener("click", (e) => {
+document.querySelector("html").addEventListener("click", closeModal);
+
+document.querySelector("#login_btn").addEventListener("click", performLogin);
+
+document.querySelector("#register_btn").addEventListener("click", () => {
+    document.querySelector("#login_modal").style.display = "none";
+    document.querySelector("#register_modal").style.display = "block";
+});
+
+document.querySelector("#request_register_btn").addEventListener("click", performRegister);
+
+function clearInputs(parentNode){
+    var inputElements = parentNode.querySelectorAll("input");
+
+    for(let i = 0; i < inputElements.length; i++){
+        inputElements[i].value = "";
+    }
+}
+
+function closeModal(){
     if(e.target.className === "login_modal_layer"){
         var form = document.querySelector(".login_form");
         document.querySelector("#login_modal").style.display = "none";
@@ -13,21 +32,12 @@ document.querySelector("html").addEventListener("click", (e) => {
         document.querySelector("#register_modal").style.display = "none";
         clearInputs(form);
     }
-});
+}
 
-document.querySelector("#login_btn").addEventListener("click", () => {
+function performLogin(){
 
-});
+}
 
-document.querySelector("#register_btn").addEventListener("click", () => {
-    document.querySelector("#login_modal").style.display = "none";
-    document.querySelector("#register_modal").style.display = "block";
-});
+function performRegister(){
 
-function clearInputs(parentNode){
-    var inputElements = parentNode.querySelectorAll("input");
-
-    for(let i = 0; i < inputElements.length; i++){
-        inputElements[i].value = "";
-    }
 }
