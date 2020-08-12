@@ -1,0 +1,2 @@
+class PetitionDao():
+    pass

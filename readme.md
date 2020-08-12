@@ -5,3 +5,4 @@
 >- python: jwt
 >- python: flask
 >- python: sqlalchemy
+>- python: mysql-connector-python

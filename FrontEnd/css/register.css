@@ -39,7 +39,7 @@
     padding:0 5px 0 5px;
 }
 
-#register_id, #register_pwd, #register_pwd_chk, #register_nickname{
+#register_email, #register_pwd, #register_pwd_chk, #register_nickname{
     height:30px;
     margin-bottom:5px;
     border-radius:12px;

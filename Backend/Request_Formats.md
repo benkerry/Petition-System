@@ -1,17 +1,17 @@
- Login Request Format
+  Register Request Format
  {
-   "id":<str>,
-   "pwd":<str>
- }
-
- Register Request Format
- {
-   "id":<str>,
+   "email":<str>,
    "pwd":<str>,
    "pwd_chk":<str>,
    "nickname":<str>,
    "stdid":<int>,
    "authcode":<str>
+ }
+ 
+ Login Request Format
+ {
+   "email":<str>,
+   "pwd":<str>
  }
 
  get_petition Request Format
@@ -38,14 +38,14 @@
  write_petition Request Format
  {
    "title":<str>,
-   "description":<str>,
+   "contents":<str>,
    "token":<str>
  }
 
  write_debate Request Format
  {
    "petition_id":<int>,
-   "description":<str>,
+   "contents":<str>,
    "token":<str>
  }
 
