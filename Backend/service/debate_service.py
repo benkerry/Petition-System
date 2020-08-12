@@ -1,5 +1,5 @@
 from ..dao import DebateDao
 
-class DebateService():
+class DebateService:
     def __init__(self, dao:DebateDao):
         self.dao = dao

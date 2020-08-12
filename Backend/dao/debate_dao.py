@@ -1,4 +1,4 @@
-class DebateDao():
+class DebateDao:
     # 여기에서는 debate 테이블과 users(nickname)까지만 접근하도록 한다.
     def __init__(self, db):
         self.db = db

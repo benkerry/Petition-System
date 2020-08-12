@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-class UserDao():
+class UserDao:
     # 여기에서는 users, authcodes 테이블에만 액세스하도록 한다.
     def __init__(self, db):
         self.db = db
