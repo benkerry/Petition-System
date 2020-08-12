@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask.json import JSONEncoder
 from sqlalchemy import create_engine
 
-class Service():
+class Service:
     pass
 
 def create_app(test_config = None):

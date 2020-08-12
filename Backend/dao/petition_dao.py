@@ -1,5 +1,5 @@
 class PetitionDao():
-    # 여기서는 petition,  테이블만 다룬다.
+    # 여기서는 petition, supports 테이블만 다룬다.
     def __init__(self, db):
         self.db = db
 
