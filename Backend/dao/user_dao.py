@@ -15,7 +15,7 @@ class UserDao:
         # 실패시 None, uid 반환.
         pass
 
-    def delete_user(self, uid:str):
+    def delete_user(self, uid:int):
         # 유저를 삭제.
         # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
         pass

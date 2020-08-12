@@ -14,7 +14,7 @@ class ManagerDao:
         # 실패시 None, 성공시 전체 유저 수 반환.
         pass
 
-    def delete_user(self, uid:str):
+    def delete_user(self, uid:int):
         # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
         pass
 
