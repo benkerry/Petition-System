@@ -1,4 +1,5 @@
 from ..dao import PetitionDao
 
 class PetitionService:
-    petition
+    def __init__(self, dao:PetitionDao):
+        self.dao = dao
