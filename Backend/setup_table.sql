@@ -15,11 +15,18 @@ CREATE TABLE petitions(
     author_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     contents TEXT NOT NULL,
-    supporters INT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW(),
     status INT NOT NULL,
+    answer TEXT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT petitions_author_id_fkey FOREIGN KEY (author_id) REFERENCES users(id)
+);
+
+CREATE TABLE supports(
+    stdid INT NOT NULL,
+    petition_id INT NOT NULL,
+    CONSTRAINT supports_stdid_fkey FOREIGN KEY (stdid) REFERENCES users(id),
+    CONSTRAINT supports_petition_id_fkey FOREIGN KEY (petition_id) REFERENCES petitions(id)
 );
 
 CREATE TABLE debates(
