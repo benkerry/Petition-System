@@ -10,9 +10,9 @@ class UserDao:
         # 해당하는 인증번호가 없으면 None, 있으면 해당 인증번호를 반환.
         pass
 
-    def insert_user(self, email:str, hashed_pwd:str, nickname:str, stdid:int):
+    def insert_user(self, stdid:int, email:str, hashed_pwd:str, nickname:str, priv:str):
         # 새 유저를 생성.
-        # 실패시 None, 성공시 전체 유저의 수 반환.
+        # 실패시 None, uid 반환.
         pass
 
     def delete_user(self, uid:str):
@@ -20,8 +20,9 @@ class UserDao:
         # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
         pass
 
-    def get_user(self, email:str, uid:int = -1):
+    def get_user(self, email:str = None, uid:int = None):
         # 유저 정보(학번, 이메일, 해시된 패스워드, 닉네임)를 인출.
+        # 이메일이 들어오면 이메일을, uid가 들어오면 uid를 사용. 둘 다 들어오면 맘대로~~
         # 실패시 None, (성공시 학번, 이메일, 해시된 패스워드, 닉네밈):tuple을 반환.
         pass
 

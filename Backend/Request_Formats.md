@@ -34,7 +34,6 @@
    "token":<str>
  }
 
-
  write_petition Request Format
  {
    "title":<str>,
@@ -49,8 +48,15 @@
    "token":<str>
  }
 
- support_petition Reuqest Format
- >
- >
- >
+ change_priv Request Format
+ {
+   "tgt_id":<int>,
+   "priv":<int>,
+   "token":<str>
+ }
 
+ support_petition Reuqest Format
+ {
+   "petition_id":<int>,
+   "token":<str>
+ }
