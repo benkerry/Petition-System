@@ -16,14 +16,20 @@
 
  get_petition Request Format
  {
+   "petition_id":<int>
+ }
+
+ get_petition_metadatas Request Format
+ {
    "count":<int>,
-   "type":<str:'newest'/'hottest'/'oldest'
+   "type":<str:'all'/'newest'/'hottest'/'oldest'/'answered'
  }
 
  change_my_pwd Request Format
  {
      "pwd":<str>,
-     "pwd_chk":<str>,
+     "change_pwd":<str>,
+     "change_pwd_chk":<str>,
      "token":<str>
  }
 
@@ -58,5 +64,17 @@
  support_petition Reuqest Format
  {
    "petition_id":<int>,
+   "token":<str>
+ }
+
+ withdraw Request Format
+ {
+   "pwd":<str>,
+   "token":<str>
+ }
+
+ delete_user Request Format
+ {
+   "nicknames":[<int>],
    "token":<str>
  }

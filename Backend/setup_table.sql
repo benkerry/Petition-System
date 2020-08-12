@@ -1,6 +1,6 @@
 CREATE TABLE users(
     id INT NOT NULL AUTO_INCREMENT,
-    stdid INT NOT NULL,
+    grade INT NOT NULL,
     email VARCHAR(255) NOT NULL,
     hashed_pwd VARCHAR(255) NOT NULL,
     nickname VARCHAR(255) NOT NULL,
@@ -17,15 +17,15 @@ CREATE TABLE petitions(
     contents TEXT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW(),
     status INT NOT NULL,
-    answer TEXT NOT NULL,
+    answer TEXT,
     PRIMARY KEY(id),
     CONSTRAINT petitions_author_id_fkey FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
 CREATE TABLE supports(
-    stdid INT NOT NULL,
+    uid INT NOT NULL,
     petition_id INT NOT NULL,
-    CONSTRAINT supports_stdid_fkey FOREIGN KEY (stdid) REFERENCES users(id),
+    CONSTRAINT supports_uid_fkey FOREIGN KEY (uid) REFERENCES users(id),
     CONSTRAINT supports_petition_id_fkey FOREIGN KEY (petition_id) REFERENCES petitions(id)
 );
 
