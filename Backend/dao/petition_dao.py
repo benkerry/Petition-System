@@ -5,7 +5,7 @@ class PetitionDao:
     def __init__(self, db):
         self.db = db
 
-    def insert_petition(self, author_id:int, title:str, contents:str):
+    def insert_petition(self, author_id:int, title:str, contents:str, expire_left:int):
         # 청원을 등록한다.
         # 실패시 None, 성공시 전체 청원의 갯수를 반환한다.
         pass
@@ -20,13 +20,13 @@ class PetitionDao:
         # 실패시 None, 성공시 전체 청원의 갯수를 반환한다.
         pass
 
-    def update_petition_status(self, petition_id, status_code:int):
+    def update_petition_status(self, petition_id:int, status_code:int):
         # 청원의 상태 코드를 갱신한다.
         # 실패시 None, 성공시 전체 청원의 갯수를 반환한다.
         pass
 
-    def check_petition_supports(self, petition_id):
-        # 해당 청원의 동의 수를 리턴한다.
+    def get_petition_supports(self, petition_id:int):
+        # 해당 청원의 만료일 이전에 찍힌 동의의 수를 리턴한다.
         # 실패시 None, 성공시 동의자 수를 반환한다.
         pass
 
@@ -48,5 +48,5 @@ class PetitionDao:
 
     def get_petition(self, petition_id:int):
         # 청원 정보를 id로 인출
-        # 실패시 None, 성공시 (id, title, contents, created_at, status, answer) 형태로 반환한다.
+        # 실패시 None, 성공시 (id, title, contents, created_at, status, answer, expire_left) 형태로 반환한다.
         pass

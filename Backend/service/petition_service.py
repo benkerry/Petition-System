@@ -2,8 +2,10 @@ from ..dao import PetitionDao
 from flask import g
 
 class PetitionService:
-    def __init__(self, dao:PetitionDao):
+    def __init__(self, dao:PetitionDao, expire_left:int, pass_ratio:int):
         self.dao = dao
+        self.expire_left = expire_left
+        self.pass_ratio = pass_ratio
 
     def get_petition_metadata_service(self, count:int, type:str = "all"):
         # count만큼의 type 청원을 꺼낸다.
@@ -31,11 +33,12 @@ class PetitionService:
         #   'created_at':created_at(YYYY-MM-DD HH:MM),
         #   'title':title,
         #   'contents':contents,
-        #   'answer':answer
+        #   'answer':answer,
+        #   'expire_left':expire_left
         # }
         pass
 
-    def write_petition_service(self, author_id:int, title:str, contents:str):
+    def write_petition_service(self, author_id:int, title:str, contents:str, expire_left:int):
         # 청원 등록
         # 실패시 None, 성공시 200 반환
         pass

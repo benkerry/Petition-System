@@ -37,8 +37,9 @@ class ManagerService:
         # user_dao에 있는 것 사용
         pass
 
-    def add_day_service(self, petition_id:int):
+    def add_day_service(self, petition_id:int, add_day:int):
         # 청원 만료기한을 늘림
+        # add_day에 음수가 들어올 시 처리 실패로 간주한다.
         # 실패시 None, 성공시 현재로부터 만료까지 남은 날짜 반환
         # petition_dao에 있는 것 사용
         pass

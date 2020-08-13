@@ -1,8 +1,8 @@
 
-import config
+import config.config as config
 from endpoints import create_endpoints
 
-from flask import Flask, Response, request, current_app, jsonify, g
+from flask import Flask
 from flask_cors import CORS
 from flask.json import JSONEncoder
 from sqlalchemy import create_engine
@@ -40,6 +40,6 @@ def create_app(test_config = None):
     services.petition_service = None
     services.debate_service = None
     
-    create_endpoints(app, services)
+    create_endpoints(app, services, config.expire_left, config.pass_ratio)
 
     return app
