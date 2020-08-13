@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="css/login.css">
         <link rel="stylesheet" href="css/register.css">
         <link rel="stylesheet" href="css/myinfo.css">
+        <link rel="stylesheet" href="css/manager_menu.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
@@ -14,7 +15,7 @@
                 <!-- Contents -->
             </div>
             <div class="sidebar">
-                <div class="profile">
+                <div class="profile_non_login">
                     <div class="profile_image">
                         <img src="resources/default_profile.png" alt="Default Progile Image. Mark of Gukwon High School.">
                     </div>
@@ -27,7 +28,7 @@
                         <div class="profile_infos_login">
                             <div class="profile_infos_name">
                                 <div class="profile_hello">
-                                    <span>(알수없음)</span>님, 반갑습니다!
+                                    <span id="name">(알수없음)</span>님, 반갑습니다!
                                 </div>
                                 <div id="myInfo_btn">내 정보</div>
                                 <div id="managerMenu_btn">관리 메뉴</div><br id="profile_br_manager">
@@ -44,19 +45,19 @@
         <div id="login_modal">
             <div class="login_modal_content">
                 <h2>로그인</h2>
-                <div class="login_form">
+                <div id="login_form" class="form">
                     <input type="text" id="login_email" placeholder="이메일"><br>
                     <input type="password"  id="login_pwd" placeholder="비밀번호"><br>
-                    <div id="login_btn">로그인</div>
-                    <div id="register_btn">회원가입</div>
+                    <div id="login_btn" class="general_btn">로그인</div>
+                    <div id="register_btn" class="general_btn">회원가입</div>
                 </div>
             </div>
-            <div class="login_modal_layer"></div>
+            <div class="modal_layer"></div>
         </div>
         <div id="register_modal">
             <div class="register_modal_content">
                 <h2>회원가입</h2>
-                <div class="register_form">
+                <div id="register_form" class="form">
                     <input type="email" id="register_email" placeholder="이메일"><br>
                     <input type="password"  id="register_pwd" placeholder="비밀번호 (8자 이상, 숫자 및 문자 포함)"><br>
                     <input type="password"  id="register_pwd_chk" placeholder="비밀번호 확인"><br>
@@ -68,31 +69,38 @@
                         <input type="text" id="register_authcode" placeholder="인증코드" minlength="6" maxlength="6">
                     </div>
                     <br>
-                    <div id="request_register_btn">가입</div>
+                    <div id="request_register_btn" class="general_btn">가입</div>
                 </div>
-                <div class="register_modal_layer"></div>
+                <div class="modal_layer"></div>
             </div>
         </div>
         <div id="myInfo_modal">
             <div class="myInfo_modal_content">
                 <h2>내 정보</h2>
-                <div id="myInfo_form">
+                <div id="myInfo_form" class="form">
                     <h3>일반정보 변경</h3>
-                    <input type="email" id="myInfo_email" class="general_btn" placeholder="현재 이메일: (서버 데이터)" disabled><br>
-                    <input type="text" id="myInfo_nickname" class="general_btn" placeholder="현재 닉네임: (서버 데이터)" disabled><br>
+                    <input type="email" id="myInfo_email" class="general_input" placeholder="현재 이메일: (서버 데이터)" disabled><br>
+                    <input type="text" id="myInfo_nickname" class="general_input" placeholder="현재 닉네임: (서버 데이터)" disabled><br>
                     <input type="checkbox" id="info_input_chkbx"> 변경할 정보 입력
-                    <div id="change_info_btn">정보 변경</div>
+                    <div id="change_info_btn" class="general_btn">정보 변경</div>
                 </div>
-                <div id="myInfo_pwd_form">
+                <div id="myInfo_pwd_form" class="form">
                     <h3>비밀번호 변경</h3>
-                    <input type="password" id="myInfo_pwd" class="general_btn" placeholder="변경할 비밀번호"><br>
-                    <input type="password" id="myInfo_pwd_chk" class="general_btn" placeholder="변경할 비밀번호 확인"><br>
+                    <input type="password" id="myInfo_pwd" class="general_input" placeholder="변경할 비밀번호"><br>
+                    <input type="password" id="myInfo_pwd_chk" class="general_input" placeholder="변경할 비밀번호 확인"><br>
                     <br>
-                    <input type="password" id="myInfo_current_pwd" class="general_btn" placeholder="현재 비밀번호"><br>
-                    <div id="change_pwd_btn">비밀번호 변경</div>
+                    <input type="password" id="myInfo_current_pwd" class="general_input" placeholder="현재 비밀번호"><br>
+                    <div id="change_pwd_btn" class="general_btn">비밀번호 변경</div>
                 </div>
             </div>
-            <div class="myInfo_modal_layer"></div>
+            <div class="modal_layer"></div>
+        </div>
+        <div id="manager_menu_modal">
+            <div class="manager_menu_modal_content">
+                <h2>관리 메뉴</h2>
+                <div class="general_btn">유저 삭제</div>
+            </div>
+            <div class="modal_layer"></div>
         </div>
         <script src="js/index.js"></script>
         <script src="js/login.js"></script>
