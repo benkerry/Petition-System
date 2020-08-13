@@ -4,7 +4,7 @@ class ManagerService:
     def __init__(self, dao:ManagerDao):
         self.dao = dao
 
-    def delete_user(self, uid_list:list):
+    def delete_user_service(self, uid_list:list):
         # 유저를 삭제.
         # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
         pass
@@ -24,3 +24,25 @@ class ManagerService:
         # 실패시 None
         pass
 
+    def close_petition_service(self, petition_id:int):
+        # 청원을 직권으로 닫음.
+        # 직권으로 닫힌 청원은 작성자와 관리자만 열람 가능
+        # 실패시 None, 성공시 200 반환
+        # user_dao에 있는 것 사용
+        pass
+
+    def open_petition_service(self, petition_id:int):
+        # 닫힌 청원을 직권으로 엶.
+        # 실패시 None, 성공시 200 반환
+        # user_dao에 있는 것 사용
+        pass
+
+    def add_day_service(self, petition_id:int):
+        # 청원 만료기한을 늘림
+        # 실패시 None, 성공시 현재로부터 만료까지 남은 날짜 반환
+        pass
+
+    def set_support_ratio_service(self, petition_id:int):
+        # 청원 동의인 비율 설정을 변경
+        # 실패시 None, 변경된 비율을 적용하여 산출된 동의인 수 임곗값 리턴
+        pass

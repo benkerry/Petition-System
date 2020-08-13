@@ -39,12 +39,12 @@ def create_endpoints(app, services):
         pass
 
     # Petition Services
-    @app.route("/get-petition-metadatas/<int:count>", methods = ["POST"])
-    def get_petition_metadatas(count):
+    @app.route("/get-petition-metadatas", methods = ["POST"])
+    def get_petition_metadatas():
         pass
 
-    @app.route("/get-petition/<int:count>", methods = ["POST"])
-    def get_petition(count):
+    @app.route("/get-petition", methods = ["POST"])
+    def get_petition():
         pass
 
     @app.route("/write-petition", methods = ["POST"])
@@ -55,6 +55,11 @@ def create_endpoints(app, services):
     @app.route("/support-petition", methods = ["POST"])
     @login_required
     def support_petition():
+        pass
+
+    @app.route("/add-day-request", methods = ["POST"])
+    @login_required
+    def add_day_request():
         pass
 
     # Debate Services
@@ -88,6 +93,28 @@ def create_endpoints(app, services):
     def generate_authcodes():
         pass
 
+    @app.route("/close-petition", methods = ["POST"])
+    @login_required
+    def close_petition():
+        pass
+
+    @app.route("/open-petition", methods = ["POST"])
+    @login_required
+    def open_petition():
+        pass
+
+    @app.route("/add-day", methods = ["POST"])
+    @login_required
+    def add_day():
+        pass
+
+    @app.route("/set-support-ratio", methods = ["POST"])
+    @login_required
+    def set_support_ratio():
+        pass
+
     ##### 답변 작성
     ##### 신고 및 처리 기능
     ##### 임의 답변 및 처리 기능
+    ##### 날짜, 동의인 비율 설정
+    ##### 이메일 인증 기능(gmail, naver, korea, daum, hanmail 제한) -> 이메일 인증 디비 만들자

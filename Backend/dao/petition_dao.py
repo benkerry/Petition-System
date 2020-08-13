@@ -30,13 +30,18 @@ class PetitionDao:
         # 실패시 None, 성공시 동의자 수를 반환한다.
         pass
 
-    def get_petition(self, type:str):
+    def get_petition_metadatas(self, type:str):
         # DB에 있는, 파라미터로 주어진 상태 코드에 해당하는 모든 청원을 인출한다.
         # type의 종류: "all", "newest", "hottest", "oldest", "answered"
-        # 실패시 None, 성공시 2차원 튜플을 ((id, title, contents, created_at, status, answer), ... ) 형태로 반환한다.
+        # 실패시 None, 성공시 2차원 튜플을 ((id, title, status, answer), ... ) 형태로 반환한다.
         pass
 
-    def get_petition_by_id(self, petition_id:int):
+    def insert_add_day_request(self, uid:int, petition_id:int, comment:str):
+        # 만료기한 연장 요청을 삽입
+        # 실패시 None, 성공시 모든 만료 연장 요청 수 반환
+        pass
+
+    def get_petition(self, petition_id:int):
         # 청원 정보를 id로 인출
         # 실패시 None, 성공시 (id, title, contents, created_at, status, answer) 형태로 반환한다.
         pass

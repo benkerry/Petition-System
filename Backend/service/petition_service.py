@@ -40,13 +40,19 @@ class PetitionService:
         # 실패시 None, 성공시 200 반환
         pass
     
-    def support_petition_service(self, petition_id:int):
+    def support_petition_service(self, uid:int, petition_id:int):
         # 청원 동의
         # 실패시 None, 이미 동의한 청원일 시 -1, 청원의 Status Code가 1인 경우 0, 성공시 200 반환
+        pass
+
+    def add_day_request_service(self, uid:int, petition_id:int, comment:str):
+        # 청원 만료기한 연장 요청
+        # 실패시 None, 성공시 200 반환
         pass
 
     def check_petitions(self):
         # 매일 실행되어, 동의 수가 일정 이상인 청원의 Status Code를 갱신.
         # 동의 수 미달성 상태로 일정 기간 지난 청원의 Status Code도 갱신.
-        # Status Code: 0 - 열림, 1 - 기간 만료 닫힘, 2 - 동의 목표 달성, 3 - 답변 완료
+        # Status Code: 0 - 열림, 1 - 기간 만료 닫힘, 2 - 동의 목표 달성, 3 - 답변 완료, 4 - 관리자 직권 닫힘
+        # 통과된 청원들을 모든 유저에게 이메일로 보냄.
         pass
