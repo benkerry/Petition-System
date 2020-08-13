@@ -113,6 +113,11 @@ def create_endpoints(app, services):
     def set_support_ratio():
         pass
 
+    @app.route("/get-add-day-request", methods = ["POST"])
+    @login_required
+    def get_add_day_request():
+        pass
+
     ##### 답변 작성
     ##### 신고 및 처리 기능
     ##### 임의 답변 및 처리 기능

@@ -40,9 +40,15 @@ class ManagerService:
     def add_day_service(self, petition_id:int):
         # 청원 만료기한을 늘림
         # 실패시 None, 성공시 현재로부터 만료까지 남은 날짜 반환
+        # petition_dao에 있는 것 사용
         pass
 
     def set_support_ratio_service(self, petition_id:int):
         # 청원 동의인 비율 설정을 변경
         # 실패시 None, 변경된 비율을 적용하여 산출된 동의인 수 임곗값 리턴
+        pass
+
+    def get_add_day_request_service(self, petition_id:int):
+        # 청원 만료기한 연장 요청 상황 확인,
+        # 실패시 None, 성공시 ( (req_id, comment), ... ) 반환
         pass

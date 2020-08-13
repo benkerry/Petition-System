@@ -41,6 +41,11 @@ class PetitionDao:
         # 실패시 None, 성공시 모든 만료 연장 요청 수 반환
         pass
 
+    def update_expire_at(self, petition_id:int, add_day:int):
+        # petition_id에 해당하는 청원의 만료일을 add_day만큼 추가함.
+        # 실패시 None, 성공시 만료일 반환
+        pass
+
     def get_petition(self, petition_id:int):
         # 청원 정보를 id로 인출
         # 실패시 None, 성공시 (id, title, contents, created_at, status, answer) 형태로 반환한다.
