@@ -5,7 +5,8 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/login.css">
         <link rel="stylesheet" href="css/register.css">
-        <title>국원청원 시스템</title>
+        <link rel="stylesheet" href="css/myinfo.css">
+        <title>청원 시스템</title>
     </head>
     <body class="index_page">
         <div class="page_contents">
@@ -26,9 +27,11 @@
                         <div class="profile_infos_login">
                             <div class="profile_infos_name">
                                 <div class="profile_hello">
-                                    <div class="name" id="nickname"><!-- 이름 여기 들어감 --></div>님, 반갑습니다!
+                                    <span>(알수없음)</span>님, 반갑습니다!
                                 </div>
-                                <div id="myInfo">내 정보</div>
+                                <div id="myInfo_btn">내 정보</div>
+                                <div id="managerMenu_btn">관리 메뉴</div><br id="profile_br_manager">
+                                <div id="logout_btn">로그아웃</div>
                             </div>
                         </div>
                     </div>
@@ -55,9 +58,10 @@
                 <h2>회원가입</h2>
                 <div class="register_form">
                     <input type="email" id="register_email" placeholder="이메일"><br>
-                    <input type="password"  id="register_pwd" placeholder="비밀번호"><br>
+                    <input type="password"  id="register_pwd" placeholder="비밀번호 (8자 이상, 숫자 및 문자 포함)"><br>
                     <input type="password"  id="register_pwd_chk" placeholder="비밀번호 확인"><br>
                     <input type="text"  id="register_nickname" placeholder="닉네임"><br>
+                    <div id="register_advice"><!--여기에 로그인 조언 작성--></div>
                     <br>
                     <div class="auth_infos">
                         <input type="number" id="register_stdid" min="1111" max="3999" placeholder="학번" minlength="4" maxlength="4">
@@ -66,9 +70,33 @@
                     <br>
                     <div id="request_register_btn">가입</div>
                 </div>
+                <div class="register_modal_layer"></div>
             </div>
-            <div class="register_modal_layer"></div>
+        </div>
+        <div id="myInfo_modal">
+            <div class="myInfo_modal_content">
+                <h2>내 정보</h2>
+                <div id="myInfo_form">
+                    <h3>일반정보 변경</h3>
+                    <input type="email" id="myInfo_email" class="general_btn" placeholder="현재 이메일: (서버 데이터)" disabled><br>
+                    <input type="text" id="myInfo_nickname" class="general_btn" placeholder="현재 닉네임: (서버 데이터)" disabled><br>
+                    <input type="checkbox" id="info_input_chkbx"> 변경할 정보 입력
+                    <div id="change_info_btn">정보 변경</div>
+                </div>
+                <div id="myInfo_pwd_form">
+                    <h3>비밀번호 변경</h3>
+                    <input type="password" id="myInfo_pwd" class="general_btn" placeholder="변경할 비밀번호"><br>
+                    <input type="password" id="myInfo_pwd_chk" class="general_btn" placeholder="변경할 비밀번호 확인"><br>
+                    <br>
+                    <input type="password" id="myInfo_current_pwd" class="general_btn" placeholder="현재 비밀번호"><br>
+                    <div id="change_pwd_btn">비밀번호 변경</div>
+                </div>
+            </div>
+            <div class="myInfo_modal_layer"></div>
         </div>
         <script src="js/index.js"></script>
+        <script src="js/login.js"></script>
+        <script src="js/register.js"></script>
+        <script src="js/myInfo.js"></script>
     </body>
 </html>

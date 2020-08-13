@@ -24,7 +24,14 @@ body{
 .profile{
     width:90%;
     margin:0px auto 20px auto;
-    padding-bottom:15px;
+    padding-bottom:65px;
+    border-bottom:1px solid gray;
+}
+
+.profile_manager{
+    width:90%;
+    margin:0px auto 20px auto;
+    padding-bottom:20px;
     border-bottom:1px solid gray;
 }
 
@@ -32,7 +39,7 @@ body{
     width:150px;
     height:150px;
 
-    padding:50px 50px 10px 50px;
+    padding:50px 50px 5px 50px;
 }
 
 .profile_image img{
@@ -49,8 +56,7 @@ body{
 #login{
     width:25%;
     padding:5px 10px 5px 10px;
-    margin-left:auto;
-    margin-right:auto;
+    margin:0 auto 0 auto;
 
     cursor:pointer;
     background-color:#E3FEFC;
@@ -58,11 +64,19 @@ body{
     border-radius:10%;
 }
 
-#login:hover{
-    background-color:#A4C1C5;
+#logout_btn{
+    float:right;
 }
 
-#login:active{
+#profile_br_manager{
+    display:none;
+}
+
+#login:hover, #myInfo_btn:hover, #myInfo_btn_manager:hover, #managerMenu_btn:hover, #logout_btn:hover{
+    background-color:#B8D0D3;
+}
+
+#login:active, #myInfo_btn:active, #myInfo_btn_manager:active, #managerMenu_btn:active, #logout_btn:active{
     background-color:gray;
 }
 
@@ -76,16 +90,41 @@ body{
     padding-bottom:10px;
 }
 
-#myInfo{
-    width:60px;
-    padding:5px 10px 5px 10px;
-    margin-left:auto;
-    margin-right:auto;
-
+#logout_btn, #myInfo_btn, #managerMenu_btn{
+    width:45%;
+    text-align:center;
+    padding:5px 0 5px 0;
+    margin:10px 0 10px 0;
+    border-radius:10%;
     cursor:pointer;
+    text-align:center;
     background-color:#E3FEFC;
     border:1px solid gray;
+}
+
+#myInfo_btn{
+    float:left;
+}
+
+#myInfo_btn_manager{
+    float:left;
+}
+
+#managerMenu_btn{
+    display:none;
+    float:right;
+}
+
+#logout_btn_manager{
+    width:100%;
+    text-align:center;
+    padding:5px 0 5px 0;
+    margin-top:30px;
     border-radius:10%;
+    cursor:pointer;
+    text-align:center;
+    background-color:#E3FEFC;
+    border:1px solid gray;
 }
 
 .navigator{
