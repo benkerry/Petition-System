@@ -49,10 +49,33 @@ document.querySelector("#managerMenu_btn").addEventListener("click", () => {
     }
 });
 
+var goBackBtns = document.querySelectorAll(".go_back");
+
+for(let i = 0; i < goBackBtns.length; i++){
+    goBackBtns[i].addEventListener("click", () => {
+        var managerModal = document.querySelectorAll(".manager_modal");
+        
+        for(let i = 0; i < managerModal.length; i++){
+            managerModal[i].style.display = "none";
+        }
+        document.querySelector("#manager_menu_modal").style.display = "block";
+    });
+}
+
 document.querySelector("#system_setting").addEventListener("click", () => {
     if(isManager){
         document.querySelector("#manager_menu_modal").style.display = "none";
         document.querySelector("#system_setting_modal").style.display = "block";
+    }
+    else{
+        alert("권한이 없습니다.");
+    }
+});
+
+document.querySelector("#change_petition_status").addEventListener("click", () => {
+    if(isManager){
+        document.querySelector("#manager_menu_modal").style.display = "none";
+        document.querySelector("#change_petition_status_modal").style.display = "block";
     }
     else{
         alert("권한이 없습니다.");

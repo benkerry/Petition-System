@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="css/myinfo.css">
         <link rel="stylesheet" href="css/manager_menu.css">
         <link rel="stylesheet" href="css/system_setting.css">
+        <link rel="stylesheet" href="css/chage_petition_status.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
@@ -44,7 +45,7 @@
             </div>
         </div>
         <div id="login_modal" class="modal">
-            <div class="login_modal_content">
+            <div class="modal_content login_modal_content">
                 <h2>로그인</h2>
                 <div id="login_form" class="form">
                     <input type="text" id="login_email" placeholder="이메일"><br>
@@ -56,7 +57,7 @@
             <div class="modal_layer"></div>
         </div>
         <div id="register_modal" class="modal">
-            <div class="register_modal_content">
+            <div class="modal_content register_modal_content">
                 <h2>회원가입</h2>
                 <div id="register_form" class="form">
                     <input type="email" id="register_email" placeholder="이메일"><br>
@@ -76,7 +77,7 @@
             </div>
         </div>
         <div id="myInfo_modal" class="modal">
-            <div class="myInfo_modal_content">
+            <div class="modal_content myInfo_modal_content">
                 <h2>내 정보</h2>
                 <div id="myInfo_form" class="form">
                     <h3>일반정보 변경</h3>
@@ -97,7 +98,7 @@
             <div class="modal_layer"></div>
         </div>
         <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
+            <div class="modal_content manager_menu_modal_content">
                 <h2>관리 메뉴</h2>
                 <div id="manager_menu_btns">
                     <h3>청원 관련 메뉴</h3>
@@ -114,9 +115,8 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 공사중 -->
-        <div id="system_setting_modal" class="modal">
-            <div class="system_setting_modal_content">
+        <div id="system_setting_modal" class="modal manager_modal">
+            <div class="modal_content system_setting_modal_content">
                 <h2>시스템 설정</h2>
                 <div id="system_setting_forms">
                     <h3>동의 비율 설정</h3>
@@ -134,44 +134,71 @@
                         <input type="text" value="" placeholder="변경할 만료기한(일)"><br>
                         <div id="set_expire_day" class="general_btn">설정 완료</div>
                     </div>
+                    <div class="go_back">뒤로가기</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <!-- 공사중 -->
+        <div id="change_petition_status_modal" class="modal manager_modal">
+            <div class="modal_content change_petition_status_modal_content">
+                <h2>청원 상태 변경</h2>
+                <div id="change_petition_status_form">
+                    <input type="radio" class="petition_status" value="0" checked> | 열린 청원<br>
+                    <input type="radio" class="petition_status" value="1"> | 기간만료 청원<br>
+                    <input type="radio" class="petition_status" value="4"> | 관리자가 닫은 청원<br>
+                    <br>
+                    <div id="petition_list" style="overflow:auto;">
+                        <!-- 여가에 청원 리스트 update -->
+                    </div>
+                    <div class="go_back">뒤로가기</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
         </div>
         <!-- 공사 예정 -->
-        <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
-                <h2>관리 메뉴</h2>
+        <div id="_modal" class="modal manager_modal">
+            <div class="modal_content _modal_content">
+                <h2>청원 상태 변경</h2>
+                <div id="_form">
+                    <div class="go_back">뒤로가기</div>
+                </div>
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
-                <h2>관리 메뉴</h2>
+        <div id="_modal" class="modal manager_modal">
+            <div class="modal_content _modal_content">
+                <h2>청원 상태 변경</h2>
+                <div id="_form">
+                    <div class="go_back">뒤로가기</div>
+                </div>
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
-                <h2>관리 메뉴</h2>
+        <div id="_modal" class="modal manager_modal">
+            <div class="modal_content _modal_content">
+                <h2>청원 상태 변경</h2>
+                <div id="_form">
+                    <div class="go_back">뒤로가기</div>
+                </div>
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
-                <h2>관리 메뉴</h2>
+        <div id="_modal" class="modal manager_modal">
+            <div class="modal_content _modal_content">
+                <h2>청원 상태 변경</h2>
+                <div id="_form">
+                    <div class="go_back">뒤로가기</div>
+                </div>
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
-                <h2>관리 메뉴</h2>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
-        <div id="manager_menu_modal" class="modal">
-            <div class="manager_menu_modal_content">
-                <h2>관리 메뉴</h2>
+        <div id="_modal" class="modal manager_modal">
+            <div class="modal_content _modal_content">
+                <h2>청원 상태 변경</h2>
+                <div id="_form">
+                    <div class="go_back">뒤로가기</div>
+                </div>
             </div>
             <div class="modal_layer"></div>
         </div>
@@ -180,5 +207,6 @@
         <script src="js/register.js"></script>
         <script src="js/myInfo.js"></script>
         <script src="js/system_setting.js"></script>
+        <script src="js/chage_petition_status.js"></script>
     </body>
 </html>

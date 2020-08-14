@@ -44,7 +44,7 @@ class PetitionService:
         pass
     
     def support_petition_service(self, uid:int, petition_id:int):
-        # 청원 동의
+        # 청원 동의, 닫힌 청원에는 불가능하도록.
         # 실패시 None, 이미 동의한 청원일 시 -1, 청원의 Status Code가 1인 경우 0, 성공시 200 반환
         pass
 
