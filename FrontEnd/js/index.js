@@ -19,6 +19,8 @@ else{
     document.querySelector("#logout_btn").addEventListener("click", performLogout);
 }
 
+document.querySelector("html").addEventListener("click", closeModal);
+
 document.querySelector("#login").addEventListener("click", () => {
     document.querySelector("#login_modal").style.display = "block";
 });
@@ -47,7 +49,15 @@ document.querySelector("#managerMenu_btn").addEventListener("click", () => {
     }
 });
 
-document.querySelector("html").addEventListener("click", closeModal);
+document.querySelector("#system_setting").addEventListener("click", () => {
+    if(isManager){
+        document.querySelector("#manager_menu_modal").style.display = "none";
+        document.querySelector("#system_setting_modal").style.display = "block";
+    }
+    else{
+        alert("권한이 없습니다.");
+    }
+});
 
 function clearInputs(parentNode){
     var inputElements = parentNode.querySelectorAll("input");

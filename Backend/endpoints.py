@@ -154,7 +154,7 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
     @login_required
     @priv_required
     def get_settings():
-        # expire_left와 pass_ratio 반환
+        # expire_left와 pass_ratio 및 현 전체 유저 수 반환
         pass
 
     @app.route("/get-add-day-request", methods = ["POST"])
