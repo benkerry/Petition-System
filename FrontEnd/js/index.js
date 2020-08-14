@@ -59,12 +59,12 @@ function clearInputs(parentNode){
 
 function closeModal(e){
     if(e.target.className === "modal_layer"){
+        var modals = document.querySelectorAll(".modal");
         var forms = document.querySelectorAll(".form");
 
-        document.querySelector("#login_modal").style.display = "none";
-        document.querySelector("#register_modal").style.display = "none";
-        document.querySelector("#myInfo_modal").style.display = "none";
-        document.querySelector("#manager_menu_modal").style.display = "none";
+        for(let i = 0; i < modals.length; i++){
+            modals[i].style.display = "none";
+        }
 
         for(let i = 0; i < forms.length; i++){
             clearInputs(forms[i]);

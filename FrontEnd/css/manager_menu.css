@@ -24,3 +24,17 @@
     border:2px solid #666;
     border-radius:2%;
 }
+
+#manager_menu_btns{
+    width:350px;
+    position:absolute;
+
+    top:45%;
+    left:37%;
+    right:63%;
+    transform: translate(-50%, -50%);
+}
+
+#manager_menu_btns .general_btn{
+    margin-left:20px;
+}
