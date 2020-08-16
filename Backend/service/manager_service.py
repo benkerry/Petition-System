@@ -25,14 +25,14 @@ class ManagerService:
         pass
 
     def close_petition_service(self, petition_id:int):
-        # 청원을 직권으로 닫음.
+        # 청원을 직권으로 닫음.(expire_left는 유지)
         # 직권으로 닫힌 청원은 작성자와 관리자만 열람 가능
         # 실패시 None, 성공시 200 반환
         # user_dao에 있는 것 사용
         pass
 
     def open_petition_service(self, petition_id:int):
-        # 닫힌 청원을 직권으로 엶.
+        # 닫힌 청원을 직권으로 엶.(expire_left는 유지)
         # 실패시 None, 성공시 200 반환
         # user_dao에 있는 것 사용
         pass

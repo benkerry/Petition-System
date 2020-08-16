@@ -1,33 +1,33 @@
-#change_petition_status_modal{
+#add_expire_day_modal{
     display:none;
 }
 
-#change_petition_status_modal h2{
+#add_expire_day_modal h2{
+    width:400px;
     margin:40px 0 10px;
+    padding-bottom:10px;
 }
 
-.change_petition_status_modal_content{
+.add_expire_day_modal_content{
     width:200px;
     height:700px;
 }
 
-#change_petition_status_form{
+#add_expire_day_form{
     width:500px;
     height:500px;
     position:absolute;
-    
-    left:50%;
-    right:50%;
+
     top:50%;
     bottom:50%;
+    left:50%;
+    right:50%;
     transform:translate(-50%, -50%);
 }
 
-#petition_list{
-    width:100%;
-    height:400px;
+#add_expire_day_requested_petition_list{
+    height:500px;
     border:1px solid gray;
-    box-shadow:none;
     padding:5px;
     background-color:#F9F9F9;
 }

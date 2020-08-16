@@ -9,11 +9,12 @@
         <link rel="stylesheet" href="css/manager_menu.css">
         <link rel="stylesheet" href="css/system_setting.css">
         <link rel="stylesheet" href="css/change_petition_status.css">
+        <link rel="stylesheet" href="css/add_expire_day.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
         <div class="page_contents">
-            <div class="content" id="content">
+            <div class="content" id="main">
                 <!-- Contents -->
             </div>
             <div class="sidebar">
@@ -104,7 +105,7 @@
                     <h3>청원 관련 메뉴</h3>
                     <div id="system_setting" class="general_btn">청원 시스템 설정</div>
                     <div id="change_petition_status" class="general_btn">청원 상태 변경</div>
-                    <div id="add_expire_day" class="general_btn">청원 만료일 연장 요청 열람</div>
+                    <div id="add_expire_day" class="general_btn">청원 만료일 연장 요청 열람 및 수리</div>
                     <br>
                     <h3>유저 관련 메뉴</h3>
                     <div id="view_report" class="general_btn">신고 열람</div>
@@ -139,7 +140,6 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 공사중 -->
         <div id="change_petition_status_modal" class="modal manager_modal">
             <div class="modal_content change_petition_status_modal_content">
                 <h2>청원 상태 변경</h2>
@@ -149,7 +149,33 @@
                     <input type="radio" class="petition_status" value="4"> | 관리자가 닫은 청원<br>
                     <br>
                     <div id="petition_list" style="overflow:auto;">
-                        <!-- 여가에 청원 리스트 update -->
+                        <!-- 여기에 청원 리스트 update -->
+                    </div>
+                    <div class="go_back">뒤로가기</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <!-- 공사중 -->
+        <div id="add_expire_day_modal" class="modal manager_modal">
+            <div class="modal_content add_expire_day_modal_content">
+                <h2>청원 만료일 연장 요청 열람 및 수리</h2>
+                <div id="add_expire_day_form">
+                    <div id="add_expire_day_requested_petition_list" style="overflow:auto;">
+                        <!-- 여기에 청원 리스트 update -->
+                    </div>
+                    <div class="go_back">뒤로가기</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <!-- 마지막에 공사 -->
+        <div id="add_expire_day_req_modal" class="modal manager_modal">
+            <div class="modal_content add_expire_day_req_modal_content">
+                <h2>청원 만료일 연장 요청 열람 및 수리</h2>
+                <div id="add_expire_day_req_form">
+                    <div id="add_expire_day_req_list" style="overflow:auto;">
+                        <!-- 여기에 해당 청원 연장 요청 리스트 update -->
                     </div>
                     <div class="go_back">뒤로가기</div>
                 </div>
@@ -157,15 +183,6 @@
             <div class="modal_layer"></div>
         </div>
         <!-- 공사 예정 -->
-        <div id="add_expire_day_modal" class="modal manager_modal">
-            <div class="modal_content add_expire_day_modal_content">
-                <h2>청원 만료일 연장</h2>
-                <div id="add_expire_day_form">
-                    <div class="go_back">뒤로가기</div>
-                </div>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
         <div id="view_report_modal" class="modal manager_modal">
             <div class="modal_content view_report_modal_content">
                 <h2>신고 열람</h2>
@@ -208,5 +225,6 @@
         <script src="js/myInfo.js"></script>
         <script src="js/system_setting.js"></script>
         <script src="js/change_petition_status.js"></script>
+        <script src="js/add_expire_day.js"></script>
     </body>
 </html>
