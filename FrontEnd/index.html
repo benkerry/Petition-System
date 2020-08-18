@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="css/system_setting.css">
         <link rel="stylesheet" href="css/change_petition_status.css">
         <link rel="stylesheet" href="css/add_expire_day.css">
+        <link rel="stylesheet" href="css/view_report.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
@@ -170,7 +171,7 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 마지막에 공사 -->
+        <!-- 백엔드 연결 후 공사 -->
         <div id="add_expire_day_req_modal" class="modal manager_modal">
             <div class="modal_content add_expire_day_req_modal_content">
                 <h2>청원 만료일 연장 요청 열람</h2>
@@ -188,6 +189,10 @@
             <div class="modal_content view_report_modal_content">
                 <h2>신고 열람</h2>
                 <div id="view_report_form">
+                    <div id="report_list" style="overflow:auto;">
+                        <!-- 신고 리스트 update -->
+                        <!-- 열린 게시물에 관한 신고만 보여지도록 -->
+                    </div>
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
@@ -228,5 +233,6 @@
         <script src="js/system_setting.js"></script>
         <script src="js/change_petition_status.js"></script>
         <script src="js/add_expire_day.js"></script>
+        <script src="js/view_report.js"></script>
     </body>
 </html>
