@@ -21,7 +21,16 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
     # User Services
     @app.route("/register", methods = ["POST"])
     def register():
-        pass
+        payload = request.json
+
+        stdid = payload['stdid']
+        authcode = payload['authcode']
+        email = payload['email']
+        pwd = payload['pwd']
+        pwd_chk = payload['pwd_chk']
+        nickname = payload['nickname']
+
+        return services.user_service.regist_service(stdid, authcode, email, pwd, pwd_chk, nickname)
 
     @app.route("/login", methods = ["POST"])
     def login():

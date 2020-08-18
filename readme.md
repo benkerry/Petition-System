@@ -3,6 +3,7 @@
 
 ## 사용된 패키지
 >- python: jwt
+>- python: bcrypt
 >- python: flask
 >- python: sqlalchemy
 >- python: mysql-connector-python

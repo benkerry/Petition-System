@@ -11,7 +11,7 @@ class UserService:
         if pwd != pwd_chk:
             return "비밀번호와 비밀번호 확인 란의 값이 다릅니다.", 400
         elif len(pwd) < 8:
-            return "비밀번호가 너무 짧습니다.", 400
+            return "비밀번호가 너무 짧습니다. 8자 이상이어야 합니다.", 400
         elif email in self.dao.get_all_email():
             return "이미 가입된 이메일입니다.", 400
         elif nickname in self.dao.get_all_nickname():
@@ -31,7 +31,7 @@ class UserService:
             if self.dao.insert_user(email, hashed_pwd, nickname, db_authcode[0] // 1000, root):
                 return "가입 성공!", 200
             else:
-                return "Server Side Error", 503
+                return "Internal Server Error", 500
 
     def login_service(self, email:str, pwd:str):
         # 로그인 수행.

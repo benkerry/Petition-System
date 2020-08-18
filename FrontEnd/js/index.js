@@ -1,5 +1,5 @@
-var isLoggedIn = true;
-var isManager = 2; // 임시
+var isLoggedIn = 0;
+var isManager = 0; // 임시
 
 if(isLoggedIn){
     document.querySelector(".profile_non_login").className = "profile_login";
