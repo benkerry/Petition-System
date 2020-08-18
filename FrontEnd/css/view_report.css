@@ -3,22 +3,23 @@
 }
 
 #view_report_modal h2{
-    width:150px;
+    width:400px;
     margin:40px 0 10px;
     padding-bottom:10px;
 }
 
 .view_report_modal_content{
     width:200px;
-    height:750px;
+    height:700px;
 }
 
 #view_report_form{
     width:500px;
+    height:500px;
     position:absolute;
 
-    top:50%;
-    bottom:50%;
+    top:47%;
+    bottom:53%;
     left:50%;
     right:50%;
     transform:translate(-50%, -50%);
@@ -26,7 +27,7 @@
 
 #report_list{
     height:500px;
-    width:100%;
+    margin-top:15px;
     border:1px solid gray;
     padding:5px;
     background-color:#F9F9F9;
