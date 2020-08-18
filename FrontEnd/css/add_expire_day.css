@@ -10,7 +10,7 @@
 
 .add_expire_day_modal_content{
     width:200px;
-    height:700px;
+    height:750px;
 }
 
 #add_expire_day_form{
@@ -18,11 +18,15 @@
     height:500px;
     position:absolute;
 
-    top:50%;
-    bottom:50%;
+    top:47%;
+    bottom:53%;
     left:50%;
     right:50%;
     transform:translate(-50%, -50%);
+}
+
+#add_expire_day_requested_petition_list{
+    margin-top:10px;
 }
 
 #add_expire_day_requested_petition_list{

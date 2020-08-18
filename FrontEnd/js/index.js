@@ -1,5 +1,5 @@
 var isLoggedIn = true;
-var isManager = true; // 임시
+var isManager = 2; // 임시
 
 if(isLoggedIn){
     document.querySelector(".profile_non_login").className = "profile_login";
@@ -66,34 +66,22 @@ document.querySelector("#managerMenu_btn").addEventListener("click", () => {
 });
 
 document.querySelector("#system_setting").addEventListener("click", () => {
-    if(isManager){
-        document.querySelector("#manager_menu_modal").style.display = "none";
-        document.querySelector("#system_setting_modal").style.display = "block";
-    }
-    else{
-        alert("권한이 없습니다.");
-    }
+    openManagerFunctionModal(document.querySelector("#system_setting_modal"));
 });
 
 document.querySelector("#change_petition_status").addEventListener("click", () => {
-    if(isManager){
-        document.querySelector("#manager_menu_modal").style.display = "none";
-        document.querySelector("#change_petition_status_modal").style.display = "block";
-    }
-    else{
-        alert("권한이 없습니다.");
-    }
+    openManagerFunctionModal(document.querySelector("#change_petition_status_modal"));
 });
 
 document.querySelector("#add_expire_day").addEventListener("click", () => {
-    if(isManager){
-        document.querySelector("#manager_menu_modal").style.display = "none";
-        document.querySelector("#add_expire_day_modal").style.display = "block";
-    }
-    else{
-        alert("권한이 없습니다.");
-    }
+    openManagerFunctionModal(document.querySelector("#add_expire_day_modal"));
 });
+
+document.querySelector("#view_report").addEventListener("click", () => {
+    openManagerFunctionModal(document.querySelector("#view_report_modal"));
+});
+
+// add_expire_day_req_modal은 마지막에 만들자
 
 function clearInputs(parentNode){
     var inputElements = parentNode.querySelectorAll("input");
@@ -115,6 +103,16 @@ function closeModal(e){
         for(let i = 0; i < forms.length; i++){
             clearInputs(forms[i]);
         }
+    }
+}
+
+function openManagerFunctionModal(modal){
+    if(isManager){
+        document.querySelector("#manager_menu_modal").style.display = "none";
+        modal.style.display = "block";
+    }
+    else{
+        alert("권한이 없습니다.");
     }
 }
 

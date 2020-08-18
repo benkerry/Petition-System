@@ -110,8 +110,8 @@
                     <h3>유저 관련 메뉴</h3>
                     <div id="view_report" class="general_btn">신고 열람</div>
                     <div id="delete_user" class="general_btn">유저 삭제</div>
-                    <div id="manage_privs" class="general_btn">관리자 권한 관리</div>
                     <div id="generate_authcode" class="general_btn">인증번호 발급</div>
+                    <div id="manage_privs" class="general_btn">관리자 권한 관리</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -144,9 +144,9 @@
             <div class="modal_content change_petition_status_modal_content">
                 <h2>청원 상태 변경</h2>
                 <div id="change_petition_status_form">
-                    <input type="radio" class="petition_status" value="0" checked> | 열린 청원<br>
-                    <input type="radio" class="petition_status" value="1"> | 기간만료 청원<br>
-                    <input type="radio" class="petition_status" value="4"> | 관리자가 닫은 청원<br>
+                    <input type="radio" name="petition_status" value="0" checked> | 열린 청원<br>
+                    <input type="radio" name="petition_status" value="1"> | 기간만료 청원<br>
+                    <input type="radio" name="petition_status" value="4"> | 관리자가 닫은 청원<br>
                     <br>
                     <div id="petition_list" style="overflow:auto;">
                         <!-- 여기에 청원 리스트 update -->
@@ -156,13 +156,14 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 공사중 -->
         <div id="add_expire_day_modal" class="modal manager_modal">
             <div class="modal_content add_expire_day_modal_content">
                 <h2>청원 만료일 연장 요청 열람 및 수리</h2>
                 <div id="add_expire_day_form">
+                    <input type="radio" name="petition_type" value="0" checked> | 요청많은순<br>
+                    <input type="radio" name="petition_type" value="1"> | 만료임박순<br>
                     <div id="add_expire_day_requested_petition_list" style="overflow:auto;">
-                        <!-- 여기에 청원 리스트 update -->
+                        <!-- 여기에 청원 연장 요청 리스트 update -->
                     </div>
                     <div class="go_back">뒤로가기</div>
                 </div>
@@ -172,7 +173,7 @@
         <!-- 마지막에 공사 -->
         <div id="add_expire_day_req_modal" class="modal manager_modal">
             <div class="modal_content add_expire_day_req_modal_content">
-                <h2>청원 만료일 연장 요청 열람 및 수리</h2>
+                <h2>청원 만료일 연장 요청 열람</h2>
                 <div id="add_expire_day_req_form">
                     <div id="add_expire_day_req_list" style="overflow:auto;">
                         <!-- 여기에 해당 청원 연장 요청 리스트 update -->
@@ -182,7 +183,7 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 공사 예정 -->
+        <!-- 공사중 -->
         <div id="view_report_modal" class="modal manager_modal">
             <div class="modal_content view_report_modal_content">
                 <h2>신고 열람</h2>
@@ -192,6 +193,7 @@
             </div>
             <div class="modal_layer"></div>
         </div>
+        <!-- 공사 예정 -->
         <div id="delete_user_modal" class="modal manager_modal">
             <div class="modal_content delete_user_modal_content">
                 <h2>유저 삭제</h2>
@@ -201,19 +203,19 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="manage_privs_modal" class="modal manager_modal">
-            <div class="modal_content manage_privs_modal_content">
-                <h2>관리자 권한 관리</h2>
-                <div id="manage_privs_form">
+        <div id="generate_authcode_modal" class="modal manager_modal">
+            <div class="modal_content generate_authcode_modal_content">
+                <h2>인증번호 발급</h2>
+                <div id="generate_authcode_form">
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="generate_authcode_modal" class="modal manager_modal">
-            <div class="modal_content generate_authcode_modal_content">
-                <h2>인증번호 발급</h2>
-                <div id="generate_authcode_form">
+        <div id="manage_privs_modal" class="modal manager_modal">
+            <div class="modal_content manage_privs_modal_content">
+                <h2>관리자 권한 관리</h2>
+                <div id="manage_privs_form">
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
