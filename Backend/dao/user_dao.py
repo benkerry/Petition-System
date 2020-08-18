@@ -64,10 +64,35 @@ class UserDao:
         # 실패시 None, 성공시 전체 유저 수 반환.
         pass
 
+    def get_all_email(self):
+        data = self.db.execute(text("""
+            SELECT email
+            FROM users
+        """)).fetchall()
+
+        if data:
+            rtn = []
+            for i in data:
+                rtn.append(i)
+
+            return tuple(rtn)
+        else:
+            return None
+
     def get_all_nickname(self):
-        # DB상 존재하는 모든 닉네임을 리스트로 리턴
-        # 실패시 None
-        pass
+        data = self.db.execute(text("""
+            SELECT nickname
+            FROM users
+        """)).fetchall()
+
+        if data:
+            rtn = []
+            for i in data:
+                rtn.append(i)
+
+            return tuple(rtn)
+        else:
+            return None
 
     def update_privilege(self, uid:int, priv:int):
         # uid에 해당하는 유저의 권한을 변경함.
