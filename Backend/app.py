@@ -1,5 +1,13 @@
 
 import config.config as config
+
+from dao.user_dao import UserDao
+from dao.petition_dao import PetitionDao
+from dao.debate_dao import DebateDao
+from dao.manager_dao import ManagerDao
+
+from service import UserService, PetitionService, DebateService, ManagerService
+
 from endpoints import create_endpoints
 
 from flask import Flask
@@ -26,19 +34,22 @@ def create_app(test_config = None):
 
     # 아직 개발되지 않은 부분은 None으로 남겨둠.
     # Persistenace Layer
-    user_dao = None
-    petition_dao = None
-    debate_dao = None
+    user_dao = UserDao(db)
+    petition_dao = PetitionDao(db)
+    debate_dao = DebateDao(db)
+    manager_dao = ManagerDao(db)
 
     # Business Layer
-    user_service = None
-    petition_service = None
-    debate_service = None
+    user_service = UserService(user_dao)
+    petition_service = PetitionService(petition_dao)
+    debate_service = DebateService(debate_dao)
+    manager_service = ManagerService(user_dao, petition_dao, debate_dao, manager_dao)
 
     services = Service
-    services.user_service = None
-    services.petition_service = None
-    services.debate_service = None
+    services.user_service = user_service
+    services.petition_service = petition_service
+    services.debate_service = debate_service
+    services.manager_service = manager_service
     
     create_endpoints(app, services, config.expire_left, config.pass_ratio)
 

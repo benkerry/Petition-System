@@ -1,8 +1,11 @@
-from ..dao import ManagerDao
+from ..dao import UserDao, PetitionDao, DebateDao, ManagerDao
 
 class ManagerService:
-    def __init__(self, dao:ManagerDao):
-        self.dao = dao
+    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, debate_dao:DebateDao, manager_dao:ManagerDao):
+        self.user_dao = user_dao
+        self.petition_dao = petition_dao
+        self.debate_dao = debate_dao
+        self.manager_dao = manager_dao
 
     def delete_user_service(self, uid_list:list):
         # 유저를 삭제.

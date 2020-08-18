@@ -50,3 +50,8 @@ class PetitionDao:
         # 청원 정보를 id로 인출
         # 실패시 None, 성공시 (id, title, contents, created_at, status, answer, expire_left) 형태로 반환한다.
         pass
+
+    def get_add_day(self, petition_id:int):
+        # 해당 청원 만료기한 연장 요청 상황 확인,
+        # 실패시 None, 성공시 ( (req_id, comment), ... ) 반환
+        pass

@@ -6,8 +6,7 @@ class UserService:
         self.dao = dao
 
     def regist_service(self, grade:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str, root:int):
-        # 회원가입 수행.
-        # 실패시 오류 번호( n < 0 ), 성공시 200 리턴
+        dao.get_authcode(stdid)
         pass
 
     def login_service(self, email:str, pwd:str):

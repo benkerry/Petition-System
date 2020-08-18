@@ -1,9 +1,9 @@
 CREATE TABLE users(
     id INT NOT NULL AUTO_INCREMENT,
-    grade INT NOT NULL,
     email VARCHAR(255) NOT NULL,
     hashed_pwd VARCHAR(255) NOT NULL,
     nickname VARCHAR(255) NOT NULL,
+    grade INT NOT NULL,
     root BOOLEAN NOT NULL,
     PRIMARY KEY(id),
     UNIQUE KEY nickname(nickname),

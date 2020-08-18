@@ -6,5 +6,6 @@ from .manager_dao import ManagerDao
 __all__ = [
     'UserDao',
     'PetitionDao',
-    'DebateDao'
+    'DebateDao',
+    'ManagerDao'
 ]
