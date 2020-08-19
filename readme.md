@@ -7,3 +7,5 @@
 >- python: flask
 >- python: sqlalchemy
 >- python: mysql-connector-python
+>- python: smtplib
+>- python:

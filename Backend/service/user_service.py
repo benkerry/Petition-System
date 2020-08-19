@@ -1,11 +1,13 @@
 import jwt
 import bcrypt
 from dao import UserDao
+from service import Mailer
 from flask import g
 
 class UserService:
-    def __init__(self, dao:UserDao):
+    def __init__(self, dao:UserDao, mailer:Mailer):
         self.dao = dao
+        self.mailer = mailer
 
     def regist_service(self, stdid:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str):
         if pwd != pwd_chk:
@@ -32,6 +34,10 @@ class UserService:
             root = db_authcode[2]
 
             if self.dao.insert_user(email, hashed_pwd, nickname, db_authcode[0] // 1000, root):
+                title = "[청원 시스템] 가입 인증 메일입니다."
+                content = ""
+                self.mailer.Send(title, content, [email])
+                
                 return "가입 완료", 200
             else:
                 return "Internal Server Error", 500

@@ -6,7 +6,7 @@ from dao.petition_dao import PetitionDao
 from dao.debate_dao import DebateDao
 from dao.manager_dao import ManagerDao
 
-from service import UserService, PetitionService, DebateService, ManagerService
+from service import UserService, PetitionService, DebateService, ManagerService, Mailer
 
 from endpoints import create_endpoints
 
@@ -30,6 +30,8 @@ def create_app(test_config = None):
         pool_recycle = 20000, 
         max_overflow = 0
     )
+
+    mailer = Mailer(config.mail_server, config.port, config.email, config.id_email, config.authcode)
 
     # Persistenace Layer
     user_dao = UserDao(db)
