@@ -15,7 +15,12 @@ class UserDao:
         }).fetchone()
 
         if data != None:
-            return (data[0], data[1], data[2], data[3])
+            return {
+                "stdid":data[0],
+                "code":data[1],
+                "root":data[2],
+                "validating":data[3]
+            }
         else:
             return None
 
@@ -53,11 +58,11 @@ class UserDao:
     def get_user(self, email:str = None, uid:int = None):
         # 유저 정보(학번, 이메일, 해시된 패스워드, 닉네임, 인증여부)를 인출.
         # 이메일이 들어오면 이메일을, uid가 들어오면 uid를 사용. 둘 다 들어오면 맘대로~~
-        # 실패시 None, 성공시 (학번, 이메일, 해시된 패스워드, 닉네임):tuple을 반환.
+        # 실패시 None, 성공시 (학번, 이메일, 해시된 패스워드, 닉네임) 딕셔너리로 반환
         pass
 
-    def update_user_info(self, uid:int, email:str, nickname:str):
-        # uid에 해당하는 유저 정보(email, nickname)를 parameter로 들어온 email, nickname으로 업데이트.
+    def update_user_info(self, uid:int, nickname:str):
+        # uid에 해당하는 유저 정보(nickname)를 parameter로 들어온 nickname으로 업데이트.
         # 실패시 None, 성공시 전체 유저 수 반환
         pass
 
@@ -76,7 +81,21 @@ class UserDao:
             rtn = []
             for i in data:
                 rtn.append(i)
+            return tuple(rtn)
+        else:
+            return None
 
+    def get_all_manager_email(self):
+        data = self.db.execute(text("""
+            SELECT email
+            FROM users
+            WHERE root > 0
+        """))
+
+        if data != None:
+            rtn = []
+            for i in data:
+                rtn.append(i)    
             return tuple(rtn)
         else:
             return None
@@ -91,10 +110,19 @@ class UserDao:
             rtn = []
             for i in data:
                 rtn.append(i)
-
             return tuple(rtn)
         else:
             return None
+
+    def update_user_email(email:str, new_email:str):
+        return self.db.execute(text("""
+            UPDATE users
+            SET email = :new_email
+            WHERE email = :email
+        """), {
+            "new_email":new_email,
+            "email":email
+        }).lastrowid
 
     def update_privilege(self, uid:int, priv:int):
         # uid에 해당하는 유저의 권한을 변경함.

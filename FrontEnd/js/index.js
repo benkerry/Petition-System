@@ -45,6 +45,22 @@ document.querySelector("#register_btn").addEventListener("click", () => {
     document.querySelector("#register_modal").style.display = "block";
 });
 
+document.querySelector("#dont_get_validate_mail").addEventListener("click", () => {
+    document.querySelector("#register_modal").style.display = "none";
+    document.querySelector("#validate_mail_resend_modal").style.display = "block";
+});
+
+document.querySelector("#validate_is_fucked").addEventListener("click", () => {
+    if(document.getElementById("validate_is_fucked").checked){
+        document.getElementById("resend_pwd").style.display = "block";
+        document.getElementById("resend_new_email").style.display = "block";
+    }
+    else{
+        document.getElementById("resend_pwd").style.display = "none";
+        document.getElementById("resend_new_email").style.display = "none";
+    }
+});
+
 document.querySelector("#myInfo_btn").addEventListener("click", () => {
     if(isLoggedIn){
         document.querySelector("#myInfo_modal").style.display = "block";

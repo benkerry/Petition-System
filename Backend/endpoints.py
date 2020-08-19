@@ -1,3 +1,4 @@
+import jwt
 from functools import wraps
 from flask import Response, request, current_app, jsonify, g
 
@@ -32,10 +33,26 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
 
         return services.user_service.regist_service(stdid, authcode, email, pwd, pwd_chk, nickname)
 
+    @app.route("/validate", methods = ["POST"])
+    def validate():
+        token = request.args.get("token")
+        data = None
+        
+        try:
+            data = jwt.decode(token, current_app.config["JWT_SECRET_KEY"], "HS256")
+        except jwt.InvalidTokenError:
+            return "잘못된 접근입니다.", 401
+
+        return services.user_service.validate(data['email'])
+
     @app.route("/validate-mail-resend", methods = ["POST"])
     def validate_mail_resend():
-        payload = request.json
-        return services.user_service.send_validate_mail(payload['email'], mode="resend")
+        payloda = request.json
+
+        if payload['isValidateFucked'] == 0:
+            return services.user_service.send_validate_mail(payload['email'], mode="resend")
+        else:
+            return services.user_service.send_validate_mail(payload['email'], payload['new_email'], payload['pwd'], mode="fucked")
 
     @app.route("/login", methods = ["POST"])
     def login():

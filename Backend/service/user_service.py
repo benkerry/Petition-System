@@ -1,6 +1,6 @@
 import jwt
 import bcrypt
-from flask import g
+from flask import g, current_app
 from datetime import datetime, timedelta
 from dao import UserDao
 from service import Mailer
@@ -10,18 +10,33 @@ class UserService:
         self.dao = dao
         self.mailer = mailer
 
-    def send_validate_mail(self, email, mode="send"):
-        if mode == "resend":
+    def send_validate_mail(self, email, new_email = "", pwd = "",  mode = "send"):
+        mode = mode.lower()
+
+        if mode == "resend" or mode == "fucked":
             if email not in self.dao.get_all_email():
-                return 500, "가입 시도 기록을 찾을 수 없습니다."
+                return 500, "가입 시도 기록을 찾을 수 없습니다.\n뭔가 이상하다면 developerkerry@naver.com으로 메일 바랍니다."
+
+        if mode == "fucked":
+            user = self.dao.get_user(email=email)
+            hashed_pwd = user["hashed_pwd"]
+            if not bcrypt.checkpw(pwd.encode("UTF-8"), hashed_pwd.encode("UTF-8")):
+                return 500, "비밀번호가 틀립니다."
+            else:
+                self.dao.update_user_email(email, new_email)
+                email = new_email
+
         token = jwt.encode({
             'user_email': email,
             'exp': datetime.utcnow() + timedelta(seconds= 60 * 60 * 24 * 7)
-        })
+        }, current_app.config["JWT_SECRET_KEY"], "HS256")
 
         title = "[청원 시스템] 가입 인증 메일입니다. 유효기간은 7일입니다."
-        content = "링크를 클릭하세요! >>> http://localhost:5000/register_auth?token=" + token.decode("UTF-8")
-        self.mailer.Send(title, content, [email])
+        content = "링크를 클릭하세요! >>> http://localhost:5000/validate?token=" + token.decode("UTF-8")
+        self.mailer.send(title, content, [email])
+
+    def validate(self, email):
+        pass
 
     def generate_authcode(self, stdid:tuple):
         pass
@@ -40,7 +55,7 @@ class UserService:
 
             if not db_authcode:
                 return "인증번호가 틀립니다.", 401
-            elif stdid != db_authcode[0] or authcode != db_authcode[1]:
+            elif stdid != db_authcode["stdid"] or authcode != db_authcode["code"]:
                 return "인증번호가 틀립니다.", 401
 
             hashed_pwd = bcrypt.hashpw(
@@ -48,9 +63,9 @@ class UserService:
                 bcrypt.gensalt()
             )
 
-            root = db_authcode[2]
+            root = db_authcode["root"]
 
-            if self.dao.insert_user(email, hashed_pwd, nickname, db_authcode[0] // 1000, root):
+            if self.dao.insert_user(email, hashed_pwd, nickname, db_authcode["stdid"] // 1000, root):
                 self.send_validate_mail(email)
                 return "가입 완료", 200
             else:

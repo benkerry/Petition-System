@@ -1,4 +1,5 @@
 document.querySelector("#request_register_btn").addEventListener("click", performRegister);
+document.querySelector("#resend_validate_mail").addEventListener("click", performResend);
 
 function performRegister(){
     var email = document.getElementById("register_email").value;
@@ -39,14 +40,84 @@ function performRegister(){
             })
         }).done((msg) => {
             console.log(msg);
-            alert("가입 성공!\n가입 시 작성한 이메일로 인증 메일을 발송하였습니다.\n서비스는 메일 인증 후 사용 가능합니다.\n인증을 완료해주세요.");
+            alert("가입 성공!\n가입 시 작성한 이메일로 인증 메일을 발송하였습니다.\n서비스는 메일 인증 후 사용 가능합니다.\n인증을 완료해주세요.\n");
+
+            document.getElementById("validate_mail_resend_modal").style.display = "none";
+            document.getElementById("login_modal").style.display = "block";
         }).fail((msg) =>{
             if(msg.status != 0){
-                alert(msg.responseText + "\n 계속 시도해도 문제가 된다면, developerkerry@naver.com으로 메일 바랍니다.");
+                alert(msg.responseText);
             }
             else{
-                alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
+                alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n잠시 후 다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
             }
         });
+    }
+}
+
+function performResend(){
+    var email = document.querySelector("#resend_email").value;
+    var isValidateFucked = document.getElementById("validate_is_fucked").checked
+
+    if(email){
+        if(!isValidateFucked){
+            $.ajax({
+                url: "http://localhost:5000/validate-mail-resend",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "email":email,
+                    "isValidateFucked":0
+                })
+            }).done((msg) => {
+                console.log(msg);
+                alert("메일함과 스팸 메일함을 다시 확인해보세요!");
+            }).fail((msg) =>{
+                if(msg.status != 0){
+                    alert(msg.responseText);
+                }
+                else{
+                    alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n잠시 후 다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
+                }
+            });
+        }
+        else{
+            var newEmail = document.getElementById("resend_new_email").value;
+            var pwd = document.getElementById("resend_pwd").value
+            
+            if(!newEmail){
+                alert("빈칸을 채워주세요!(볼빨사 아님 ㅎ)");
+            }
+            else if(newEmail.indexOf("@naver.com") == -1 && newEmail.indexOf("@daum.net") == -1 && newEmail.indexOf("@hanmail.net") == -1 
+                && newEmail.indexOf("@korea.kr") == -1 && newEmail.indexOf("@gmail.com") == -1 && newEmail.indexOf("@kakao.com") == -1){
+                alert("이메일 형식이 잘못되었거나, 지원하지 않는 이메일입니다.\n네이버, 다음, 카카오, 구글, 공직메일만 사용 가능합니다.");
+            }
+            else{
+                $.ajax({
+                    url: "http://localhost:5000/validate-mail-resend",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "email":email,
+                        "new_email":new_email,
+                        "pwd":pwd,
+                        "isValidateFucked":1
+                    })
+                }).done((msg) => {
+                    console.log(msg);
+                    alert("새로 입력한 메일주소로 이메일이 왔는지 확인해보세요!");
+                }).fail((msg) =>{
+                    if(msg.status != 0){
+                        alert(msg.responseText);
+                    }
+                    else{
+                        alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n잠시 후 다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
+                    }
+                });
+            }  
+        }
+    }
+    else{
+        alert("빈칸을 채워주세요!(볼빨사 아님 ㅎ)");
     }
 }

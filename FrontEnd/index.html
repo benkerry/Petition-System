@@ -73,6 +73,22 @@
                     </div>
                     <br>
                     <div id="request_register_btn" class="general_btn">가입</div>
+                    <div id="dont_get_validate_mail">인증 메일을 받지 못하셨나요?</div>
+                </div>
+                <div class="modal_layer"></div>
+            </div>
+        </div>
+        <div id="validate_mail_resend_modal" class="modal">
+            <div class="modal_content validate_mail_resend_modal_content">
+                <h2>인증메일 재전송</h2>
+                <div id="resend_form" class="form">
+                    <input type="text" id="resend_email" placeholder="가입 시 입력했던 이메일"><br>
+                    <input type="password" id="resend_pwd" placeholder="가입 시 입력했던 비밀번호"><br>
+                    <input type="text" id="resend_new_email" placeholder="다른 이메일 주소 입력" style="display:none;">
+                    <div id="change_email_addr">
+                        <input type="checkbox" id="validate_is_fucked"> | 문제가 계속된다면?
+                    </div>
+                    <div id="resend_validate_mail" class="general_btn">재전송</div>
                 </div>
                 <div class="modal_layer"></div>
             </div>

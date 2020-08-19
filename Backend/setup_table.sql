@@ -44,7 +44,6 @@ CREATE TABLE debates(
 CREATE TABLE authcodes(
     stdid INT NOT NULL,
     code VARCHAR(255) NOT NULL,
-    root INT NOT NULL,
-    validating BOOLEAN NOT NULL,
+    root INT NOT NULL
     UNIQUE KEY stdid(stdid)
 );

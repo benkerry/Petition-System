@@ -9,7 +9,7 @@ class Mailer:
         self.id_email = id_email
         self.authcode = authcode
 
-    def Send(self, title:str, content:str, to:tuple):
+    def send(self, title:str, content:str, to:tuple):
         self.smtp = smtplib.SMTP(self.mail_server, self.port)
         self.smtp.ehlo()
         self.smtp.starttls()

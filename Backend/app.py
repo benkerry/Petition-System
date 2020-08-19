@@ -20,6 +20,7 @@ class Service:
 
 def create_app(test_config = None):
     app = Flask(__name__)
+    app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
 
     CORS(app)
 
