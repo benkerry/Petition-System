@@ -51,7 +51,7 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
     def change_my_pwd():
         pass
 
-    @app.route("/withdraw", methodes = ["POST"])
+    @app.route("/withdraw", methods = ["POST"])
     @login_required
     def withdraw():
         pass

@@ -5,6 +5,7 @@ CREATE TABLE users(
     nickname VARCHAR(255) NOT NULL,
     grade INT NOT NULL,
     root BOOLEAN NOT NULL,
+    validated BOOLEAN NOT NULL,
     PRIMARY KEY(id),
     UNIQUE KEY nickname(nickname),
     UNIQUE KEY email(email)

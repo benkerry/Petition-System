@@ -1,13 +1,13 @@
 import jwt
 import bcrypt
-from ..dao import UserDao
+from dao import UserDao
 from flask import g
 
 class UserService:
     def __init__(self, dao:UserDao):
         self.dao = dao
 
-    def regist_service(self, stdid:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str, root:int):
+    def regist_service(self, stdid:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str):
         if pwd != pwd_chk:
             return "비밀번호와 비밀번호 확인 란의 값이 다릅니다.", 400
         elif len(pwd) < 8:
@@ -15,7 +15,7 @@ class UserService:
         elif email in self.dao.get_all_email():
             return "이미 가입된 이메일입니다.", 400
         elif nickname in self.dao.get_all_nickname():
-            return "이미 존재하는 닉네임입니다."
+            return "이미 존재하는 닉네임입니다.", 400
         else:
             db_authcode = self.dao.get_authcode(stdid)
 
@@ -28,8 +28,11 @@ class UserService:
                 pwd.encode("UTF-8"),
                 bcrypt.gensalt()
             )
+
+            root = db_authcode[2]
+
             if self.dao.insert_user(email, hashed_pwd, nickname, db_authcode[0] // 1000, root):
-                return "가입 성공!", 200
+                return "가입 완료", 200
             else:
                 return "Internal Server Error", 500
 
