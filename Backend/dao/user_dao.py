@@ -114,7 +114,16 @@ class UserDao:
         else:
             return None
 
-    def update_user_email(email:str, new_email:str):
+    def process_validate(self, email:str):
+        return self.db.execute(text("""
+            UPDATE users
+            SET validated = 1
+            WHERE email = :email
+        """), {
+            "email":email
+        }).lastrowid
+
+    def update_user_email(self, email:str, new_email:str):
         return self.db.execute(text("""
             UPDATE users
             SET email = :new_email
