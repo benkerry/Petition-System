@@ -26,8 +26,9 @@ function performRegister(){
     }
     else{
         $.ajax({
-            url: "http://localhost:5500/register",
+            url: "http://localhost:5000/register",
             type: "POST",
+            contentType: "application/json",
             data: JSON.stringify({
                 "stdid": stdid,
                 "authcode": authcode,
@@ -38,8 +39,14 @@ function performRegister(){
             })
         }).done((msg) => {
             console.log(msg);
+            alert("가입 성공!\n가입 시 작성한 이메일로 인증 메일을 발송하였습니다.\n서비스는 메일 인증 후 사용 가능합니다.\n인증을 완료해주세요.");
         }).fail((msg) =>{
-            alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");
+            if(msg.status != 0){
+                alert(msg.responseText + "\n 계속 시도해도 문제가 된다면, developerkerry@naver.com으로 메일 바랍니다.");
+            }
+            else{
+                alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
+            }
         });
     }
 }
