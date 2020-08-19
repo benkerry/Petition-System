@@ -32,6 +32,11 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
 
         return services.user_service.regist_service(stdid, authcode, email, pwd, pwd_chk, nickname)
 
+    @app.route("/validate-mail-resend", methods = ["POST"])
+    def validate_mail_resend():
+        payload = request.json
+        return services.user_service.send_validate_mail(payload['email'], mode="resend")
+
     @app.route("/login", methods = ["POST"])
     def login():
         pass

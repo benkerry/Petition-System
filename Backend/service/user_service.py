@@ -1,13 +1,30 @@
 import jwt
 import bcrypt
+from flask import g
+from datetime import datetime, timedelta
 from dao import UserDao
 from service import Mailer
-from flask import g
 
 class UserService:
     def __init__(self, dao:UserDao, mailer:Mailer):
         self.dao = dao
         self.mailer = mailer
+
+    def send_validate_mail(self, email, mode="send"):
+        if mode == "resend":
+            if email not in self.dao.get_all_email():
+                return 500, "가입 시도 기록을 찾을 수 없습니다."
+        token = jwt.encode({
+            'user_email': email,
+            'exp': datetime.utcnow() + timedelta(seconds= 60 * 60 * 24 * 7)
+        })
+
+        title = "[청원 시스템] 가입 인증 메일입니다. 유효기간은 7일입니다."
+        content = "링크를 클릭하세요! >>> http://localhost:5000/register_auth?token=" + token.decode("UTF-8")
+        self.mailer.Send(title, content, [email])
+
+    def generate_authcode(self, stdid:tuple):
+        pass
 
     def regist_service(self, stdid:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str):
         if pwd != pwd_chk:
@@ -34,10 +51,7 @@ class UserService:
             root = db_authcode[2]
 
             if self.dao.insert_user(email, hashed_pwd, nickname, db_authcode[0] // 1000, root):
-                title = "[청원 시스템] 가입 인증 메일입니다."
-                content = ""
-                self.mailer.Send(title, content, [email])
-                
+                self.send_validate_mail(email)
                 return "가입 완료", 200
             else:
                 return "Internal Server Error", 500

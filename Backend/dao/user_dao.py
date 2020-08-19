@@ -7,7 +7,7 @@ class UserDao:
 
     def get_authcode(self, stdid:int):
         data = self.db.execute(text("""
-            SELECT stdid, code, root
+            SELECT stdid, code, root, validating
             FROM authcodes
             WHERE stdid = :stdid
         """), {
@@ -15,13 +15,13 @@ class UserDao:
         }).fetchone()
 
         if data != None:
-            return (data[0], data[1], data[2])
+            return (data[0], data[1], data[2], data[3])
         else:
             return None
 
-    def insert_user(self, email:str, hashed_pwd:str, nickname:str, grade:int, priv:str):
+    def insert_user_staged(self, email:str, hashed_pwd:str, nickname:str, grade:int, priv:str):
         return self.db.execute(text("""
-            INSERT INTO users(
+            INSERT INTO users_staged(
                 email,
                 hashed_pwd,
                 nickname,
@@ -45,13 +45,13 @@ class UserDao:
             "root":priv
         }).lastrowid
 
-    def delete_user(self, uid:int):
+    def delete_user(self, uid = -1, email = None):
         # 유저를 삭제.
         # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
         pass
 
     def get_user(self, email:str = None, uid:int = None):
-        # 유저 정보(학번, 이메일, 해시된 패스워드, 닉네임)를 인출.
+        # 유저 정보(학번, 이메일, 해시된 패스워드, 닉네임, 인증여부)를 인출.
         # 이메일이 들어오면 이메일을, uid가 들어오면 uid를 사용. 둘 다 들어오면 맘대로~~
         # 실패시 None, 성공시 (학번, 이메일, 해시된 패스워드, 닉네임):tuple을 반환.
         pass
