@@ -1,4 +1,4 @@
-from ..dao import UserDao, PetitionDao, DebateDao, ManagerDao
+from dao import UserDao, PetitionDao, DebateDao, ManagerDao
 
 class ManagerService:
     def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, debate_dao:DebateDao, manager_dao:ManagerDao):

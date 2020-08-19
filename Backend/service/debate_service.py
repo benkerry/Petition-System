@@ -1,4 +1,4 @@
-from ..dao import DebateDao
+from dao import DebateDao
 
 class DebateService:
     def __init__(self, dao:DebateDao):

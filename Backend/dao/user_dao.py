@@ -7,15 +7,15 @@ class UserDao:
 
     def get_authcode(self, stdid:int):
         data = self.db.execute(text("""
-            SELECT stdid, code
+            SELECT stdid, code, root
             FROM authcodes
             WHERE stdid = :stdid
         """), {
             "stdid":stdid
-        }).fetchone
+        }).fetchone()
 
-        if data:
-            return (data[0], data[1])
+        if data != None:
+            return (data[0], data[1], data[2])
         else:
             return None
 
@@ -26,14 +26,16 @@ class UserDao:
                 hashed_pwd,
                 nickname,
                 grade,
-                root
+                root,
+                validated
             )
             VALUES(
                 :email,
                 :hashed_pwd,
                 :nickname,
                 :grade,
-                :root
+                :root,
+                0
             )
         """), {
             "email":email,
@@ -70,7 +72,7 @@ class UserDao:
             FROM users
         """)).fetchall()
 
-        if data:
+        if data != None:
             rtn = []
             for i in data:
                 rtn.append(i)
@@ -85,7 +87,7 @@ class UserDao:
             FROM users
         """)).fetchall()
 
-        if data:
+        if data != None:
             rtn = []
             for i in data:
                 rtn.append(i)

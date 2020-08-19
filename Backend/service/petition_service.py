@@ -1,4 +1,4 @@
-from ..dao import PetitionDao
+from dao import PetitionDao
 from flask import g
 
 class PetitionService:

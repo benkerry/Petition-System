@@ -22,17 +22,15 @@ def create_app(test_config = None):
     app = Flask(__name__)
 
     CORS(app)
-    app.config.from_pyfile("config.py")
 
     db = create_engine(
-        app.config['DB_URL'], 
+        config.DB_URL, 
         encoding = "utf-8", 
         pool_size = 50, 
         pool_recycle = 20000, 
         max_overflow = 0
     )
 
-    # 아직 개발되지 않은 부분은 None으로 남겨둠.
     # Persistenace Layer
     user_dao = UserDao(db)
     petition_dao = PetitionDao(db)
@@ -41,7 +39,7 @@ def create_app(test_config = None):
 
     # Business Layer
     user_service = UserService(user_dao)
-    petition_service = PetitionService(petition_dao)
+    petition_service = PetitionService(petition_dao, config.expire_left, config.pass_ratio)
     debate_service = DebateService(debate_dao)
     manager_service = ManagerService(user_dao, petition_dao, debate_dao, manager_dao)
 
@@ -52,5 +50,4 @@ def create_app(test_config = None):
     services.manager_service = manager_service
     
     create_endpoints(app, services, config.expire_left, config.pass_ratio)
-
     return app
