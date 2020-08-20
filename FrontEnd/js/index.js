@@ -1,13 +1,24 @@
-var isLoggedIn = 0;
-var isManager = 0; // 임시
+var priv = sessionStorage.getItem("priv");
 
-if(isLoggedIn){
+if(priv == null){
+    priv = 0;
+}
+// production에서 삭제할 것
+
+priv = 2;
+
+if(priv > 0){
+    document.getElementById("profile_img").setAttribute("src", "resources/login_profile.png")
+    document.getElementById("name").innerHTML = sessionStorage.getItem("nickname");
+}
+
+if(priv){
     document.querySelector(".profile_non_login").className = "profile_login";
     document.querySelector(".profile_infos_non_login").style.display = "none";
     document.querySelector(".profile_infos_login").style.display = "block";
 }
 
-if(isLoggedIn && isManager){
+if(priv > 1){
     document.querySelector(".profile_login").className = "profile_manager";
     document.querySelector(".profile_manager").className = "profile_manager";
     document.querySelector("#logout_btn").id = "logout_btn_manager";
@@ -40,49 +51,20 @@ document.querySelector("#login").addEventListener("click", () => {
     recentModal.style.display = "block";
 });
 
-document.querySelector("#register_btn").addEventListener("click", () => {
-    document.querySelector("#login_modal").style.display = "none";
-    document.querySelector("#register_modal").style.display = "block";
-});
-
-document.querySelector("#dont_get_validate_mail").addEventListener("click", () => {
-    document.querySelector("#register_modal").style.display = "none";
-    document.querySelector("#validate_mail_resend_modal").style.display = "block";
-});
-
-document.querySelector("#validate_is_fucked").addEventListener("click", () => {
-    if(document.getElementById("validate_is_fucked").checked){
-        document.getElementById("resend_pwd").style.display = "block";
-        document.getElementById("resend_new_email").style.display = "block";
+document.querySelector("#login_modal").addEventListener("keydown", (event) => {
+    if(event.keyCode == 13){
+        performLogin();
     }
-    else{
-        document.getElementById("resend_pwd").style.display = "none";
-        document.getElementById("resend_new_email").style.display = "none";
-    }
-});
-
-document.querySelector("#myInfo_btn").addEventListener("click", () => {
-    if(isLoggedIn){
-        document.querySelector("#myInfo_modal").style.display = "block";
-    }
-    else{
-        alert("로그인이 필요합니다.");
-        document.querySelector("#login_modal").style.display = "block";
-    }
-});
+})
 
 document.querySelector("#managerMenu_btn").addEventListener("click", () => {
-    if(isManager){
+    if(priv > 1){
         recentModal = document.querySelector("#manager_menu_modal");
         recentModal.style.display = "block";
     }
     else{
         alert("권한이 없습니다.");
     }
-});
-
-document.querySelector("#system_setting").addEventListener("click", () => {
-    openManagerFunctionModal(document.querySelector("#system_setting_modal"));
 });
 
 document.querySelector("#change_petition_status").addEventListener("click", () => {
@@ -123,7 +105,7 @@ function closeModal(e){
 }
 
 function openManagerFunctionModal(modal){
-    if(isManager){
+    if(priv > 1){
         document.querySelector("#manager_menu_modal").style.display = "none";
         modal.style.display = "block";
     }
@@ -132,6 +114,42 @@ function openManagerFunctionModal(modal){
     }
 }
 
-function performLogout(){
+function commFail(msg){
+    if(msg.status != 0){
+        alert(msg.responseText);
+    }
+    else{
+        alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n잠시 후 다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
+    }
+}
 
+function performLogout(){
+    sessionStorage.clear();
+    location.reload();
+}
+
+function sendApiRequest(endpoint, data2send, done, isLoginRequirAction){
+    if(isLoginRequirAction){
+        $.ajax({
+            url: "http://localhost:5000/" + endpoint,
+            type: "POST",
+            contentType: "application/json",
+            beforeSend: (xhr) => { xhr.setRequestHeader("token", sessionStorage.getItem("token")) },
+            data: JSON.stringify(data2send)
+        }).done(done)
+        .fail((msg) =>{
+            commFail(msg);
+        });
+    }
+    else{
+        $.ajax({
+            url: "http://localhost:5000/" + endpoint,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data2send)
+        }).done(done)
+        .fail((msg) =>{
+            commFail(msg);
+        });
+    }
 }

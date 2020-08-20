@@ -6,6 +6,7 @@ CREATE TABLE users(
     grade INT NOT NULL,
     root BOOLEAN NOT NULL,
     validated BOOLEAN NOT NULL,
+    withdraw_at DATETIME,
     PRIMARY KEY(id),
     UNIQUE KEY nickname(nickname),
     UNIQUE KEY email(email)
@@ -45,5 +46,6 @@ CREATE TABLE authcodes(
     stdid INT NOT NULL,
     code VARCHAR(255) NOT NULL,
     root INT NOT NULL,
-    UNIQUE KEY stdid(stdid)
+    UNIQUE KEY stdid(stdid),
+    UNIQUE KEY code(code)
 );

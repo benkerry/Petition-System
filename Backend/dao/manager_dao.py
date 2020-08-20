@@ -4,6 +4,11 @@ class ManagerDao:
     def __init__(self, db):
         self.db = db
 
+    def get_user_count(self):
+        return self.db.execute(text("""
+            SELECT COUNT(*) FROM users
+        """)).fetchone()[0]
+
     def insert_authcode(self, authcode:tuple):
         # ( (stdid, authcode), ... ) 형태로 들어온 인증번호 insert
         # 실패시 None, 성공시 1

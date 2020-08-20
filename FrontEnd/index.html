@@ -11,17 +11,18 @@
         <link rel="stylesheet" href="css/change_petition_status.css">
         <link rel="stylesheet" href="css/add_expire_day.css">
         <link rel="stylesheet" href="css/view_report.css">
+        <link rel="stylesheet" href="css/write_petition.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
         <div class="page_contents">
-            <div class="content" id="main">
+            <div id="main">
                 <!-- Contents -->
             </div>
             <div class="sidebar">
                 <div class="profile_non_login">
                     <div class="profile_image">
-                        <img src="resources/default_profile.png" alt="Default Progile Image. Mark of Gukwon High School.">
+                        <img id="profile_img" src="resources/default_profile.png" alt="Default Progile Image. Mark of Gukwon High School.">
                     </div>
                     <div class="profile_infos">
                         <div class="profile_infos_non_login">
@@ -42,7 +43,7 @@
                     </div>
                 </div>
                 <div class="navigator" id="navigator">
-                    <!-- 게시판 리스트 추가 -->
+                    <div id="write_petition">청원 작성하기</div>
                 </div>
             </div>
         </div>
@@ -83,7 +84,7 @@
                 <h2>인증메일 재전송</h2>
                 <div id="resend_form" class="form">
                     <input type="text" id="resend_email" placeholder="가입 시 입력했던 이메일"><br>
-                    <input type="password" id="resend_pwd" placeholder="가입 시 입력했던 비밀번호"><br>
+                    <input type="password" id="resend_pwd" placeholder="가입 시 입력했던 비밀번호" style="display:none;"><br>
                     <input type="text" id="resend_new_email" placeholder="다른 이메일 주소 입력" style="display:none;">
                     <div id="change_email_addr">
                         <input type="checkbox" id="validate_is_fucked"> | 문제가 계속된다면?
@@ -110,6 +111,18 @@
                     <br>
                     <input type="password" id="myInfo_current_pwd" class="general_input" placeholder="현재 비밀번호"><br>
                     <div id="change_pwd_btn" class="general_btn">비밀번호 변경</div>
+                    <div id="withdraw_btn" class="general_btn">회원탈퇴</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <div id="write_petition_modal" class="modal">
+            <div class="modal_content write_petition_modal_content">
+                <h2>청원 올리기</h2>
+                <div id="write_petition_form">
+                    <input type="text" id="petition_title" placeholder="제목"><br>
+                    <textarea id="petition_content"></textarea>
+                    <div id="send_petition" class="general_btn">청원 보내기</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -138,18 +151,19 @@
                 <div id="system_setting_forms">
                     <h3>동의 비율 설정</h3>
                     <div id="pass_ratio_setting_form" class="form">
-                        <input type="text" value="" placeholder="(설정 동의 비율)(%)" disabled> | 현재 설정된 동의인 비율<br>
-                        <input type="text" value="" placeholder="(현재 임계 동의인 수)" disabled> | 현재 설정 비율로 계산한 임계 동의 수<br>
-                        <input type="text" value="" placeholder="변경할 동의 비율(%)"><br>
-                        <input type="text" value="" placeholder="(동의 변경시 임계 동의인 수)" disabled> | 동의 비율 변경시 기준 임계 동의 수<br>
-                        <div id="set_pass_ratio" class="general_btn">설정 완료</div>
+                        <input type="text" id="user_count" value="" placeholder="(현재 회원 수)" disabled> | 현재 회원 수<br>
+                        <input type="text" id="current_pass_ratio" value="" placeholder="(설정 동의 비율)(%)" disabled> | 현재 설정된 동의인 비율<br>
+                        <input type="text" id="current_pass_support" value="" placeholder="(현재 임계 동의인 수)" disabled> | 현재 설정 비율로 계산한 임계 동의 수<br>
+                        <input type="text" id="pass_ratio_to_set" value="" placeholder="변경할 동의 비율(%)" maxlength="3"> | 변경할 동의 비율<br> 
+                        <input type="text" id="pass_support_when_setted" value="" placeholder="동의비율 변경시 임계 동의인 수" disabled> | 동의 비율 변경시 기준 임계 동의 수<br>
+                        <div id="set_pass_ratio" class="general_btn">변경</div>
                     </div>
                     <br>
                     <h3>청원 만료기한 설정</h3>
                     <div id="expire_day_setting_form" class="form">
-                        <input type="text" value="" placeholder="(현재 만료기한)" disabled> | 현재 설정된 만료기한<br>
-                        <input type="text" value="" placeholder="변경할 만료기한(일)"><br>
-                        <div id="set_expire_day" class="general_btn">설정 완료</div>
+                        <input type="text" id="current_expire_left" value="" placeholder="(현재 만료기한)" disabled> | 현재 설정된 만료기한<br>
+                        <input type="text" id="expire_left_to_set" value="" placeholder="변경할 만료기한(일)" maxlength="3"> | 변경할 만료기한<br>
+                        <div id="set_expire_day" class="general_btn">변경</div>
                     </div>
                     <div class="go_back">뒤로가기</div>
                 </div>
@@ -265,5 +279,6 @@
         <script src="js/change_petition_status.js"></script>
         <script src="js/add_expire_day.js"></script>
         <script src="js/view_report.js"></script>
+        <script src="js/write_petition.js"></script>
     </body>
 </html>

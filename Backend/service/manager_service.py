@@ -1,3 +1,4 @@
+from flask import jsonify
 from dao import UserDao, PetitionDao, DebateDao, ManagerDao
 
 class ManagerService:
@@ -6,6 +7,9 @@ class ManagerService:
         self.petition_dao = petition_dao
         self.debate_dao = debate_dao
         self.manager_dao = manager_dao
+
+    def get_user_count(self):
+        return self.manager_dao.get_user_count()
 
     def delete_user_service(self, uid_list:list):
         # 유저를 삭제.

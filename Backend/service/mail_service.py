@@ -1,23 +1,39 @@
 import smtplib
+import threading
 from email.mime.text import MIMEText
 
 class Mailer:
     def __init__(self, mail_server:str, port:int, email:str, id_email:str, authcode:str):
-        self.mail_server = mail_server
-        self.port = port
         self.email = email
-        self.id_email = id_email
-        self.authcode = authcode
+        self.send_list = []
 
-    def send(self, title:str, content:str, to:tuple):
-        self.smtp = smtplib.SMTP(self.mail_server, self.port)
+        self.smtp = smtplib.SMTP(mail_server, port)
         self.smtp.ehlo()
         self.smtp.starttls()
         self.smtp.login(id_email, authcode)
 
-        msg = MIMEText(content)
-        msg['Subject'] = title
-        msg['From'] = email
-        msg['To'] = ",".join(to)
+    def run(self):
+        self.send_process()
+        threading.Timer(5, self.run).start()
 
-        self.smtp.sendmail(email, to, msg.as_string())
+    def send(self, title:str, content:str, to:tuple):
+        self.send_list.append({
+            "title":title,
+            "content":content,
+            "to":to
+        })
+
+    def send_process(self):
+        while True:
+            try:
+                i = self.send_list.pop()
+            except IndexError:
+                break
+
+            msg = MIMEText(i["content"])
+            msg["Subject"] = i["title"]
+            msg["From"] = self.email
+
+            for k in i["to"]:
+                msg["To"] = k
+                self.smtp.sendmail(self.email, k, msg.as_string())

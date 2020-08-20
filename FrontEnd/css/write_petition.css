@@ -1,0 +1,47 @@
+#write_petition_modal{
+    display:none;
+}
+
+#write_petition_modal h2{
+    margin:40px 0 180px;
+}
+
+.write_petition_modal_content{
+    width:300px;
+    height:800px;
+}
+
+#write_petition_form{
+    width:600px;
+    padding-top:30px;
+    position:absolute;
+
+    top:10%;
+    bottom:90%;
+    left:49%;
+    right:51%;
+    transform: translate(-50%, -50%);
+}
+
+#petition_title, #petition_content{
+    width:100%;
+    border:1px solid gray;
+    border-radius:12px;
+    padding:10px;
+}
+
+#petition_title{
+    height:50px;
+    font-size:25px;
+    margin-bottom:15px;
+}
+
+#petition_content{
+    height:500px;
+    font-size:15px;
+}
+
+#send_petition{
+    padding-left:10px;
+    padding-right:10px;
+}

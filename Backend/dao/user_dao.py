@@ -1,13 +1,12 @@
 from sqlalchemy import text
 
 class UserDao:
-    # 여기에서는 users, authcodes 테이블에만 액세스하도록 한다.
     def __init__(self, db):
         self.db = db
 
     def get_authcode(self, stdid:int):
         data = self.db.execute(text("""
-            SELECT stdid, code, root, validating
+            SELECT stdid, code, root
             FROM authcodes
             WHERE stdid = :stdid
         """), {
@@ -18,15 +17,21 @@ class UserDao:
             return {
                 "stdid":data[0],
                 "code":data[1],
-                "root":data[2],
-                "validating":data[3]
+                "root":data[2]
             }
         else:
             return None
 
-    def insert_user_staged(self, email:str, hashed_pwd:str, nickname:str, grade:int, priv:str):
+    def delete_authcode(self, authcode:str):
         return self.db.execute(text("""
-            INSERT INTO users_staged(
+            DELETE FROM authcodes WHERE code = :authcode
+        """),{
+            "code":authcode
+        }).lastrowid
+
+    def insert_user(self, email:str, hashed_pwd:str, nickname:str, grade:int, priv:str):
+        return self.db.execute(text("""
+            INSERT INTO users(
                 email,
                 hashed_pwd,
                 nickname,
@@ -51,25 +56,103 @@ class UserDao:
         }).lastrowid
 
     def delete_user(self, uid = -1, email = None):
-        # 유저를 삭제.
-        # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
-        pass
+        if uid > -1:
+            return self.db.execute(text("""
+                DELETE FROM users
+                WHERE id = :uid
+            """), {
+                "uid":uid
+            }).lastrowid
+        elif email:
+            return self.db.execute(text("""
+                DELETE FROM users
+                WHERE email = :email
+            """), {
+                "email":email
+            }).lastrowid
+        else:
+            return None
+
+    def delete_withdrawed_user(self):
+        return self.db.execuet(text("""
+            DELETE users
+            WHERE TIMESTAMPDIFF(day, withdraw_at, NOW()) > 13
+        """)).lastrowid
+
+    def update_withdraw(self, uid:int):
+        return self.db.execute(text("""
+            UPDATE users
+            SET withdraw_at = NOW()
+            WHERE id = :uid
+        """),{
+            "uid":uid
+        }).lastrowid
 
     def get_user(self, email:str = None, uid:int = None):
-        # 유저 정보(학번, 이메일, 해시된 패스워드, 닉네임, 인증여부)를 인출.
-        # 이메일이 들어오면 이메일을, uid가 들어오면 uid를 사용. 둘 다 들어오면 맘대로~~
-        # 실패시 None, 성공시 (학번, 이메일, 해시된 패스워드, 닉네임) 딕셔너리로 반환
-        pass
+        user = None
+        
+        if email:
+            data = self.db.execute(text("""
+                SELECT 
+                    id,
+                    email,
+                    hashed_pwd,
+                    nickname,
+                    root,
+                    validated
+                FROM users
+                WHERE email = :email
+            """), {
+                "email":email
+            }).fetchone()
+        elif uid:
+            data = self.db.execute(text("""
+                SELECT 
+                    id,
+                    email,
+                    hashed_pwd,
+                    nickname,
+                    root,
+                    validated
+                FROM users
+                WHERE id = :id
+            """), {
+                "id":uid
+            }).fetchone()
+        else:
+            return None
 
-    def update_user_info(self, uid:int, nickname:str):
-        # uid에 해당하는 유저 정보(nickname)를 parameter로 들어온 nickname으로 업데이트.
-        # 실패시 None, 성공시 전체 유저 수 반환
-        pass
+        if data != None:
+            return {
+                "uid":data[0],
+                "email":data[1],
+                "hashed_pwd":data[2],
+                "nickname":data[3],
+                "root":data[4],
+                "validated":data[5]
+            }
+        else:
+            return None
+
+    def update_user_nickname(self, uid:int, nickname:str):
+        return self.db.execute(text("""
+            UPDATE users
+            SET nickname = :nickname
+            WHERE id = :uid
+        """), {
+            "nickname":nickname,
+            "uid":uid
+        }).lastrowid
 
     def update_pwd(self, uid:int, hashed_pwd:str):
-        # uid에 해당하는 유저의 해시 패스워드를 업데이트.
-        # 실패시 None, 성공시 전체 유저 수 반환.
-        pass
+        return self.db.execute(text("""
+            UPDATE users
+            SET hashed_pwd = :hashed_pwd
+            WHERE id = :uid
+        """), {
+            "hashed_pwd":hashed_pwd,
+            "uid":uid
+        }).lastrowid
 
     def get_all_email(self):
         data = self.db.execute(text("""
@@ -80,7 +163,7 @@ class UserDao:
         if data != None:
             rtn = []
             for i in data:
-                rtn.append(i)
+                rtn.append(i[0])
             return tuple(rtn)
         else:
             return None
@@ -95,7 +178,7 @@ class UserDao:
         if data != None:
             rtn = []
             for i in data:
-                rtn.append(i)    
+                rtn.append(i[0])    
             return tuple(rtn)
         else:
             return None
@@ -109,7 +192,7 @@ class UserDao:
         if data != None:
             rtn = []
             for i in data:
-                rtn.append(i)
+                rtn.append(i[0])
             return tuple(rtn)
         else:
             return None
@@ -123,14 +206,14 @@ class UserDao:
             "email":email
         }).lastrowid
 
-    def update_user_email(self, email:str, new_email:str):
+    def update_user_email(self, uid:int, new_email:str):
         return self.db.execute(text("""
             UPDATE users
             SET email = :new_email
-            WHERE email = :email
+            WHERE id = :uid
         """), {
             "new_email":new_email,
-            "email":email
+            "uid":uid
         }).lastrowid
 
     def update_privilege(self, uid:int, priv:int):

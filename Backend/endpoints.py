@@ -2,10 +2,26 @@ import jwt
 from functools import wraps
 from flask import Response, request, current_app, jsonify, g
 
+class Config:
+    def __init__(self, pass_ratio, expire_left):
+        self.pass_ratio = pass_ratio
+        self.expire_left = expire_left
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # JWT 검증 절차 수행
+        token = request.headers.get("token")
+
+        if token is not None:
+            try:
+                payload = jwt.decode(token, current_app.config["JWT_SECRET_KEY"], "HS256")
+
+                g.uid = payload["uid"]
+                g.priv = payload["priv"]
+            except jwt.InvalidTokenError:
+                return "잘못된 접근입니다.", 401
+        else:
+            return "잘못된 접근입니다.", 401
         return f(*args, *kwargs)
 
     return decorated_function
@@ -13,12 +29,13 @@ def login_required(f):
 def priv_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # 관리자가 맞는지 검증 수행
+        if g.priv < 2:
+            return "잘못된 접근입니다.", 401
         return f(*args, **kwargs)
 
     return decorated_function
 
-def create_endpoints(app, services, expire_left:int, pass_ratio:int):
+def create_endpoints(app, services, config:Config):
     # User Services
     @app.route("/register", methods = ["POST"])
     def register():
@@ -33,7 +50,7 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
 
         return services.user_service.regist_service(stdid, authcode, email, pwd, pwd_chk, nickname)
 
-    @app.route("/validate", methods = ["POST"])
+    @app.route("/validate", methods = ["GET"])
     def validate():
         token = request.args.get("token")
         data = None
@@ -43,11 +60,11 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
         except jwt.InvalidTokenError:
             return "잘못된 접근입니다.", 401
 
-        return services.user_service.validate(data['email'])
+        return services.user_service.validate(data['user_email'])
 
     @app.route("/validate-mail-resend", methods = ["POST"])
     def validate_mail_resend():
-        payloda = request.json
+        payload = request.json
 
         if payload['isValidateFucked'] == 0:
             return services.user_service.send_validate_mail(payload['email'], mode="resend")
@@ -56,22 +73,20 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
 
     @app.route("/login", methods = ["POST"])
     def login():
-        pass
-
-    @app.route("/get-user-info", methods = ["POST"])
-    @login_required
-    def get_user_info():
-        pass
+        payload = request.json
+        return services.user_service.login_service(payload["email"], payload["pwd"])
 
     @app.route("/change-my-info", methods = ["POST"])
     @login_required
     def change_my_info():
-        pass
+        payload = request.json
+        return services.user_service.change_info_service(g.uid, payload["email"], payload["nickname"])
 
     @app.route("/change-my-pwd", methods = ["POST"])
     @login_required
     def change_my_pwd():
-        pass
+        payload = request.json
+        return services.user_service.change_pwd_service(g.uid, payload["pwd"], payload["pwd_chk"], payload["old_pwd"])
 
     @app.route("/withdraw", methods = ["POST"])
     @login_required
@@ -90,7 +105,8 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
     @app.route("/write-petition", methods = ["POST"])
     @login_required
     def write_petition():
-        pass
+        payload = request.json
+        # 여기까지
 
     @app.route("/support-petition", methods = ["POST"])
     @login_required
@@ -154,9 +170,9 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
     @priv_required
     def set_expire_left():
         set_data = request.json['expire_left']
-        expire_left = set_data
+        config.expire_left = int(set_data)
 
-        fp = open(".config/config.expire_left", 'w')
+        fp = open("config/config.expire_left", 'w')
         fp.write(set_data)
         fp.close()
 
@@ -172,21 +188,28 @@ def create_endpoints(app, services, expire_left:int, pass_ratio:int):
     @login_required
     @priv_required
     def set_pass_ratio():
-        set_data = request.json['pass_ratio']
-        pass_ratio = set_data
+        set_data = int(request.json['pass_ratio'])
 
-        fp = open(".config/config.pass_ratio", 'w')
-        fp.write(set_data)
-        fp.close()
+        if set_data > 100:
+            return "100 이상의 값은 입력하실 수 없습니다.", 400
+        else:
+            config.pass_ratio = set_data
 
-        return '', 200
+            fp = open("config/config.pass_ratio", 'w')
+            fp.write(str(set_data))
+            fp.close()
+
+            return '', 200
 
     @app.route("/get-settings", methods = ["POST"])
     @login_required
     @priv_required
     def get_settings():
-        # expire_left와 pass_ratio 및 현 전체 유저 수 반환
-        pass
+        return jsonify({
+            "user_count":services.manager_service.get_user_count(),
+            "pass_ratio":config.pass_ratio,
+            "expire_left":config.expire_left
+        })
 
     @app.route("/get-add-day-request", methods = ["POST"])
     @login_required

@@ -1,11 +1,11 @@
-from dao import PetitionDao
 from flask import g
+from dao import PetitionDao
+from endpoints import Config
 
 class PetitionService:
-    def __init__(self, dao:PetitionDao, expire_left:int, pass_ratio:int):
+    def __init__(self, dao:PetitionDao, config:Config):
         self.dao = dao
-        self.expire_left = expire_left
-        self.pass_ratio = pass_ratio
+        self.config = config
 
     def get_petition_metadata_service(self, count:int, type:str = "all"):
         # count만큼의 type 청원을 꺼낸다.
