@@ -1,7 +1,7 @@
 import jwt
 import bcrypt
 import threading
-from flask import g, current_app, Response, jsonify
+from flask import current_app, jsonify
 from datetime import datetime, timedelta
 from dao import UserDao
 from .mail_service import Mailer

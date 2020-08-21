@@ -91,7 +91,8 @@ def create_endpoints(app, services, config:Config):
     @app.route("/withdraw", methods = ["POST"])
     @login_required
     def withdraw():
-        pass
+        payload = request.json
+        return services.user_service.withdraw_service(g.uid, payload["pwd"])
 
     # Petition Services
     @app.route("/get-petition-metadatas", methods = ["POST"])
@@ -106,7 +107,7 @@ def create_endpoints(app, services, config:Config):
     @login_required
     def write_petition():
         payload = request.json
-        # 여기까지
+        return services.petition_service.write_petition_service(g.uid, payload["title"], payload["content"])
 
     @app.route("/support-petition", methods = ["POST"])
     @login_required

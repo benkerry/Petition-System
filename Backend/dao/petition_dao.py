@@ -5,10 +5,26 @@ class PetitionDao:
     def __init__(self, db):
         self.db = db
 
-    def insert_petition(self, author_id:int, title:str, contents:str, expire_left:int):
-        # 청원을 등록한다.
-        # 실패시 None, 성공시 전체 청원의 갯수를 반환한다.
-        pass
+    def insert_petition(self, uid:int, title:str, contents:str):
+        return self.db.execute(text("""
+            INSERT INTO petitions(
+                author_id,
+                title,
+                contents,
+                created_at,
+                status
+            ) VALUES(
+                :uid,
+                :title,
+                :contents,
+                NOW(),
+                0
+            )
+        """), {
+            "uid":uid,
+            "title":title,
+            "contents":contents,
+        }).lastrowid
 
     def insert_support(self, stdid:int, petition_id:int):
         # 청원에 대한 동의를 등록한다.
@@ -30,11 +46,31 @@ class PetitionDao:
         # 실패시 None, 성공시 동의자 수를 반환한다.
         pass
 
-    def get_petition_metadatas(self, type:str):
-        # DB에 있는, 파라미터로 주어진 상태 코드에 해당하는 모든 청원을 인출한다.
-        # type의 종류: "all", "newest", "hottest", "oldest", "answered"
-        # 실패시 None, 성공시 2차원 튜플을 ((id, title, status, answer), ... ) 형태로 반환한다.
-        pass
+    def get_petition_metadatas(self, count):
+        result = dict()
+        data = self.db.execute(text("""
+            SELECT 
+                id, 
+                title, 
+                created_at, 
+                status, 
+                answer
+            FROM petitions 
+            ORDER BY id DESC
+            LIMIT :count
+        """), {
+            "count":count
+        })
+
+        for i in data:
+            result[i[0]] = {
+                "title":i[1],
+                "created_at":i[2],
+                "status":i[3],
+                "answer":i[4] != ""
+            }
+
+        return result
 
     def insert_add_day_request(self, uid:int, petition_id:int, comment:str):
         # 만료기한 연장 요청을 삽입

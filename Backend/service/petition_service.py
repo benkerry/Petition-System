@@ -1,29 +1,14 @@
-from flask import g
 from dao import PetitionDao
 from endpoints import Config
+from flask import jsonify
 
 class PetitionService:
     def __init__(self, dao:PetitionDao, config:Config):
         self.dao = dao
         self.config = config
 
-    def get_petition_metadata_service(self, count:int, type:str = "all"):
-        # count만큼의 type 청원을 꺼낸다.
-        # type의 종류: "all", "newest", "hottest", "oldest", "answered"
-        # 각각 가장 최신의 청원, 가장 동의가 많은 청원, 가장 기간종료와 가까운 청원, 가장 최근에 답변이 달린 청원을 count개 인출한다.
-        # 실패시 None, 성공시 다음과 같은 형태의 이중 딕셔너리로 데이터 반환
-        # {
-        #   id:{
-        #       'status':status,
-        #       'title':title,
-        #       'answer_exists':0 or 1(답변 존재 여부),
-        #       'support_count':support_count(동의 갯수)
-        #   },
-        #   .
-        #   .
-        #   .
-        # }
-        pass
+    def get_petition_metadata_service(self, count:int = 0):
+        return jsonify(self.dao.get_petition_metadatas())
 
     def get_petition_service(self, petition_id:int):
         # petition_id에 해당하는 청원의 정보를 반환.
@@ -38,10 +23,12 @@ class PetitionService:
         # }
         pass
 
-    def write_petition_service(self, author_id:int, title:str, contents:str, expire_left:int):
-        # 청원 등록
-        # 실패시 None, 성공시 200 반환
-        pass
+    def write_petition_service(self, uid:int, title:str, contents:str):
+        if title != "" and contents != "":
+            self.dao.insert_petition(uid, title, contents)
+            return "작성 성공", 200
+        else:
+            return "빈칸을 모두 채워주세요.", 200
     
     def support_petition_service(self, uid:int, petition_id:int):
         # 청원 동의, 닫힌 청원에는 불가능하도록.

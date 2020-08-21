@@ -8,7 +8,7 @@ function performSendPetition(){
     var title = document.getElementById("petition_title").value;
     var content = document.getElementById("petition_content").value;
 
-    if(title || content){
+    if(!title || !content){
         alert("빈칸을 모두 채워주세요.")
     }
     else if(title.length < 2){

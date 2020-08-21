@@ -57,7 +57,7 @@ body{
 .profile_image img{
     width:90%;
     height:90%;
-    border-radius:70%;
+    border-radius:100%;
 }
 
 .profile_infos_non_login{
@@ -71,9 +71,9 @@ body{
     margin:0 auto 0 auto;
 
     cursor:pointer;
-    background-color:#E3FEFC;
+    background-color:white;
     border:1px solid gray;
-    border-radius:12px;
+    border-radius:8px;
 }
 
 #logout_btn{
@@ -107,7 +107,7 @@ body{
     text-align:center;
     padding:5px 0 5px 0;
     margin:10px 0 10px 0;
-    border-radius:12px;
+    border-radius:8px;
     cursor:pointer;
     text-align:center;
     background-color:white;
@@ -132,7 +132,7 @@ body{
     text-align:center;
     margin-top:30px;
     padding:5px 0 5px 0;
-    border-radius:12px;
+    border-radius:8px;
     cursor:pointer;
     text-align:center;
     background-color:white;
@@ -221,9 +221,10 @@ body{
     text-align:center;
     margin-top:15px;
     padding:5px 0 5px 0;
-    border-radius:12px;
+    border-radius:8px;
     cursor:pointer;
     text-align:center;
     background-color:white;
     border:1px solid gray;
+    display:none;
 }

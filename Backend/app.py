@@ -12,7 +12,6 @@ from endpoints import create_endpoints, Config
 
 from flask import Flask
 from flask_cors import CORS
-from flask.json import JSONEncoder
 from sqlalchemy import create_engine
 
 class Service:

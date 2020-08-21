@@ -4,12 +4,12 @@ if(priv == null){
     priv = 0;
 }
 // production에서 삭제할 것
-
 priv = 2;
 
 if(priv > 0){
     document.getElementById("profile_img").setAttribute("src", "resources/login_profile.png")
     document.getElementById("name").innerHTML = sessionStorage.getItem("nickname");
+    document.getElementById("write_petition").style.display = "block";
 }
 
 if(priv){
