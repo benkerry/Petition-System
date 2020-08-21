@@ -1,0 +1,40 @@
+#petition_viewer_modal{
+    /*display:none;*/
+}
+
+#petition_viewer_modal h2{
+    margin:40px 0 180px;
+}
+
+.petition_viewer_modal_content{
+    width:300px;
+    height:760px;
+}
+
+#petition_viewer_form{
+    width:650px;
+    height:560px;
+    position:absolute;
+
+    top:49%;
+    bottom:51%;
+    left:50%;
+    right:50%;
+    transform:translate(-50%, -50%);
+}
+
+#petition_viewer_metadatas{
+    padding-bottom:20px;
+}
+
+#petition_viewer_nickname{
+    margin-bottom:10px;
+}
+
+#petition_viewer_content{
+    height:85%;
+    padding:10px;
+    background-color:#effaf4;
+    border:3px solid gray;
+    border-radius:12px;
+}

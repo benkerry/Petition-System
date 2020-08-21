@@ -62,7 +62,7 @@ class UserService:
 
             if not db_authcode:
                 return "인증번호가 틀립니다.", 401
-            elif int(stdid) != db_authcode["stdid"] or authcode != db_authcode["code"]:
+            elif int(stdid) != db_authcode["stdid"] or authcode.upper() != db_authcode["code"]:
                 return "인증번호가 틀립니다.", 401
 
             hashed_pwd = bcrypt.hashpw(

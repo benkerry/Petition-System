@@ -1,19 +1,68 @@
-#main{
+#all_petitions{
+    margin-left:30px;
+}
+
+#petitions{
     width:70%;
     float:left;
     padding:40px 50px 50px 50px;
 }
 
-.petitions{
-    width:70%;
-    height:300px;
-    margin-bottom:30px;
-    float:left;
+#petition_type_radios{
+    padding:0 0 15px 15px;
 }
 
-.petitions_list{
-    background-color:white;
+#petition_type_radios input{
+    margin-bottom:10px;
+}
+
+#all_petitions_list{
     width:100%;
-    height:80%;
-    margin:0 25% 0 5%;
+    height:650px;
+    margin:10px 0 0 15px;
+    background-color:#e7f3f0;
+    border:2px solid gray;
+    border-radius:12px;
+}
+
+#all_petitions_list_table{
+    text-align:center;
+}
+
+#all_petitions_list_table th{
+    height:45px;
+    border-bottom:1px solid gray;
+    background-color:#d5ecdd;
+}
+
+#all_petitions_list_table tbody tr td{
+    border-bottom:1px solid #B4B4B4;
+}
+
+#all_petitions_list_table tbody tr:hover{
+    background-color:#d1ddda;
+}
+
+#all_petitions_list_table tbody tr:active{
+    background-color:#afb9b7;
+}
+
+#all_petitions_list_table td{
+    padding:7px;
+}
+
+#petition_id{
+    width:75px;
+}
+
+#petition_title_table{
+    width:700px;
+}
+
+#petition_supports{
+    width:75px;
+}
+
+#petition_created_at{
+    width:200px;
 }

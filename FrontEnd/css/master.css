@@ -16,7 +16,7 @@ body{
 
 .sidebar{
     width:250px;
-    height:1300px;
+    height:1000px;
     float:right;
     background-color:#D5F5E3;
 }
@@ -228,6 +228,6 @@ body{
     display:none;
 }
 
-#notice_list{
-    padding-left:10px;
+#myPetitions_list{
+    margin-left:10px;
 }

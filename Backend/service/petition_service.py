@@ -8,25 +8,16 @@ class PetitionService:
         self.config = config
 
     def get_petition_metadata_service(self, count:int = 0):
-        return jsonify(self.dao.get_petition_metadatas(count))
+        return jsonify({"petitions":self.dao.get_petition_metadatas(count)})
 
     def get_petition_service(self, petition_id:int):
-        # petition_id에 해당하는 청원의 정보를 반환.
-        # 실패시 None, 성공시 다음과 같은 형태의 딕셔너리 반환
-        # {
-        #   'status':status,
-        #   'created_at':created_at(YYYY-MM-DD HH:MM),
-        #   'title':title,
-        #   'contents':contents,
-        #   'answer':answer,
-        #   'expire_left':expire_left
-        # }
-        pass
+        result = self.dao.get_petition(petition_id)
+        result["expire_left"] = config.expire_left
+        return jsonify(result)
 
     def write_petition_service(self, uid:int, title:str, contents:str):
         if title != "" and contents != "":
-            self.dao.insert_petition(uid, title, contents)
-            return "작성 성공", 200
+            return jsonify({"id":self.dao.insert_petition(uid, title, contents)})
         else:
             return "빈칸을 모두 채워주세요.", 200
     

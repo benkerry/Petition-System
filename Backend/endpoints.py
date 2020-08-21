@@ -97,11 +97,17 @@ def create_endpoints(app, services, config:Config):
     # Petition Services
     @app.route("/get-petition-metadatas", methods = ["POST"])
     def get_petition_metadatas():
-        pass
+        payload = request.json
+
+        if payload.get("count", True):
+            return services.petition_service.get_petition_metadata_service()
+        else:
+            return services.petition_service.get_petition_metadata_service(payload["count"])
 
     @app.route("/get-petition", methods = ["POST"])
     def get_petition():
-        pass
+        petition_id = request.json["petition_id"]
+        return services.petition_service.get_petition_service(petition_id)
 
     @app.route("/write-petition", methods = ["POST"])
     @login_required
@@ -117,16 +123,6 @@ def create_endpoints(app, services, config:Config):
     @app.route("/add-day-request", methods = ["POST"])
     @login_required
     def add_day_request():
-        pass
-
-    # Debate Services
-    @app.route("/write-debate", methods = ["POST"])
-    @login_required
-    def write_debate():
-        pass
-
-    @app.route("/get-debate", methods = ["POST"])
-    def get_debate():
         pass
 
     # Manager Services

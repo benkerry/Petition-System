@@ -13,29 +13,32 @@
         <link rel="stylesheet" href="css/add_expire_day.css">
         <link rel="stylesheet" href="css/view_report.css">
         <link rel="stylesheet" href="css/write_petition.css">
+        <link rel="stylesheet" href="css/petition_viewer.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
         <div class="page_contents">
-            <div id="main">
-                <div id="newest_petitions" class="petitions">
-                    <h2>신규 청원</h2>
-                    <div id="newest_petitions_list" class="petitions_list" style="overflow:auto;">
-                        <!-- 리스트 JS로 생성 -->
+            <div id="petitions">
+                <h1>청원 리스트</h1>
+                <div id="all_petitions" class="petitions">
+                    <div id="petition_type_radios">
+                        <input type="radio" id="newest" name="petition_order" checked> 최신 청원부터<br>
+                        <input type="radio" id="oldest" name="petition_order"> 오래된 청원부터<br>
+                        <input type="radio" id="answered" name="petition_order"> 최근에 통과된 청원부터<br>
+                        <input type="radio" id="supportest" name="petition_order"> 지지 많은 청원부터<br>
                     </div>
-                    <div id="today_report">
-                    </div>
-                </div>
-                <div id="oldest_petitions" class="petitions">
-                    <h2>만료임박 청원</h2>
-                    <div id="oldest_petitions_list" class="petitions_list" style="overflow:auto;">
-                        <!-- 리스트 JS로 생성 -->
-                    </div>
-                </div>
-                <div id="answerd_petitions" class="petitions">
-                    <h2>최근 답변된 청원</h2>
-                    <div id="answerd_petitions_list" class="petitions_list" style="overflow:auto;">
-                        <!-- 리스트 JS로 생성 -->
+                    <div id="all_petitions_list" style="overflow:auto;">
+                        <table id="all_petitions_list_table" summary="전체 청원 리스트 표입니다.">
+                            <thead>
+                                <th id="petition_id">번호</th>
+                                <th id="petition_title_table">제목</th>
+                                <th id="petition_supports">동의 수</th>
+                                <th id="petition_created_at">작성일시</th>
+                            </thead>
+                            <tbody id="all_petitions_list_table_tbody">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -64,8 +67,8 @@
                 </div>
                 <div class="sidebar_contents">
                     <div id="write_petition">청원 작성하기</div>
-                    <div id="notice_list">
-                        <h3>공지사항</h3>
+                    <div id="myPetitions_list">
+                        <h3>내가 작성한 청원</h3>
                     </div>
                 </div>
             </div>
@@ -146,6 +149,23 @@
                     <input type="text" id="petition_title" placeholder="제목"><br>
                     <textarea id="petition_content"></textarea>
                     <div id="send_petition" class="general_btn">청원 보내기</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <div id="petition_viewer_modal" class="modal">
+            <div class="modal_content petition_viewer_modal_content">
+                <h2 id="petition_viewer_title">(청원 제목)</h2>
+                <div id="petition_viewer_form">
+                    <div id="petition_viewer_metadatas">
+                        <strong id="petition_viewer_nickname">(작성자)</strong><br>
+                        <strong id="petition_viewer_created_at">(작성 시간)</strong><br>
+                        <strong id="petition_viewer_expire_at">(만료 시간)</strong>
+                    </div>
+                    <div id="petition_viewer_content">
+                        (청원 내용)
+                    </div>
+                    <div id="support_petition_btn" class="general_btn">청원에 지지 보내기</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -295,6 +315,7 @@
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/master.js"></script>
+        <script src="js/petition_viewer.js"></script>
         <script src="js/main.js"></script>
         <script src="js/login.js"></script>
         <script src="js/register.js"></script>

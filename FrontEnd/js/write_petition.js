@@ -25,6 +25,7 @@ function performSendPetition(){
             document.getElementById("petition_title").value = "";
             content = document.getElementById("petition_content").value = "";
             alert("작성 완료!");
+            location.reload();
             // 여기에서 작성된 글 볼 수 있도록 처리
         }
 

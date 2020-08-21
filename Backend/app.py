@@ -1,5 +1,5 @@
 
-import config.config as pycfg
+import config.config as cfg
 
 from dao.user_dao import UserDao
 from dao.petition_dao import PetitionDao
@@ -19,21 +19,21 @@ class Service:
 
 def create_app(test_config = None):
     app = Flask(__name__)
-    app.config['JWT_SECRET_KEY'] = pycfg.JWT_SECRET_KEY
+    app.config['JWT_SECRET_KEY'] = cfg.JWT_SECRET_KEY
 
     CORS(app)
 
     db = create_engine(
-        pycfg.DB_URL, 
+        cfg.DB_URL, 
         encoding = "utf-8", 
         pool_size = 50, 
         pool_recycle = 20000, 
         max_overflow = 0
     )
 
-    config = Config(pycfg.pass_ratio, pycfg.expire_left)
+    config = Config(cfg.pass_ratio, cfg.expire_left)
 
-    mailer = Mailer(pycfg.mail_server, pycfg.port, pycfg.email, pycfg.id_email, pycfg.authcode)
+    mailer = Mailer(cfg.mail_server, cfg.port, cfg.email, cfg.id_email, cfg.authcode)
     mailer.run()
 
     # Persistenace Layer

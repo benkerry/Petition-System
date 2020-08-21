@@ -10,13 +10,11 @@ class PetitionDao:
             INSERT INTO petitions(
                 author_id,
                 title,
-                contents,
-                status
+                contents
             ) VALUES(
                 :uid,
                 :title,
-                :contents,
-                0
+                :contents
             )
         """), {
             "uid":uid,
@@ -39,25 +37,18 @@ class PetitionDao:
         # 실패시 None, 성공시 전체 청원의 갯수를 반환한다.
         pass
 
-    def get_petition_supports(self, petition_id:int):
-        # 해당 청원의 만료일 이전에 찍힌 동의의 수를 리턴한다.
-        # 실패시 None, 성공시 동의자 수를 반환한다.
-        pass
-
     def get_petition_metadatas(self, count):
-        result = dict()
+        result = []
         data = None
         sql = """
-            SELECT 
-                id, 
-                title, 
-                created_at, 
-                answered_at,
-                SELECT COUNT(*)
-                FROM supports
-                WHERE petition_id = petitions.id as supports
-            FROM petitions 
-            ORDER BY id DESC WHERE status = 0
+            SELECT
+                id,
+                title,
+                date_format(created_at, "%Y-%m-%dT%H:%i:%S"),
+                supports
+            FROM petitions
+            WHERE status = 0
+            ORDER BY id DESC
         """
 
         if count:
@@ -69,12 +60,36 @@ class PetitionDao:
             data = self.db.execute(text(sql))
 
         for i in data:
-            result[i[0]] = {
+            result.append({
+                "id":i[0],
                 "title":i[1],
                 "created_at":i[2],
-                "answered_at":i[3],
                 "supports":i[4]
-            }
+            })
+
+        return result
+
+    def get_petition(self, petition_id:int):
+        result = dict()
+        data = self.db.execute(text("""
+            SELECT
+                u.nickname,
+                p.title,
+                p.contents,
+                date_format(p.created_at, "%Y-%m-%dT%H:%i:%S"),
+                p.status
+            FROM petitions AS p
+            LEFT JOIN users AS u ON u.id = p.author_id
+            WHERE p.id = :petition_id
+        """), {
+            "petition_id":petition_id
+        })
+
+        result["author"] = data[0]
+        result["title"] = data[1]
+        result["contents"] = data[2]
+        result["created_at"] = data[3]
+        result["status"] = data[3]
 
         return result
 
@@ -86,9 +101,4 @@ class PetitionDao:
     def update_expire_at(self, petition_id:int, add_day:int):
         # petition_id에 해당하는 청원의 만료일을 add_day만큼 추가함.
         # 실패시 None, 성공시 만료일 반환
-        pass
-
-    def get_petition(self, petition_id:int):
-        # 청원 정보를 id로 인출
-        # 실패시 None, 성공시 (id, title, contents, created_at, status, answer, expire_left) 형태로 반환한다.
         pass
