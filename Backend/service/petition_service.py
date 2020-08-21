@@ -8,7 +8,7 @@ class PetitionService:
         self.config = config
 
     def get_petition_metadata_service(self, count:int = 0):
-        return jsonify(self.dao.get_petition_metadatas())
+        return jsonify(self.dao.get_petition_metadatas(count))
 
     def get_petition_service(self, petition_id:int):
         # petition_id에 해당하는 청원의 정보를 반환.

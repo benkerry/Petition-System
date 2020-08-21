@@ -11,13 +11,11 @@ class PetitionDao:
                 author_id,
                 title,
                 contents,
-                created_at,
                 status
             ) VALUES(
                 :uid,
                 :title,
                 :contents,
-                NOW(),
                 0
             )
         """), {
@@ -48,26 +46,34 @@ class PetitionDao:
 
     def get_petition_metadatas(self, count):
         result = dict()
-        data = self.db.execute(text("""
+        data = None
+        sql = """
             SELECT 
                 id, 
                 title, 
                 created_at, 
-                status, 
-                answer
+                answered_at,
+                SELECT COUNT(*)
+                FROM supports
+                WHERE petition_id = petitions.id as supports
             FROM petitions 
-            ORDER BY id DESC
-            LIMIT :count
-        """), {
-            "count":count
-        })
+            ORDER BY id DESC WHERE status = 0
+        """
+
+        if count:
+            sql += " LIMIT :count"
+            data = self.db.execute(text(sql), {
+                "count":count
+            })
+        else:
+            data = self.db.execute(text(sql))
 
         for i in data:
             result[i[0]] = {
                 "title":i[1],
                 "created_at":i[2],
-                "status":i[3],
-                "answer":i[4] != ""
+                "answered_at":i[3],
+                "supports":i[4]
             }
 
         return result

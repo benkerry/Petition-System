@@ -21,7 +21,7 @@ function performSendPetition(){
         }
 
         let done = () => {
-            document.querySelector("#write_petition").style.display = "none";
+            document.querySelector("#write_petition_modal").style.display = "none";
             document.getElementById("petition_title").value = "";
             content = document.getElementById("petition_content").value = "";
             alert("작성 완료!");

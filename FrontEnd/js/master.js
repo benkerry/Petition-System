@@ -3,8 +3,6 @@ var priv = sessionStorage.getItem("priv");
 if(priv == null){
     priv = 0;
 }
-// production에서 삭제할 것
-priv = 2;
 
 if(priv > 0){
     document.getElementById("profile_img").setAttribute("src", "resources/login_profile.png")

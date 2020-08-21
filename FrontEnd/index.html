@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="css/master.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/login.css">
         <link rel="stylesheet" href="css/register.css">
@@ -17,7 +18,26 @@
     <body class="index_page">
         <div class="page_contents">
             <div id="main">
-                <!-- Contents -->
+                <div id="newest_petitions" class="petitions">
+                    <h2>신규 청원</h2>
+                    <div id="newest_petitions_list" class="petitions_list" style="overflow:auto;">
+                        <!-- 리스트 JS로 생성 -->
+                    </div>
+                    <div id="today_report">
+                    </div>
+                </div>
+                <div id="oldest_petitions" class="petitions">
+                    <h2>만료임박 청원</h2>
+                    <div id="oldest_petitions_list" class="petitions_list" style="overflow:auto;">
+                        <!-- 리스트 JS로 생성 -->
+                    </div>
+                </div>
+                <div id="answerd_petitions" class="petitions">
+                    <h2>최근 답변된 청원</h2>
+                    <div id="answerd_petitions_list" class="petitions_list" style="overflow:auto;">
+                        <!-- 리스트 JS로 생성 -->
+                    </div>
+                </div>
             </div>
             <div class="sidebar">
                 <div class="profile_non_login">
@@ -42,8 +62,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="navigator" id="navigator">
+                <div class="sidebar_contents">
                     <div id="write_petition">청원 작성하기</div>
+                    <div id="notice_list">
+                        <h3>공지사항</h3>
+                    </div>
                 </div>
             </div>
         </div>
@@ -271,7 +294,8 @@
             <div class="modal_layer"></div>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="js/index.js"></script>
+        <script src="js/master.js"></script>
+        <script src="js/main.js"></script>
         <script src="js/login.js"></script>
         <script src="js/register.js"></script>
         <script src="js/myInfo.js"></script>

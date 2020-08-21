@@ -20,6 +20,7 @@ CREATE TABLE petitions(
     created_at DATETIME NOT NULL DEFAULT NOW(),
     status INT NOT NULL,
     answer TEXT,
+    answered_at DATETIME,
     PRIMARY KEY(id),
     CONSTRAINT petitions_author_id_fkey FOREIGN KEY (author_id) REFERENCES users(id)
 );
