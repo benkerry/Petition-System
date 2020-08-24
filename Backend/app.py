@@ -3,7 +3,6 @@ import config.config as cfg
 
 from dao.user_dao import UserDao
 from dao.petition_dao import PetitionDao
-from dao.debate_dao import DebateDao
 from dao.manager_dao import ManagerDao
 
 from service import UserService, PetitionService, DebateService, ManagerService, Mailer
@@ -39,19 +38,16 @@ def create_app(test_config = None):
     # Persistenace Layer
     user_dao = UserDao(db)
     petition_dao = PetitionDao(db)
-    debate_dao = DebateDao(db)
     manager_dao = ManagerDao(db)
 
     # Business Layer
     user_service = UserService(user_dao, mailer)
     petition_service = PetitionService(petition_dao, config)
-    debate_service = DebateService(debate_dao)
-    manager_service = ManagerService(user_dao, petition_dao, debate_dao, manager_dao)
+    manager_service = ManagerService(user_dao, petition_dao, manager_dao)
 
     services = Service
     services.user_service = user_service
     services.petition_service = petition_service
-    services.debate_service = debate_service
     services.manager_service = manager_service
     
     create_endpoints(app, services, config)
