@@ -5,7 +5,7 @@ from dao.user_dao import UserDao
 from dao.petition_dao import PetitionDao
 from dao.manager_dao import ManagerDao
 
-from service import UserService, PetitionService, DebateService, ManagerService, Mailer
+from service import UserService, PetitionService, ManagerService, Mailer
 
 from endpoints import create_endpoints, Config
 
@@ -42,7 +42,7 @@ def create_app(test_config = None):
 
     # Business Layer
     user_service = UserService(user_dao, mailer)
-    petition_service = PetitionService(petition_dao, config)
+    petition_service = PetitionService(petition_dao, config, mailer)
     manager_service = ManagerService(user_dao, petition_dao, manager_dao)
 
     services = Service

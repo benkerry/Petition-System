@@ -18,6 +18,7 @@ CREATE TABLE petitions(
     title VARCHAR(255) NOT NULL,
     contents TEXT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW(),
+    expire_at DATETIME NOT NULL,
     supports INT NOT NULL DEFAULT 0,
     status INT NOT NULL DEFAULT 0,
     passed_at DATETIME,
@@ -30,7 +31,7 @@ CREATE TABLE supports(
     petition_id INT NOT NULL,
     CONSTRAINT supports_uid_fkey FOREIGN KEY (uid) REFERENCES users(id),
     CONSTRAINT supports_petition_id_fkey FOREIGN KEY (petition_id) REFERENCES petitions(id)
-);    ㅇ
+);
 
 CREATE TABLE authcodes(
     stdid INT NOT NULL,

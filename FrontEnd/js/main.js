@@ -1,49 +1,38 @@
-var done = (rsp) => {
-    var table = document.querySelector("#all_petitions_list_table_tbody");
-    var petitions = Array();
+var allPetitions = null;
+var petitionOrderRdos = document.getElementsByName("petition_order");
 
-    for(let i = 0; i < rsp.petitions.length; i++){
-        let petition = rsp.petitions[i];
-        let created_timestamp = (new Date(petition.created_at)).getTime();
+for(let i = 0; i < petitionOrderRdos.length; i++){
+    petitionOrderRdos[i].addEventListener("change", () => {
+        var newest = document.getElementById("newest");
+        var oldest = document.getElementById("oldest");
+        var newest_passed = document.getElementById("newest_passed");
+        var supportest = document.getElementById("supportest");
 
-        petitions.push({
-            "id":petition.id,
-            "title":petition.title,
-            "created_at":petition.created_at,
-            "supports":petition.supports,
-            "created_timestamp":created_timestamp,
-        });
-    }
-
-    petitions.sort((a, b) => {
-        if(a["created_timestamp"] < b["created_timestamp"]){
-            return 1;
+        if(newest.checked){
+            performNewestOrder();
         }
-        else if (a["created_timestamp"] < b["created_timestamp"]){
-            return -1;
+        else if(oldest.checked){
+            performOldestOrder();
         }
-        else{
-            return 0;
+        else if(newest_passed.checked){
+            performNewestPassedOrder();
+        }
+        else if(supportest.checked){
+            performSupportestOrder();
         }
     });
-
-    for(let i = 0; i < 10; i++){
-        if(i == petitions.length){
-            break;
-        }
-        let trNode = document.createElement("tr");
-        trNode = appendTableData(trNode, petitions[i]["id"]);
-        trNode = appendTableData(trNode, petitions[i]["title"]);
-        trNode = appendTableData(trNode, petitions[i]["supports"]);
-        trNode = appendTableData(trNode, petitions[i]["created_at"].replace("T", " / "));
-
-        trNode.setAttribute("id", "petition_id:" + petitions[i]["id"]);
-        trNode.addEventListener("click", clickPetition);
-        table.appendChild(trNode);
-    }
 }
 
-sendApiRequest("get-petition-metadatas", {}, done, false);
+sendApiRequest("get-petition-metadatas", { "petition_type":"newest" }, performNewestOrder, false);
+
+document.querySelector("#petition_search_checkbox").addEventListener("change", performReady2Search);
+document.querySelector("#search_token").addEventListener("keydown", searchPetition);
+
+var petittionSearchByRdos = document.getElementsByName("petition_search_by");
+
+for(let i = 0; i < petittionSearchByRdos.length; i++){
+    petittionSearchByRdos[i].addEventListener("change", searchPetition);
+}
 
 function appendTableData(trNode, str){
     let tdElement = document.createElement("td");
@@ -57,4 +46,95 @@ function clickPetition(){
     showPetition(petition_id);
 }
 
-// 청원 관련 라디오버튼 처리
+function addPetitions2List(petitions, mode){
+    var table = document.querySelector("#all_petitions_list_table_tbody");
+
+    table.innerHTML = "";
+
+    for(let i = 0; i < 10; i++){
+        if(i == petitions.length){
+            break;
+        }
+
+        if(mode === "direct" || (mode === "searching" && petitions[i]["display"] === "block")){
+            let trNode = document.createElement("tr");
+            trNode = appendTableData(trNode, petitions[i]["id"]);
+            trNode = appendTableData(trNode, petitions[i]["title"]);
+            trNode = appendTableData(trNode, petitions[i]["supports"]);
+            trNode = appendTableData(trNode, petitions[i]["created_at"].replace("T", " / "));
+
+            trNode.setAttribute("id", "petition_id:" + petitions[i]["id"]);
+            trNode.addEventListener("click", clickPetition);
+            table.appendChild(trNode);
+        }
+        else{
+            continue;
+        }
+    }
+}
+
+function addPetitions2ListForDirect(rsp){
+    addPetitions2List(rsp.petitions, "direct");
+}
+
+function performNewestOrder(rsp){
+    sendApiRequest("get-petition-metadatas", { "petition_type":"newest" }, addPetitions2ListForDirect, false);
+}
+
+function performOldestOrder(){
+    sendApiRequest("get-petition-metadatas", { "petition_type":"oldest" }, addPetitions2ListForDirect, false);
+}
+
+function performNewestPassedOrder(){
+    sendApiRequest("get-petition-metadatas", { "petition_type":"newest_passed" }, addPetitions2ListForDirect, false);
+}
+
+function performSupportestOrder(){
+    sendApiRequest("get-petition-metadatas", { "petition_type":"supportest" }, addPetitions2ListForDirect, false);
+}
+
+function performShowAllPetitions(){
+    sendApiRequest("get-petition-metadatas", { "petition_type":"all_for_search" }, (rsp) => { addPetitions2ListForDirect(rsp); allPetitions = rsp.petitions; }, false);
+}
+
+function performReady2Search(){
+    if(this.checked){
+        performShowAllPetitions();
+        document.getElementById("petition_type_radios").style.display = "none";
+        document.getElementById("petition_search_form").style.display = "block";
+    }
+    else{
+        location.reload();
+    }
+}
+
+function searchPetition(event){
+    var byTitle = document.getElementById("by_title").checked;
+    var byId = document.getElementById("by_id").checked;
+    var byContent = document.getElementById("by_content").checked;
+    var by;
+
+    var token = document.getElementById("search_token").value;
+    var petitions = JSON.parse(JSON.stringify(allPetitions));
+
+    if(byTitle){
+        by = "title";
+    }
+    else if(byId){
+        by = "id"
+    }
+    else if(byContent){
+        by = "content"
+    }
+
+    for(let i = 0; i < petitions.length; i++){
+        if(String(petitions[i][by]).toLowerCase().indexOf(token.toLowerCase()) > -1){
+            petitions[i]["display"] = "block";
+        }
+        else{
+            petitions[i]["display"] = "none";
+        }
+    }
+
+    addPetitions2List(petitions, "searching");
+}

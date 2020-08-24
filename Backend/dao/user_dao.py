@@ -99,7 +99,8 @@ class UserDao:
                     hashed_pwd,
                     nickname,
                     root,
-                    validated
+                    validated,
+                    withdraw_at
                 FROM users
                 WHERE email = :email
             """), {
@@ -113,7 +114,8 @@ class UserDao:
                     hashed_pwd,
                     nickname,
                     root,
-                    validated
+                    validated,
+                    withdraw_at
                 FROM users
                 WHERE id = :id
             """), {
@@ -129,7 +131,8 @@ class UserDao:
                 "hashed_pwd":data[2],
                 "nickname":data[3],
                 "root":data[4],
-                "validated":data[5]
+                "validated":data[5],
+                "withdrawed": True if data[6] else False
             }
         else:
             return None

@@ -19,9 +19,9 @@ def login_required(f):
                 g.uid = payload["uid"]
                 g.priv = payload["priv"]
             except jwt.InvalidTokenError:
-                return "잘못된 접근입니다.", 401
+                return "로그인이 필요합니다.", 401
         else:
-            return "잘못된 접근입니다.", 401
+            return "로그인이 필요합니다.", 401
         return f(*args, *kwargs)
 
     return decorated_function
@@ -100,9 +100,9 @@ def create_endpoints(app, services, config:Config):
         payload = request.json
 
         if payload.get("count", True):
-            return services.petition_service.get_petition_metadata_service()
+            return services.petition_service.get_petition_metadata_service(petition_type = payload["petition_type"])
         else:
-            return services.petition_service.get_petition_metadata_service(payload["count"])
+            return services.petition_service.get_petition_metadata_service(payload["count"], payload["petition_type"])
 
     @app.route("/get-petition", methods = ["POST"])
     def get_petition():
@@ -118,14 +118,16 @@ def create_endpoints(app, services, config:Config):
     @app.route("/support-petition", methods = ["POST"])
     @login_required
     def support_petition():
-        pass
-
-    @app.route("/add-day-request", methods = ["POST"])
-    @login_required
-    def add_day_request():
-        pass
+        pid = request.json["petition_id"]
+        return services.petition_service.support_petition_service(g.uid, pid)
 
     # Manager Services
+    @app.route("/get-petition-status", methods = ["POST"])
+    @login_required
+    @priv_required
+    def get_petition_status():
+        return services.manager_service.get_petition_status(request.json["petition_id"])
+
     @app.route("/delete-user", methods = ["POST"])
     @login_required
     @priv_required
@@ -175,12 +177,6 @@ def create_endpoints(app, services, config:Config):
 
         return '', 200
 
-    @app.route("/add-day", methods = ["POST"])
-    @login_required
-    @priv_required
-    def add_day():
-        pass
-
     @app.route("/set-pass-ratio", methods = ["POST"])
     @login_required
     @priv_required
@@ -207,12 +203,6 @@ def create_endpoints(app, services, config:Config):
             "pass_ratio":config.pass_ratio,
             "expire_left":config.expire_left
         })
-
-    @app.route("/get-add-day-request", methods = ["POST"])
-    @login_required
-    @priv_required
-    def get_add_day_request():
-        pass
 
     ##### 답변 작성
     ##### 신고 및 처리 기능

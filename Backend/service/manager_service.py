@@ -5,11 +5,23 @@ class ManagerService:
     def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, manager_dao:ManagerDao):
         self.user_dao = user_dao
         self.petition_dao = petition_dao
-        self.debate_dao = debate_dao
         self.manager_dao = manager_dao
 
     def get_user_count(self):
         return self.manager_dao.get_user_count()
+
+    def get_petition_status(self, petition_id:int):
+        status = self.petition_dao.get_petition_status(petition_id)
+
+        if status:
+            return jsonify({
+                "status":status,
+                "msg":"success!"
+            })
+        else:
+            return jsonify({
+                "msg":"fail"
+            })
 
     def delete_user_service(self, uid_list:list):
         # 유저를 삭제.

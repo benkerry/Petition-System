@@ -88,7 +88,9 @@ class UserService:
         else:
             if bcrypt.checkpw(pwd.encode("UTF-8"), user["hashed_pwd"].encode("UTF-8")):
                 if not user["validated"]:
-                   return "이메일 인증을 진행하지 않으셨습니다.", 401
+                    return "이메일 인증을 진행하지 않으셨습니다.", 401
+                elif user["withdrawed"]:
+                    return "탈퇴한 회원입니다.", 401
                 else:
                     response = {
                         "email":user["email"],

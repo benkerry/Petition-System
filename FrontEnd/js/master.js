@@ -69,10 +69,6 @@ document.querySelector("#change_petition_status").addEventListener("click", () =
     openManagerFunctionModal(document.querySelector("#change_petition_status_modal"));
 });
 
-document.querySelector("#add_expire_day").addEventListener("click", () => {
-    openManagerFunctionModal(document.querySelector("#add_expire_day_modal"));
-});
-
 document.querySelector("#view_report").addEventListener("click", () => {
     openManagerFunctionModal(document.querySelector("#view_report_modal"));
 });
@@ -114,10 +110,10 @@ function openManagerFunctionModal(modal){
 
 function commFail(msg){
     if(msg.status != 0){
-        alert(msg.responseText);
+        alert("[오류] " + msg.responseText);
     }
     else{
-        alert("[" + msg.status + "] 서버와의 통신에 문제가 생겼습니다!\n잠시 후 다시 시도해보시고, 문제가 지속되면 오류 코드를 첨부하여\ndeveloperkerry@naver.com으로 메일 바랍니다.");   
+        alert("서버와의 통신에 문제가 생겼습니다! 잠시 후 다시 시도해보시고,\n문제가 지속되면 developerkerry@naver.com으로 메일 바랍니다.");   
     }
 }
 

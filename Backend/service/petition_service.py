@@ -1,35 +1,33 @@
 from dao import PetitionDao
+from .mail_service import Mailer
 from endpoints import Config
 from flask import jsonify
 
 class PetitionService:
-    def __init__(self, dao:PetitionDao, config:Config):
+    def __init__(self, dao:PetitionDao, config:Config, mailer:Mailer):
         self.dao = dao
         self.config = config
+        self.mailer = mailer
 
-    def get_petition_metadata_service(self, count:int = 0):
-        return jsonify({"petitions":self.dao.get_petition_metadatas(count)})
+    def get_petition_metadata_service(self, count = 0, petition_type = "newest"):
+        return jsonify({"petitions":self.dao.get_petition_metadatas(count, petition_type)})
 
     def get_petition_service(self, petition_id:int):
-        result = self.dao.get_petition(petition_id)
-        result["expire_left"] = config.expire_left
+        result = self.dao.get_petition(petition_id, self.config.pass_ratio)
+        result["expire_left"] = self.config.expire_left
         return jsonify(result)
 
     def write_petition_service(self, uid:int, title:str, contents:str):
         if title != "" and contents != "":
-            return jsonify({"id":self.dao.insert_petition(uid, title, contents)})
+            return jsonify({"id":self.dao.insert_petition(uid, title, contents.replace("\n", "<br>"), self.config.expire_left)})
         else:
             return "빈칸을 모두 채워주세요.", 200
     
     def support_petition_service(self, uid:int, petition_id:int):
-        # 청원 동의, 닫힌 청원에는 불가능하도록.
-        # 실패시 None, 이미 동의한 청원일 시 -1, 청원의 Status Code가 1인 경우 0, 성공시 200 반환
-        pass
-
-    def add_day_request_service(self, uid:int, petition_id:int, comment:str):
-        # 청원 만료기한 연장 요청
-        # 실패시 None, 성공시 200 반환
-        pass
+        if self.dao.insert_support(uid, petition_id) is not None:
+            return "{petition_id}번 청원에 동의하셨습니다!", 200
+        else:
+            return "이미 동의한 청원이거나, 동의할 수 없는 청원입니다.", 400
 
     def check_petitions(self):
         # 매일 실행되어, 동의 수가 일정 이상인 청원의 Status Code를 갱신.
