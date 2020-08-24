@@ -1,8 +1,8 @@
 from flask import jsonify
-from dao import UserDao, PetitionDao, DebateDao, ManagerDao
+from dao import UserDao, PetitionDao, ManagerDao
 
 class ManagerService:
-    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, debate_dao:DebateDao, manager_dao:ManagerDao):
+    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, manager_dao:ManagerDao):
         self.user_dao = user_dao
         self.petition_dao = petition_dao
         self.debate_dao = debate_dao
