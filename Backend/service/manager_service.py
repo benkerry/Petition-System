@@ -1,27 +1,29 @@
 from flask import jsonify
+from endpoints import Config
 from dao import UserDao, PetitionDao, ManagerDao
 
 class ManagerService:
-    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, manager_dao:ManagerDao):
+    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, manager_dao:ManagerDao, config:Config):
         self.user_dao = user_dao
         self.petition_dao = petition_dao
         self.manager_dao = manager_dao
+        self.config = config
 
     def get_user_count(self):
         return self.manager_dao.get_user_count()
 
     def get_petition_status(self, petition_id:int):
-        status = self.petition_dao.get_petition_status(petition_id)
+        title, status, supports = self.petition_dao.get_petition_status(petition_id)
 
-        if status:
+        if status != None:
             return jsonify({
+                "title":title,
                 "status":status,
+                "supports":supports,
                 "msg":"success!"
             })
         else:
-            return jsonify({
-                "msg":"fail"
-            })
+            return "청원번호 조회에 실패했습니다.", 400
 
     def delete_user_service(self, uid_list:list):
         # 유저를 삭제.
@@ -43,18 +45,11 @@ class ManagerService:
         # 실패시 None
         pass
 
-    def close_petition_service(self, petition_id:int):
-        # 청원을 직권으로 닫음.(expire_left는 유지)
-        # 직권으로 닫힌 청원은 작성자와 관리자만 열람 가능
-        # 실패시 None, 성공시 200 반환
-        # user_dao에 있는 것 사용
-        pass
-
     def open_petition_service(self, petition_id:int):
-        # 닫힌 청원을 직권으로 엶.(expire_left는 유지)
-        # 실패시 None, 성공시 200 반환
-        # user_dao에 있는 것 사용
-        pass
+        if self.petition_dao.reopen_petition(petition_id, self.config.expire_left) is not None:
+            return "성공!", 200
+        else:
+            return "잘못된 접근입니다.", 403
 
     def add_day_service(self, petition_id:int, add_day:int):
         # 청원 만료기한을 늘림

@@ -40,3 +40,11 @@ CREATE TABLE authcodes(
     UNIQUE KEY stdid(stdid),
     UNIQUE KEY code(code)
 );
+
+CREATE TABLE reports(
+    uid INT NOT NULL,
+    petition_id INT NOT NULL,
+    description TEXT NOT NULL,
+    CONSTRAINT reports_uid_fkey FOREIGN KEY (uid) REFERENCES users(id),
+    CONSTRAINT reports_petition_id_fkey FOREIGN KEY (petition_id) REFERENCES petitions(id)
+)

@@ -29,6 +29,12 @@ class PetitionService:
         else:
             return "이미 동의한 청원이거나, 동의할 수 없는 청원입니다.", 400
 
+    def report_service(self, uid:int, petition_id:int, description:str):
+        if self.dao.insert_report(uid, petition_id, description) is not None:
+            return "신고가 접수되었습니다.", 200
+        else:
+            return "이미 신고하신 청원입니다.", 400
+
     def check_petitions(self):
         # 매일 실행되어, 동의 수가 일정 이상인 청원의 Status Code를 갱신.
         # 동의 수 미달성 상태로 일정 기간 지난 청원의 Status Code도 갱신.(열린 청원만)

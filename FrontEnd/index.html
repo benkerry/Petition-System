@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="css/view_report.css">
         <link rel="stylesheet" href="css/write_petition.css">
         <link rel="stylesheet" href="css/petition_viewer.css">
+        <link rel="stylesheet" href="css/report_petition.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
@@ -24,7 +25,7 @@
                         <input type="radio" id="newest" name="petition_order" checked> 최신 청원부터<br>
                         <input type="radio" id="oldest" name="petition_order"> 오래된 청원부터<br>
                         <input type="radio" id="newest_passed" name="petition_order"> 최근에 통과된 청원부터<br>
-                        <input type="radio" id="supportest" name="petition_order"> 지지 많은 청원부터<br>
+                        <input type="radio" id="supportest" name="petition_order"> 지지 많은 청원부터
                     </div>
                     <div id="petition_search">
                         <input type="checkbox" id="petition_search_checkbox"> 청원 검색하기
@@ -166,6 +167,7 @@
                 <h2 id="petition_viewer_title">(청원 제목)</h2>
                 <div id="petition_viewer_form">
                     <div id="petition_viewer_metadatas">
+                        <strong id="petition_viewer_author">(작성자)</strong><br>
                         <strong id="petition_viewer_created_at">(작성 시간)</strong><br>
                         <strong id="petition_viewer_expire_at">(만료 시간)</strong><br>
                         <strong id="petition_viewer_supports">(동의 현황)</strong>
@@ -174,6 +176,17 @@
                         (청원 내용)
                     </div>
                     <div id="support_petition_btn" class="general_btn">청원에 지지 보내기</div>
+                    <div id="report_petition_btn" class="general_btn">청원 신고</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <div id="report_petition_modal" class="modal">
+            <div class="modal_content report_petition_modal_content">
+                <h2 id="reporting_petition_title">(청원 제목)</h2>
+                <div id="report_petition_form">
+                    <textarea id="report_petition_description"></textarea>
+                    <div id="send_report_btn" class="general_btn">신고 접수</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -223,9 +236,10 @@
         <div id="change_petition_status_modal" class="modal manager_modal">
             <div class="modal_content change_petition_status_modal_content">
                 <h2>청원 상태 변경</h2>
-                <div id="change_petition_status_form">
+                <div id="change_petition_status_form" class="form">
                     <input type="text" id="petition_id_for_get_status" placeholder="청원번호 입력 후 엔터">
                     <div id="change_status_btn" class="general_btn">(버튼)</div>
+                    <input type="hidden" id="set_petition_id">
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
@@ -298,5 +312,6 @@
         <script src="js/change_petition_status.js"></script>
         <script src="js/view_report.js"></script>
         <script src="js/write_petition.js"></script>
+        <script src="js/report_petition.js"></script>
     </body>
 </html>

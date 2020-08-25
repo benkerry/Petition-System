@@ -42,18 +42,11 @@ for(let i = 0; i < goBackBtns.length; i++){
     });
 }
 
-document.querySelector("html").addEventListener("click", closeModal);
+var modalLayers = document.querySelectorAll(".modal_layer");
 
-document.querySelector("#login").addEventListener("click", () => {
-    recentModal = document.querySelector("#login_modal");
-    recentModal.style.display = "block";
-});
-
-document.querySelector("#login_modal").addEventListener("keydown", (event) => {
-    if(event.keyCode == 13){
-        performLogin();
-    }
-})
+for(let i = 0; i < modalLayers.length; i++){
+    modalLayers[i].addEventListener("click", closeModal);
+}
 
 document.querySelector("#managerMenu_btn").addEventListener("click", () => {
     if(priv > 1){
@@ -63,10 +56,6 @@ document.querySelector("#managerMenu_btn").addEventListener("click", () => {
     else{
         alert("권한이 없습니다.");
     }
-});
-
-document.querySelector("#change_petition_status").addEventListener("click", () => {
-    openManagerFunctionModal(document.querySelector("#change_petition_status_modal"));
 });
 
 document.querySelector("#view_report").addEventListener("click", () => {
@@ -83,18 +72,16 @@ function clearInputs(parentNode){
     }
 }
 
-function closeModal(e){
-    if(e.target.className === "modal_layer"){
-        var modals = document.querySelectorAll(".modal");
-        var forms = document.querySelectorAll(".form");
+function closeModal(){
+    var modals = document.querySelectorAll(".modal");
+    var forms = document.querySelectorAll(".form");
 
-        for(let i = 0; i < modals.length; i++){
-            modals[i].style.display = "none";
-        }
+    for(let i = 0; i < modals.length; i++){
+        modals[i].style.display = "none";
+    }
 
-        for(let i = 0; i < forms.length; i++){
-            clearInputs(forms[i]);
-        }
+    for(let i = 0; i < forms.length; i++){
+        clearInputs(forms[i]);
     }
 }
 

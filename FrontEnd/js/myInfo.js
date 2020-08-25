@@ -36,11 +36,9 @@ function performChangeInfo(){
     var nickname = document.getElementById("myInfo_nickname").value;
     
     if(priv){
-        if(!email){
-            email = sessionStorage.getItem("email");
-        }
-        if(!nickname){
-            nickname = sessionStorage.getItem("nickname");
+        if(!email || ! nickname){
+            alert("빈칸을 모두 채워주세요.");
+            return;
         }
 
         var data2send = {

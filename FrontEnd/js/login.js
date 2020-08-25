@@ -1,3 +1,14 @@
+document.querySelector("#login").addEventListener("click", () => {
+    recentModal = document.querySelector("#login_modal");
+    recentModal.style.display = "block";
+});
+
+document.querySelector("#login_modal").addEventListener("keydown", (event) => {
+    if(event.keyCode == 13){
+        performLogin();
+    }
+})
+
 document.querySelector("#login_btn").addEventListener("click", performLogin);
 
 function performLogin(){

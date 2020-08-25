@@ -43,7 +43,7 @@ def create_app(test_config = None):
     # Business Layer
     user_service = UserService(user_dao, mailer)
     petition_service = PetitionService(petition_dao, config, mailer)
-    manager_service = ManagerService(user_dao, petition_dao, manager_dao)
+    manager_service = ManagerService(user_dao, petition_dao, manager_dao, config)
 
     services = Service
     services.user_service = user_service

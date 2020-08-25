@@ -62,10 +62,23 @@ class PetitionDao:
                 "petition_id":petition_id
             }).lastrowid
 
-    def update_petition_status(self, petition_id:int, status_code:int):
-        # 청원의 상태 코드를 갱신한다.
-        # 실패시 None, 성공시 전체 청원의 갯수를 반환한다.
-        pass
+    def reopen_petition(self, petition_id:int, expire_left = 0):
+        self.db.execute(text("""
+            UPDATE petitions 
+            SET expire_at = DATE_ADD(NOW(), INTERVAL :expire_left DAY)
+            WHERE id = :petition_id
+        """), {
+            "expire_left":expire_left,
+            "petition_id":petition_id
+        })
+
+        return self.db.execute(text("""
+            UPDATE petitions
+            SET status = 0
+            WHERE id = :petition_id
+        """), {
+            "petition_id":petition_id
+        }).lastrowid
 
     def get_petition_metadatas(self, count:int, petition_type:str):     
         result = []
@@ -122,24 +135,27 @@ class PetitionDao:
         result = dict()
         data = self.db.execute(text("""
             SELECT
-                title,
-                contents,
-                date_format(created_at, "%Y-%m-%dT%H:%i:%S"),
-                date_format(expire_at, "%Y-%m-%dT%H:%i:%S"),
-                supports,
-                status
-            FROM petitions
-            WHERE id = :petition_id
+                u.nickname,
+                p.title,
+                p.contents,
+                date_format(p.created_at, "%Y-%m-%dT%H:%i:%S"),
+                date_format(p.expire_at, "%Y-%m-%dT%H:%i:%S"),
+                p.supports,
+                p.status
+            FROM petitions AS p
+            LEFT JOIN users AS u ON p.author_id = u.id
+            WHERE p.id = :petition_id
         """), {
             "petition_id":petition_id
         }).fetchone()
 
-        result["title"] = data[0]
-        result["contents"] = data[1]
-        result["created_at"] = data[2]
-        result["expire_at"] = data[3]
-        result["supports"] = str(data[4])
-        result["status"] = data[5]
+        result["author"] = data[0]
+        result["title"] = data[1]
+        result["contents"] = data[2]
+        result["created_at"] = data[3]
+        result["expire_at"] = data[4]
+        result["supports"] = str(data[5])
+        result["status"] = data[6]
 
         data = self.db.execute(text("""
             SELECT COUNT(*) FROM users
@@ -154,9 +170,45 @@ class PetitionDao:
 
     def get_petition_status(self, petition_id:int):
         data = self.db.execute(text("""
-            SELECT status FROM petitions WHERE id = :petition_id
+            SELECT title, status, supports FROM petitions WHERE id = :petition_id
         """), {
             "petition_id":petition_id
-        })
+        }).fetchone()
 
-        return data.fetchone()[0] if data else None
+        return data[0], data[1], data[2] if data else None
+
+    def insert_report(self, uid:int, petition_id:int, description:str):
+        exists = self.db.execute(text("""
+            SELECT COUNT(*) FROM reports WHERE uid = :uid AND petition_id = :petition_id
+        """), {
+            "uid":uid,
+            "petition_id":petition_id
+        }).fetchone()[0]
+
+        if exists:
+            return None
+        else:
+            self.db.execute(text("""
+                UPDATE petitions
+                SET reports = reports + 1
+                WHERE id = :petition_id
+            """), {
+                "petition_id":petition_id
+            })
+
+            return self.db.execute(text("""
+                INSERT INTO reports(
+                    uid, 
+                    petition_id, 
+                    description
+                )
+                VALUES(
+                    :uid,
+                    :petition_id,
+                    :description
+                )
+            """), {
+                "uid":uid,
+                "petition_id":petition_id,
+                "description":description
+            }).lastrowid

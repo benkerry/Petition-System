@@ -104,6 +104,11 @@ def create_endpoints(app, services, config:Config):
         else:
             return services.petition_service.get_petition_metadata_service(payload["count"], payload["petition_type"])
 
+    @app.route("/get-reported-petition-metadatas", methods = ["POST"])
+    @login_required
+    def get_reported_petition_metadatas():
+        return services.petition_service.get_petition_metadata_service(petition_type = request.json["petition_type"])
+
     @app.route("/get-petition", methods = ["POST"])
     def get_petition():
         petition_id = request.json["petition_id"]
@@ -121,6 +126,15 @@ def create_endpoints(app, services, config:Config):
         pid = request.json["petition_id"]
         return services.petition_service.support_petition_service(g.uid, pid)
 
+    @app.route("/report-petition", methods = ["POST"])
+    @login_required
+    def report_petition():
+        payload = request.json
+        petition_id = payload["petition_id"]
+        description = payload["description"]
+
+        return services.petition_service.report_service(g.uid, petition_id, description)
+        
     # Manager Services
     @app.route("/get-petition-status", methods = ["POST"])
     @login_required
@@ -152,17 +166,12 @@ def create_endpoints(app, services, config:Config):
     def generate_authcodes():
         pass
 
-    @app.route("/close-petition", methods = ["POST"])
-    @login_required
-    @priv_required
-    def close_petition():
-        pass
-
     @app.route("/open-petition", methods = ["POST"])
     @login_required
     @priv_required
     def open_petition():
-        pass
+        payload = request.json
+        return services.manager_service.open_petition_service(payload["petition_id"])
 
     @app.route("/set-expire-left", methods = ["POST"])
     @login_required
@@ -203,8 +212,3 @@ def create_endpoints(app, services, config:Config):
             "pass_ratio":config.pass_ratio,
             "expire_left":config.expire_left
         })
-
-    ##### 답변 작성
-    ##### 신고 및 처리 기능
-    ##### 임의 답변 및 처리 기능
-    ##### 이메일 인증 기능(gmail, naver, korea, daum, hanmail 제한) -> 이메일 인증 디비 만들자

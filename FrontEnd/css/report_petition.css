@@ -1,0 +1,33 @@
+#report_petition_modal{
+    display:none;
+}
+
+#report_petition_modal h2{
+    width:700px;
+    margin:40px 0 180px;
+}
+
+.report_petition_modal_content{
+    width:300px;
+    height:500px;
+}
+
+#report_petition_form{
+    width:650px;
+    height:560px;
+    position:absolute;
+
+    top:75%;
+    bottom:25%;
+    left:50%;
+    right:50%;
+    transform:translate(-50%, -50%);
+}
+
+#report_petition_description{
+    width:100%;
+    height:300px;
+    padding:5px;
+    border-radius:12px;
+    font-size:15px;
+}
