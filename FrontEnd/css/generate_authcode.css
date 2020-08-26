@@ -1,0 +1,33 @@
+.generate_authcode_modal_content{
+    width:300px;
+}
+
+#generate_authcode_form{
+    width:500px;
+    height:550px;
+    padding-left:15px;
+}
+
+#generate_authcode_form input{
+    margin-left:20px;
+}
+
+#truncate_authcode, #generate{
+    margin-left:20px;
+}
+
+.authcodes_count{
+    height:25px;
+    padding:5px;
+    margin-bottom:10px;
+    border:1px solid gray;
+    border-radius:12px;
+}
+
+.generate_authcode_input{
+    height:25px;
+    padding:5px;
+    margin:5px 0 5px 0;
+    border:1px solid gray;
+    border-radius:12px;
+}

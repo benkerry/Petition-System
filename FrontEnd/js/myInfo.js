@@ -40,6 +40,10 @@ function performChangeInfo(){
             alert("빈칸을 모두 채워주세요.");
             return;
         }
+        else if(email.indexOf("@naver.com") == -1 && email.indexOf("@daum.net") == -1 && email.indexOf("@hanmail.net") == -1 
+            && email.indexOf("@korea.kr") == -1 && email.indexOf("@gmail.com") == -1 && email.indexOf("@kakao.com") == -1){
+            alert("지원하지 않는 이메일이거나, 이메일 형식이 잘못되었습니다.");
+        }
 
         var data2send = {
             "email":email,

@@ -20,6 +20,15 @@ function showPetition(petition_id){
         document.getElementById("support_petition_btn").setAttribute("value", petition_id);
         document.getElementById("petition_viewer_modal").style.display = "block";
         document.getElementById("report_petition_btn").setAttribute("value", petition_id);
+
+        if(rsp.status != 0 || priv == 0){
+            document.getElementById("support_petition_btn").style.display = "none";
+            document.getElementById("report_petition_btn").style.display = "none";
+        }
+        else{
+            document.getElementById("support_petition_btn").style.display = "block";
+            document.getElementById("report_petition_btn").style.display = "block";
+        }
     }
 
     sendApiRequest("get-petition", data2Send, done, false);

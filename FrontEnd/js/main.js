@@ -7,6 +7,7 @@ for(let i = 0; i < petitionOrderRdos.length; i++){
         var oldest = document.getElementById("oldest");
         var newest_passed = document.getElementById("newest_passed");
         var supportest = document.getElementById("supportest");
+        var expired = document.getElementById("expired");
 
         if(newest.checked){
             performNewestOrder();
@@ -20,6 +21,9 @@ for(let i = 0; i < petitionOrderRdos.length; i++){
         else if(supportest.checked){
             performSupportestOrder();
         }
+        else if(expired.checked){
+            performShowExpired();
+        }
     });
 }
 
@@ -32,13 +36,6 @@ var petittionSearchByRdos = document.getElementsByName("petition_search_by");
 
 for(let i = 0; i < petittionSearchByRdos.length; i++){
     petittionSearchByRdos[i].addEventListener("change", searchPetition);
-}
-
-function appendTableData(trNode, str){
-    let tdElement = document.createElement("td");
-    tdElement.appendChild(document.createTextNode(str));
-    trNode.appendChild(tdElement);
-    return trNode;
 }
 
 function clickPetition(){
@@ -95,6 +92,10 @@ function performSupportestOrder(){
 
 function performShowAllPetitions(){
     sendApiRequest("get-petition-metadatas", { "petition_type":"all_for_search" }, (rsp) => { addPetitions2ListForDirect(rsp); allPetitions = rsp.petitions; }, false);
+}
+
+function performShowExpired(){
+    sendApiRequest("get-petition-metadatas", { "petition_type":"expired" }, addPetitions2ListForDirect, false);
 }
 
 function performReady2Search(){

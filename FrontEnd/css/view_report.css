@@ -30,5 +30,45 @@
     margin-top:15px;
     border:1px solid gray;
     padding:5px;
-    background-color:#F9F9F9;
+    background-color:#e7f3f0;
+    border:2px solid gray;
+    border-radius:12px;
+}
+
+#report_list_table{
+    width:100%;
+}
+
+#report_list_table th{
+    height:30px;
+    border-bottom:1px solid gray;
+    background-color:#d5ecdd;
+}
+
+#report_list_table tbody tr td{
+    border-bottom:1px solid #B4B4B4;
+}
+
+#report_list_table tbody tr:hover{
+    background-color:#d1ddda;
+}
+
+#report_list_table tbody tr:active{
+    background-color:#afb9b7;
+}
+
+#report_list_table td{
+    padding:7px;
+}
+
+#report_list_table_petition_id{
+    width:20%;
+}
+
+#report_list_table_description{
+    width:80%;
+}
+
+.report_list_td_pid{
+    text-align:center;
 }

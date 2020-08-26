@@ -101,6 +101,8 @@ class PetitionDao:
             sql += " WHERE status = 0 ORDER BY supports DESC, id DESC"
         elif petition_type == "newest_passed":
             sql += " WHERE status = 1 ORDER BY passed_at DESC"
+        elif petition_type == "expired":
+            sql += " WHERE status = 2 ORDER BY expire_at DESC"
         else:
             sql += " WHERE status <= 1 ORDER BY id DESC"
 
@@ -185,7 +187,7 @@ class PetitionDao:
             "petition_id":petition_id
         }).fetchone()[0]
 
-        if exists:
+        if exists or self.get_petition_status(petition_id)[1] != 0:
             return None
         else:
             self.db.execute(text("""

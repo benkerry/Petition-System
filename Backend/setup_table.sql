@@ -4,7 +4,7 @@ CREATE TABLE users(
     hashed_pwd VARCHAR(255) NOT NULL,
     nickname VARCHAR(255) NOT NULL,
     grade INT NOT NULL,
-    root BOOLEAN NOT NULL,
+    priv INT NOT NULL,
     validated BOOLEAN NOT NULL,
     withdraw_at DATETIME,
     PRIMARY KEY(id),
@@ -20,6 +20,7 @@ CREATE TABLE petitions(
     created_at DATETIME NOT NULL DEFAULT NOW(),
     expire_at DATETIME NOT NULL,
     supports INT NOT NULL DEFAULT 0,
+    reports INT NOT NULL DEFAULT 0,
     status INT NOT NULL DEFAULT 0,
     passed_at DATETIME,
     PRIMARY KEY(id),
@@ -34,14 +35,15 @@ CREATE TABLE supports(
 );
 
 CREATE TABLE authcodes(
-    stdid INT NOT NULL,
+    grade INT NOT NULL,
     code VARCHAR(255) NOT NULL,
-    root INT NOT NULL,
-    UNIQUE KEY stdid(stdid),
+    priv INT NOT NULL,
+    expire_at DATETIME NOT NULL,
     UNIQUE KEY code(code)
 );
 
 CREATE TABLE reports(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uid INT NOT NULL,
     petition_id INT NOT NULL,
     description TEXT NOT NULL,

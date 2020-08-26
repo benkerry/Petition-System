@@ -33,12 +33,14 @@ var recentModal = null;
 
 for(let i = 0; i < goBackBtns.length; i++){
     goBackBtns[i].addEventListener("click", () => {
-        var managerModal = document.querySelectorAll(".manager_modal");
-        
-        for(let i = 0; i < managerModal.length; i++){
-            managerModal[i].style.display = "none";
+        if(recentModal){
+            var managerModal = document.querySelectorAll(".manager_modal");
+            
+            for(let i = 0; i < managerModal.length; i++){
+                managerModal[i].style.display = "none";
+            }
+            recentModal.style.display = "block";
         }
-        recentModal.style.display = "block";
     });
 }
 
@@ -57,12 +59,6 @@ document.querySelector("#managerMenu_btn").addEventListener("click", () => {
         alert("권한이 없습니다.");
     }
 });
-
-document.querySelector("#view_report").addEventListener("click", () => {
-    openManagerFunctionModal(document.querySelector("#view_report_modal"));
-});
-
-// add_expire_day_req_modal은 마지막에 만들자
 
 function clearInputs(parentNode){
     var inputElements = parentNode.querySelectorAll("input");
@@ -133,4 +129,16 @@ function sendApiRequest(endpoint, data2send, done, isLoginRequirAction){
             commFail(msg);
         });
     }
+}
+
+function appendTableData(trNode, str, td_attr = null, td_attr_val = null){
+    let tdElement = document.createElement("td");
+    tdElement.appendChild(document.createTextNode(str));
+
+    if(td_attr && td_attr_val){
+        tdElement.setAttribute(td_attr, td_attr_val);
+    }
+
+    trNode.appendChild(tdElement);
+    return trNode;
 }

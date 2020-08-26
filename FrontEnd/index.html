@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="css/write_petition.css">
         <link rel="stylesheet" href="css/petition_viewer.css">
         <link rel="stylesheet" href="css/report_petition.css">
+        <link rel="stylesheet" href="css/generate_authcode.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
@@ -25,7 +26,8 @@
                         <input type="radio" id="newest" name="petition_order" checked> 최신 청원부터<br>
                         <input type="radio" id="oldest" name="petition_order"> 오래된 청원부터<br>
                         <input type="radio" id="newest_passed" name="petition_order"> 최근에 통과된 청원부터<br>
-                        <input type="radio" id="supportest" name="petition_order"> 지지 많은 청원부터
+                        <input type="radio" id="supportest" name="petition_order"> 지지 많은 청원부터<br>
+                        <input type="radio" id="expired" name="petition_order"> 만료된 청원 보기
                     </div>
                     <div id="petition_search">
                         <input type="checkbox" id="petition_search_checkbox"> 청원 검색하기
@@ -104,7 +106,7 @@
                     <input type="text"  id="register_nickname" placeholder="닉네임"><br>
                     <br>
                     <div class="auth_infos">
-                        <input type="text" id="register_stdid" placeholder="학번" minlength="4" maxlength="4">
+                        <input type="text" id="register_grade" placeholder="학년" maxlength="1">
                         <input type="text" id="register_authcode" placeholder="인증코드" minlength="6" maxlength="6">
                     </div>
                     <br>
@@ -200,7 +202,7 @@
                     <div id="change_petition_status" class="general_btn">청원 상태 변경</div>
                     <br>
                     <h3>유저 관련 메뉴</h3>
-                    <div id="view_report" class="general_btn">신고 열람</div>
+                    <div id="view_report" class="general_btn">신고 열람 및 처리</div>
                     <div id="delete_user" class="general_btn">유저 삭제</div>
                     <div id="generate_authcode" class="general_btn">인증번호 발급</div>
                     <div id="manage_privs" class="general_btn">관리자 권한 관리</div>
@@ -245,35 +247,25 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 백엔드 연결 후 공사 -->
         <div id="view_report_modal" class="modal manager_modal">
             <div class="modal_content view_report_modal_content">
                 <h2>신고 열람</h2>
                 <div id="view_report_form">
                     <div id="report_list" style="overflow:auto;">
-                        <!-- 신고 리스트 update -->
-                        <!-- 열린 게시물에 관한 신고만 보여지도록 -->
-                        <!-- 신고가 존재하는 청원의 제목 + 신고 수까지만 표시 -->
-                        <!-- 신고로 자동 닫힘 처리된 게시물도 여기 표시 -->
+                        <table id="report_list_table">
+                            <thead id="report_list_table_thead">
+                                <th id="report_list_table_petition_id">청원 번호</th>
+                                <th id="report_list_table_description">내용</th>
+                            </thead>
+                            <tbody id="report_list_table_tbody"></tbody>
+                        </table>
                     </div>
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="view_detail_report_modal" class="modal manager_modal" style="display:none;">
-            <div class="modal_content view_detail_report_modal_content">
-                <h2>신고 세부내용 열람</h2>
-                <div id="view_detail_report_form">
-                    <div id="detail_report_list" style="overflow:auto;">
-                        <!-- 신고 리스트 update -->
-                        <!-- 여기서 닫기, 열기, 작성자 삭제 가능토록 -->
-                    </div>
-                    <div class="go_back">뒤로가기</div>
-                </div>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
+        <!-- 회의 후 개발 -->
         <div id="delete_user_modal" class="modal manager_modal" style="display:none;">
             <div class="modal_content delete_user_modal_content">
                 <h2>유저 삭제</h2>
@@ -283,10 +275,22 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="generate_authcode_modal" class="modal manager_modal" style="display:none;">
+        <!-- 공사중 -->
+        <div id="generate_authcode_modal" class="modal manager_modal">
             <div class="modal_content generate_authcode_modal_content">
                 <h2>인증번호 발급</h2>
                 <div id="generate_authcode_form">
+                    <h3>현황</h3>
+                    <input type="text" id="current_general_authcodes_count" class="authcodes_count" placeholder="Server Data" disabled> | 미사용 일반 인증번호<br>
+                    <input type="text" id="current_manager_authcodes_count" class="authcodes_count" placeholder="Server Data" disabled> | 미사용 관리자 인증번호<br>
+                    <div id="truncate_authcode" class="general_btn">인증번호 전체 삭제</div>
+                    <br>
+                    <h3>발급 메뉴</h3>
+                    <input type="radio" id="general_authcode" name="authcode_priv_rdo" checked> 일반용 인증번호 발급<br>
+                    <input type="radio" id="manager_authcode" name="authcode_priv_rdo"> 관리자용 인증번호 발급<br>
+                    <input type="text" id="authcode_count" class="generate_authcode_input"><br>
+                    <input type="text" id="authcode_life" class="generate_authcode_input" placeholder="인증번호 수명(단위: 일)">
+                    <div id="generate" class="general_btn">인증번호 발급</div>
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
@@ -313,5 +317,6 @@
         <script src="js/view_report.js"></script>
         <script src="js/write_petition.js"></script>
         <script src="js/report_petition.js"></script>
+        <script src="js/generate_authcode.js"></script>
     </body>
 </html>

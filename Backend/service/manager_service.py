@@ -1,4 +1,9 @@
-from flask import jsonify
+import random
+from datetime import datetime
+from flask import jsonify, send_file
+from openpyxl import Workbook
+from openpyxl.styles.borders import Border, Side
+
 from endpoints import Config
 from dao import UserDao, PetitionDao, ManagerDao
 
@@ -25,6 +30,9 @@ class ManagerService:
         else:
             return "청원번호 조회에 실패했습니다.", 400
 
+    def get_report_service(self):
+        return jsonify({ "reports":self.manager_dao.get_reports() })
+
     def delete_user_service(self, uid_list:list):
         # 유저를 삭제.
         # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
@@ -40,10 +48,73 @@ class ManagerService:
         # 실패시 None
         pass
 
-    def generate_authcodes_service(self, stdid_list):
-        # stdid_list에 대응하는 인증번호 생성 및 이중 튜플 ( (stdid, authcode), ... )로 반환
-        # 실패시 None
-        pass
+    def get_authcode_count(self):
+        data = self.manager_dao.get_authcode_count()
+
+        if "manager" not in data.keys():
+            data["manager"] = 0
+        if "general" not in data.keys():
+            data["general"] = 0
+
+        return jsonify(data)
+
+    def generate_authcodes_service(self, grade = 0, count = 0, priv = 0, life = 0):
+        charset = "AB1CD3E2FG4HI5JK6LMN7OP8QR9STU0WXYZ"
+        old_authcodes = self.user_dao.get_all_authcodes()
+        authcodes = []
+
+        if grade > 0:
+            count *= 30
+
+        while len(authcodes) < count:
+            authcode = ""
+            for i in range(6):
+                authcode += random.choice(charset)
+
+            if authcode not in authcodes and authcode not in old_authcodes:
+                authcodes.append(authcode)
+
+        self.manager_dao.insert_authcode(grade, tuple(authcodes), priv, life)
+
+        wb = Workbook()
+        ws = wb.active
+        border = Border(
+            left = Side(style="thin"),
+            right = Side(style="thin"),
+            top = Side(style="thin"),
+            bottom = Side(style="thin")
+        )
+
+        for i in len(authcodes):
+            rowidx = str((i % 30) + 3)
+
+            if rowidx == "3":
+                ws["B2"] = "학년"
+                ws["C2"] = "인증번호"
+                ws["D2"] = "권한"
+
+                ws["B2"].border = border
+                ws["C2"].border = border
+                ws["D2"].border = border
+                if not i < 30:
+                    ws = wb.create_sheet()
+
+            ws["B" + rowidx] = grade
+            ws["C" + rowidx] = authcodes[i]
+            ws["D" + rowidx] = "일반" if priv == 0 else "관리자"
+
+            ws["B" + rowidx].border = border
+            ws["C" + rowidx].border = border
+            ws["D" + rowidx].border = border
+
+        timestamp = datetime.now().timestamp()
+        wb.save(f"{timestamp}.xlsx")
+
+        return send_file(
+            filename_or_fp = f"{timestamp}.xlsx",
+            attachment_filename = "인증번호.xlsx",
+            as_attachment= True
+        )
 
     def open_petition_service(self, petition_id:int):
         if self.petition_dao.reopen_petition(petition_id, self.config.expire_left) is not None:

@@ -10,6 +10,15 @@ class UserService:
         self.dao = dao
         self.mailer = mailer
 
+    def check_email(self, email:str):
+        support_mails = ["@korea.kr", "@daum.net", "@hanmail.net", "@korea.net", "@gmail.com", "@kakao.com"]
+
+        for i in support_mails:
+            if email.find(i) != -1:
+                return True
+
+        return False
+
     def send_validate_mail(self, email, new_email = "", pwd = "",  mode = "send"):
         mode = mode.lower()
         user = self.dao.get_user(email=email)
@@ -48,8 +57,10 @@ class UserService:
         self.dao.process_validate(email)
         return "<script>alert(\"인증 성공!\");</script>"
 
-    def regist_service(self, stdid:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str):
-        if pwd != pwd_chk:
+    def regist_service(self, grade:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str):
+        if not self.check_email(email):
+            return "지원하지 않는 이메일이거나, 이메일 형식이 잘못되었습니다.", 400
+        elif pwd != pwd_chk:
             return "비밀번호와 비밀번호 확인 란의 값이 다릅니다.", 400
         elif len(pwd) < 8:
             return "비밀번호가 너무 짧습니다. 8자 이상이어야 합니다.", 400
@@ -58,11 +69,11 @@ class UserService:
         elif nickname in self.dao.get_all_nickname():
             return "이미 존재하는 닉네임입니다.", 400
         else:
-            db_authcode = self.dao.get_authcode(stdid)
+            db_authcode = self.dao.get_authcode(authcode)
 
             if not db_authcode:
                 return "인증번호가 틀립니다.", 401
-            elif int(stdid) != db_authcode["stdid"] or authcode.upper() != db_authcode["code"]:
+            elif int(grade) != db_authcode["grade"] or authcode.upper() != db_authcode["code"]:
                 return "인증번호가 틀립니다.", 401
 
             hashed_pwd = bcrypt.hashpw(
@@ -70,13 +81,14 @@ class UserService:
                 bcrypt.gensalt()
             )
 
-            root = db_authcode["root"]
+            priv = db_authcode["priv"]
 
             try:
-                self.dao.insert_user(email, hashed_pwd, nickname, db_authcode["stdid"] // 1000, root)
+                self.dao.insert_user(email, hashed_pwd, nickname, grade, priv)
             except:
                 return "이미 가입된 사용자입니다.", 400
 
+            self.dao.delete_authcode(authcode)
             self.send_validate_mail(email)
             return "가입 완료", 200
 
@@ -95,8 +107,8 @@ class UserService:
                     response = {
                         "email":user["email"],
                         "nickname":user["nickname"],
-                        "priv":user["root"],
-                        "token":self.generate_access_token(user['uid'], user["root"])
+                        "priv":user["priv"],
+                        "token":self.generate_access_token(user['uid'], user["priv"])
                     }
                     return jsonify(response)
             else:
@@ -110,6 +122,9 @@ class UserService:
         }, current_app.config['JWT_SECRET_KEY'], "HS256").decode("UTF-8")
 
     def change_info_service(self, uid:int, email:str, nickname:str):
+        if not self.check_email(email):
+            return "지원하지 않는 이메일이거나, 이메일 형식이 잘못되었습니다."
+
         self.dao.update_user_email(uid, email)
         self.dao.update_user_nickname(uid, nickname)
         return "정보 변경 성공", 200
@@ -129,9 +144,6 @@ class UserService:
                 return "비밀번호 변경 성공", 200
             else:
                 return "현재 비밀번호를 잘못 입력하셨습니다.", 401
-
-    def generate_authcode(self, stdid:tuple):
-        pass
 
     def withdraw_service(self, uid:int, pwd:str):
         hashed_pwd = self.dao.get_user(uid = uid)["hashed_pwd"]

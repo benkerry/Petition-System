@@ -4,20 +4,31 @@ class UserDao:
     def __init__(self, db):
         self.db = db
 
-    def get_authcode(self, stdid:int):
+    def get_all_authcodes(self):
+        result = []
         data = self.db.execute(text("""
-            SELECT stdid, code, root
+            SELECT authcode FROM authcodes
+        """)).fetchall()
+
+        for i in data:
+            result.append(i[0])
+
+        return tuple(result)
+
+    def get_authcode(self, authcode:str):
+        data = self.db.execute(text("""
+            SELECT grade, code, priv
             FROM authcodes
             WHERE stdid = :stdid
         """), {
-            "stdid":stdid
+            "authcode":authcode
         }).fetchone()
 
         if data != None:
             return {
-                "stdid":data[0],
+                "grade":data[0],
                 "code":data[1],
-                "root":data[2]
+                "priv":data[2]
             }
         else:
             return None
@@ -36,7 +47,7 @@ class UserDao:
                 hashed_pwd,
                 nickname,
                 grade,
-                root,
+                priv,
                 validated
             )
             VALUES(
@@ -44,7 +55,7 @@ class UserDao:
                 :hashed_pwd,
                 :nickname,
                 :grade,
-                :root,
+                :priv,
                 0
             )
         """), {
@@ -52,7 +63,7 @@ class UserDao:
             "hashed_pwd":hashed_pwd,
             "nickname":nickname,
             "grade":grade,
-            "root":priv
+            "priv":priv
         }).lastrowid
 
     def delete_user(self, uid = -1, email = None):
@@ -98,7 +109,7 @@ class UserDao:
                     email,
                     hashed_pwd,
                     nickname,
-                    root,
+                    priv,
                     validated,
                     withdraw_at
                 FROM users
@@ -113,7 +124,7 @@ class UserDao:
                     email,
                     hashed_pwd,
                     nickname,
-                    root,
+                    priv,
                     validated,
                     withdraw_at
                 FROM users
@@ -130,7 +141,7 @@ class UserDao:
                 "email":data[1],
                 "hashed_pwd":data[2],
                 "nickname":data[3],
-                "root":data[4],
+                "priv":data[4],
                 "validated":data[5],
                 "withdrawed": True if data[6] else False
             }
@@ -175,7 +186,7 @@ class UserDao:
         data = self.db.execute(text("""
             SELECT email
             FROM users
-            WHERE root > 0
+            WHERE priv > 1
         """))
 
         if data != None:

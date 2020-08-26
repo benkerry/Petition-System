@@ -41,14 +41,14 @@ def create_endpoints(app, services, config:Config):
     def register():
         payload = request.json
 
-        stdid = payload['stdid']
+        grade = payload['grade']
         authcode = payload['authcode']
         email = payload['email']
         pwd = payload['pwd']
         pwd_chk = payload['pwd_chk']
         nickname = payload['nickname']
 
-        return services.user_service.regist_service(stdid, authcode, email, pwd, pwd_chk, nickname)
+        return services.user_service.regist_service(grade, authcode, email, pwd, pwd_chk, nickname)
 
     @app.route("/validate", methods = ["GET"])
     def validate():
@@ -104,11 +104,6 @@ def create_endpoints(app, services, config:Config):
         else:
             return services.petition_service.get_petition_metadata_service(payload["count"], payload["petition_type"])
 
-    @app.route("/get-reported-petition-metadatas", methods = ["POST"])
-    @login_required
-    def get_reported_petition_metadatas():
-        return services.petition_service.get_petition_metadata_service(petition_type = request.json["petition_type"])
-
     @app.route("/get-petition", methods = ["POST"])
     def get_petition():
         petition_id = request.json["petition_id"]
@@ -142,6 +137,12 @@ def create_endpoints(app, services, config:Config):
     def get_petition_status():
         return services.manager_service.get_petition_status(request.json["petition_id"])
 
+    @app.route("/get-reports", methods = ["POST"])
+    @login_required
+    @priv_required
+    def get_reports():
+        return services.manager_service.get_report_service()
+
     @app.route("/delete-user", methods = ["POST"])
     @login_required
     @priv_required
@@ -160,11 +161,18 @@ def create_endpoints(app, services, config:Config):
     def get_all_nicknames():
         pass
 
+    @app.route("/get-authcode-count", methods = ["POST"])
+    @login_required
+    @priv_required
+    def get_authcode_count():
+        return services.manager_service.get_authcode_count()
+
     @app.route("/generate-authcodes", methods = ["POST"])
     @login_required
     @priv_required
     def generate_authcodes():
-        pass
+        grade, count, priv, life = request.json["grade"], request.json["count"], request.json["priv"], request.json["life"]
+        return services.manager_service.generate_authcode_service(grade, count, priv, life)
 
     @app.route("/open-petition", methods = ["POST"])
     @login_required
