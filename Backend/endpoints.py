@@ -6,6 +6,7 @@ class Config:
     def __init__(self, pass_ratio, expire_left):
         self.pass_ratio = pass_ratio
         self.expire_left = expire_left
+        self.pass_line = 0
 
 def login_required(f):
     @wraps(f)
@@ -80,7 +81,7 @@ def create_endpoints(app, services, config:Config):
     @login_required
     def change_my_info():
         payload = request.json
-        return services.user_service.change_info_service(g.uid, payload["email"], payload["nickname"])
+        return services.user_service.change_info_service(g.uid, payload["nickname"])
 
     @app.route("/change-my-pwd", methods = ["POST"])
     @login_required
@@ -143,23 +144,17 @@ def create_endpoints(app, services, config:Config):
     def get_reports():
         return services.manager_service.get_report_service()
 
+    @app.route("/deactivate-petition", methods = ["POST"])
+    @login_required
+    @priv_required
+    def deactivate_petition():
+        return services.manager_service.deactivate_petition_service(request.json["pid"])
+
     @app.route("/delete-user", methods = ["POST"])
     @login_required
     @priv_required
     def delete_user():
-        pass
-
-    @app.route("/change-priv", methods = ["POST"])
-    @login_required
-    @priv_required
-    def change_priv():
-        pass
-
-    @app.route("/get-all-nicknames", methods = ["POST"])
-    @login_required
-    @priv_required
-    def get_all_nicknames():
-        pass
+        return services.manager_service.delete_user_service(request.json["uid"])
 
     @app.route("/get-authcode-count", methods = ["POST"])
     @login_required
@@ -173,6 +168,13 @@ def create_endpoints(app, services, config:Config):
     def generate_authcodes():
         grade, count, priv, life = request.json["grade"], request.json["count"], request.json["priv"], request.json["life"]
         return services.manager_service.generate_authcode_service(grade, count, priv, life)
+
+    @app.route("/truncate-authcodes", methods = ["POST"])
+    @login_required
+    @priv_required
+    def truncate_authcodes():
+        services.manager_service.truncate_authcodes_service()
+        return "성공", 200
 
     @app.route("/open-petition", methods = ["POST"])
     @login_required
@@ -204,6 +206,7 @@ def create_endpoints(app, services, config:Config):
             return "100 이상의 값은 입력하실 수 없습니다.", 400
         else:
             config.pass_ratio = set_data
+            config.pass_line = services.manager_service.get_pass_line()
 
             fp = open("config/config.pass_ratio", 'w')
             fp.write(str(set_data))

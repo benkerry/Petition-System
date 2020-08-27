@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy import text
 
 class PetitionDao:
@@ -146,10 +147,13 @@ class PetitionDao:
                 p.status
             FROM petitions AS p
             LEFT JOIN users AS u ON p.author_id = u.id
-            WHERE p.id = :petition_id
+            WHERE p.id = :petition_id AND p.status != 3
         """), {
             "petition_id":petition_id
         }).fetchone()
+
+        if not data:
+            return None
 
         result["author"] = data[0]
         result["title"] = data[1]
@@ -214,3 +218,56 @@ class PetitionDao:
                 "petition_id":petition_id,
                 "description":description
             }).lastrowid
+
+    def deactivate_petition(self, pid:int):
+        self.db.execute(text("""
+            UPDATE petitions
+            SET status = 3
+            WHERE id = :pid AND reports >= 10
+        """), {
+            "pid":pid
+        })
+
+    def check_petitions(self, pass_line:int):
+        datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        self.db.execute(text("""
+            UPDATE petitions SET passed_at = :datetime_now WHERE supports >= :pass_line AND status = 0
+        """), {
+            "datetime_now":datetime_now,
+            "pass_line":pass_line
+        })
+
+        self.db.execute(text("""
+            UPDATE petitions SET status = 1 WHERE supports >= :pass_line AND status = 0
+        """), {
+            "pass_line":pass_line
+        })
+
+        self.db.execute(text("""
+            UPDATE petitions
+            SET status = 2
+            WHERE TIMESTAMPDIFF(DAY, expire_at, NOW()) > 0 AND status = 0
+        """))
+
+        data = self.db.execute(text("""
+            SELECT 
+                title, 
+                contents, 
+                passed_at 
+            FROM petitions 
+            WHERE passed_at = :datetime_now
+        """, {
+            "datetime_now":datetime_now
+        })).fetchall()
+
+        result = list()
+
+        for i in data:
+            result.append({
+                "title":i[0],
+                "contents":i[1],
+                "passed_at":i[2]
+            })
+
+        return result

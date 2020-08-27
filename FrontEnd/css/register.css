@@ -41,7 +41,7 @@
     margin-bottom:10px;
 }
 
-#register_stdid, #register_authcode{
+#register_grade, #register_authcode{
     width:43%;
     height:30px;
     margin-bottom:5px;
@@ -50,7 +50,7 @@
     box-shadow:none;
 }
 
-#register_stdid{
+#register_grade{
     float:left;
 }
 

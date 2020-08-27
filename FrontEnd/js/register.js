@@ -33,7 +33,7 @@ function performRegister(){
     var pwd = document.getElementById("register_pwd").value;
     var pwd_chk = document.getElementById("register_pwd_chk").value;
     var nickname = document.getElementById("register_nickname").value;
-    var stdid = document.getElementById("register_stdid").value;
+    var grade = document.getElementById("register_grade").value;
     var authcode = document.getElementById("register_authcode").value;
 
     if(email.indexOf("@naver.com") == -1 && email.indexOf("@daum.net") == -1 && email.indexOf("@hanmail.net") == -1 
@@ -46,7 +46,7 @@ function performRegister(){
     else if(pwd.length < 8){
         alert("비밀번호가 너무 짧습니다. 8자 이상이어야 합니다.")
     }
-    else if(stdid > 3999){
+    else if(grade < 1 || grade > 3){
         alert("학번 입력값을 확인해 주세요.");
     }
     else if(authcode.length != 6){
@@ -54,7 +54,7 @@ function performRegister(){
     }
     else{
         var data2send = {
-            "stdid": stdid,
+            "grade": grade,
             "authcode": authcode,
             "email": email,
             "pwd": pwd,

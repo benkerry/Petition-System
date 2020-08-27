@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="css/myinfo.css">
         <link rel="stylesheet" href="css/manager_menu.css">
         <link rel="stylesheet" href="css/system_setting.css">
-        <link rel="stylesheet" href="css/change_petition_status.css">
         <link rel="stylesheet" href="css/view_report.css">
         <link rel="stylesheet" href="css/write_petition.css">
         <link rel="stylesheet" href="css/petition_viewer.css">
@@ -136,7 +135,6 @@
                 <h2>내 정보</h2>
                 <div id="myInfo_form" class="form">
                     <h3>일반정보 변경</h3>
-                    <input type="email" id="myInfo_email" class="general_input" placeholder="현재 이메일: (서버 데이터)" disabled><br>
                     <input type="text" id="myInfo_nickname" class="general_input" placeholder="현재 닉네임: (서버 데이터)" disabled><br>
                     <input type="checkbox" id="info_input_chkbx"> 변경할 정보 입력
                     <div id="change_info_btn" class="general_btn">정보 변경</div>
@@ -199,13 +197,10 @@
                 <div id="manager_menu_btns">
                     <h3>청원 관련 메뉴</h3>
                     <div id="system_setting" class="general_btn">청원 시스템 설정</div>
-                    <div id="change_petition_status" class="general_btn">청원 상태 변경</div>
-                    <br>
-                    <h3>유저 관련 메뉴</h3>
                     <div id="view_report" class="general_btn">신고 열람 및 처리</div>
-                    <div id="delete_user" class="general_btn">유저 삭제</div>
+
+                    <h3>유저 관련 메뉴</h3>
                     <div id="generate_authcode" class="general_btn">인증번호 발급</div>
-                    <div id="manage_privs" class="general_btn">관리자 권한 관리</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -235,18 +230,6 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <div id="change_petition_status_modal" class="modal manager_modal">
-            <div class="modal_content change_petition_status_modal_content">
-                <h2>청원 상태 변경</h2>
-                <div id="change_petition_status_form" class="form">
-                    <input type="text" id="petition_id_for_get_status" placeholder="청원번호 입력 후 엔터">
-                    <div id="change_status_btn" class="general_btn">(버튼)</div>
-                    <input type="hidden" id="set_petition_id">
-                    <div class="go_back">뒤로가기</div>
-                </div>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
         <div id="view_report_modal" class="modal manager_modal">
             <div class="modal_content view_report_modal_content">
                 <h2>신고 열람</h2>
@@ -265,17 +248,6 @@
             </div>
             <div class="modal_layer"></div>
         </div>
-        <!-- 회의 후 개발 -->
-        <div id="delete_user_modal" class="modal manager_modal" style="display:none;">
-            <div class="modal_content delete_user_modal_content">
-                <h2>유저 삭제</h2>
-                <div id="delete_user_form">
-                    <div class="go_back">뒤로가기</div>
-                </div>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
-        <!-- 공사중 -->
         <div id="generate_authcode_modal" class="modal manager_modal">
             <div class="modal_content generate_authcode_modal_content">
                 <h2>인증번호 발급</h2>
@@ -288,18 +260,10 @@
                     <h3>발급 메뉴</h3>
                     <input type="radio" id="general_authcode" name="authcode_priv_rdo" checked> 일반용 인증번호 발급<br>
                     <input type="radio" id="manager_authcode" name="authcode_priv_rdo"> 관리자용 인증번호 발급<br>
+                    <input type="text" id="authcode_grade" class="generate_authcode_input" placeholder="학년">
                     <input type="text" id="authcode_count" class="generate_authcode_input"><br>
                     <input type="text" id="authcode_life" class="generate_authcode_input" placeholder="인증번호 수명(단위: 일)">
                     <div id="generate" class="general_btn">인증번호 발급</div>
-                    <div class="go_back">뒤로가기</div>
-                </div>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
-        <div id="manage_privs_modal" class="modal manager_modal" style="display:none;">
-            <div class="modal_content manage_privs_modal_content">
-                <h2>관리자 권한 관리</h2>
-                <div id="manage_privs_form">
                     <div class="go_back">뒤로가기</div>
                 </div>
             </div>
@@ -313,7 +277,6 @@
         <script src="js/register.js"></script>
         <script src="js/myInfo.js"></script>
         <script src="js/system_setting.js"></script>
-        <script src="js/change_petition_status.js"></script>
         <script src="js/view_report.js"></script>
         <script src="js/write_petition.js"></script>
         <script src="js/report_petition.js"></script>

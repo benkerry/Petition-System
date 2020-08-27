@@ -9,15 +9,16 @@ class UserService:
     def __init__(self, dao:UserDao, mailer:Mailer):
         self.dao = dao
         self.mailer = mailer
+        self.check_expired_users_n_authcodes()
 
     def check_email(self, email:str):
         support_mails = ["@korea.kr", "@daum.net", "@hanmail.net", "@korea.net", "@gmail.com", "@kakao.com"]
 
         for i in support_mails:
             if email.find(i) != -1:
-                return True
+                return False
 
-        return False
+        return True
 
     def send_validate_mail(self, email, new_email = "", pwd = "",  mode = "send"):
         mode = mode.lower()
@@ -73,7 +74,7 @@ class UserService:
 
             if not db_authcode:
                 return "인증번호가 틀립니다.", 401
-            elif int(grade) != db_authcode["grade"] or authcode.upper() != db_authcode["code"]:
+            elif int(grade) != db_authcode["grade"] or authcode.upper() != db_authcode["code"].upper():
                 return "인증번호가 틀립니다.", 401
 
             hashed_pwd = bcrypt.hashpw(
@@ -102,7 +103,7 @@ class UserService:
                 if not user["validated"]:
                     return "이메일 인증을 진행하지 않으셨습니다.", 401
                 elif user["withdrawed"]:
-                    return "탈퇴한 회원입니다.", 401
+                    return "탈퇴한 회원이거나, 신고로 인해 삭제된 유저입니다.", 401
                 else:
                     response = {
                         "email":user["email"],
@@ -121,11 +122,7 @@ class UserService:
             'exp': datetime.utcnow() + timedelta(seconds= 60 * 60 * 24)
         }, current_app.config['JWT_SECRET_KEY'], "HS256").decode("UTF-8")
 
-    def change_info_service(self, uid:int, email:str, nickname:str):
-        if not self.check_email(email):
-            return "지원하지 않는 이메일이거나, 이메일 형식이 잘못되었습니다."
-
-        self.dao.update_user_email(uid, email)
+    def change_info_service(self, uid:int, nickname:str):
         self.dao.update_user_nickname(uid, nickname)
         return "정보 변경 성공", 200
 
@@ -150,13 +147,12 @@ class UserService:
         
         if bcrypt.checkpw(pwd.encode("UTF-8"), hashed_pwd.encode("UTF-8")):
             self.dao.update_withdraw(uid)
+            return "성공!", 200
         else:
             return "비밀번호가 틀렸습니다.", 401
 
-    def delete_withdrawed_users(self):
-        self.dao.delete_withdrawed_user()
-        threading.Timer(86400, self.delete_withdrawed_users)
-
-    def promote(self):
-        # 매년 3월, 모든 유저의 grade를 1씩 증가시킴.
-        pass
+    def check_expired_users_n_authcodes(self):
+        self.dao.delete_expired_user()
+        self.dao.delete_expired_authcode()
+        print("Expired Users and Authcodes Checked!")
+        threading.Timer(600, self.check_expired_users_n_authcodes).start()

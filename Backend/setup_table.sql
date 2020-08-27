@@ -6,7 +6,8 @@ CREATE TABLE users(
     grade INT NOT NULL,
     priv INT NOT NULL,
     validated BOOLEAN NOT NULL,
-    withdraw_at DATETIME,
+    expire_at DATETIME NOT NULL,
+    withdrawed BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY(id),
     UNIQUE  KEY nickname(nickname),
     UNIQUE KEY email(email)
@@ -23,15 +24,12 @@ CREATE TABLE petitions(
     reports INT NOT NULL DEFAULT 0,
     status INT NOT NULL DEFAULT 0,
     passed_at DATETIME,
-    PRIMARY KEY(id),
-    CONSTRAINT petitions_author_id_fkey FOREIGN KEY (author_id) REFERENCES users(id)
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE supports(
     uid INT NOT NULL,
-    petition_id INT NOT NULL,
-    CONSTRAINT supports_uid_fkey FOREIGN KEY (uid) REFERENCES users(id),
-    CONSTRAINT supports_petition_id_fkey FOREIGN KEY (petition_id) REFERENCES petitions(id)
+    petition_id INT NOT NULL
 );
 
 CREATE TABLE authcodes(
@@ -46,7 +44,5 @@ CREATE TABLE reports(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uid INT NOT NULL,
     petition_id INT NOT NULL,
-    description TEXT NOT NULL,
-    CONSTRAINT reports_uid_fkey FOREIGN KEY (uid) REFERENCES users(id),
-    CONSTRAINT reports_petition_id_fkey FOREIGN KEY (petition_id) REFERENCES petitions(id)
-)
+    description TEXT NOT NULL
+);

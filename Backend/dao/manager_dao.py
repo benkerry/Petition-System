@@ -13,9 +13,12 @@ class ManagerDao:
         data = self.db.execute(text("""
             SELECT
                 u.nickname,
-                a.reports,
+                a.author_id,
                 a.petition_id,
-                a.description
+                a.description,
+                a.reports,
+                a.status,
+                a.id
             FROM users AS u
             LEFT JOIN
             (
@@ -23,10 +26,14 @@ class ManagerDao:
                     p.author_id,
                     p.reports,
                     r.petition_id, 
-                    r.description 
+                    r.description,
+                    p.status,
+                    r.id
                 FROM reports AS r
                 LEFT JOIN petitions AS p ON r.petition_id = p.id
             ) AS a ON a.author_id = u.id
+            WHERE status = 0 AND reports >= 10
+            ORDER BY id DESC
         """))
 
         result = []
@@ -35,7 +42,7 @@ class ManagerDao:
             result.append(
                 {
                     "nickname":i[0],
-                    "reports":i[1],
+                    "author_id":i[1],
                     "pid":i[2],
                     "description":i[3]
                 }
@@ -60,10 +67,10 @@ class ManagerDao:
         return result
 
     def insert_authcode(self, grade:int, authcodes:tuple, priv:int, life:int):
-        sql = "INSERT INTO authcodes(grade, code, root, expire_at) VALUES"
+        sql = "INSERT INTO authcodes(grade, code, priv, expire_at) VALUES"
 
         for authcode in authcodes:
-            sql += f"(:grade, {authcode}, :priv, DATE_ADD(NOW(), INTERVAL :life DAY)),"
+            sql += f"(:grade, \"{authcode}\", :priv, DATE_ADD(NOW(), INTERVAL :life DAY)),"
 
         sql = sql[:-1]
 
@@ -73,12 +80,5 @@ class ManagerDao:
             "life":life
         }).lastrowid
 
-    def get_all_authcode(self, stdid:tuple):
-        # stdid(학번 등 개인고유번호)의 튜플을 받아 DB에서 해당 학번의 인증번호를 인출.
-        # 해당하는 모든 인증번호를 2차원 튜플 ( (stdid, authcode), ... ) 형태로 반환
-        pass
-
-    def get_add_day(self, petition_id:int):
-        # 해당 청원 만료기한 연장 요청 상황 확인,
-        # 실패시 None, 성공시 ( (req_id, comment), ... ) 반환
-        pass
+    def truncate_authcodes(self):
+        self.db.execute(text("""TRUNCATE authcodes"""))

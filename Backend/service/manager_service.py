@@ -1,4 +1,6 @@
+import os
 import random
+import base64
 from datetime import datetime
 from flask import jsonify, send_file
 from openpyxl import Workbook
@@ -33,20 +35,13 @@ class ManagerService:
     def get_report_service(self):
         return jsonify({ "reports":self.manager_dao.get_reports() })
 
-    def delete_user_service(self, uid_list:list):
-        # 유저를 삭제.
-        # 실패시 None, 성공시 Transaction 이후 전체 유저의 수 반환.
-        pass
+    def deactivate_petition_service(self, pid:int):
+        self.petition_dao.deactivate_petition(pid)
+        return "성공!", 200
 
-    def change_priv_service(self, uid:int, tgt_nickname:str):
-        # 권한 변경 수행
-        # 실패시 None, 성공시 200 반환
-        pass
-
-    def get_all_nicknames_service(self):
-        # 모든 유저의 닉네임을 인출하여 리스트로 반환
-        # 실패시 None
-        pass
+    def delete_user_service(self, uid:int):
+        self.user_dao.update_withdraw(uid)
+        return "성공!", 200
 
     def get_authcode_count(self):
         data = self.manager_dao.get_authcode_count()
@@ -58,10 +53,15 @@ class ManagerService:
 
         return jsonify(data)
 
-    def generate_authcodes_service(self, grade = 0, count = 0, priv = 0, life = 0):
+    def generate_authcode_service(self, grade:int, count:int, priv:int, life:int):
         charset = "AB1CD3E2FG4HI5JK6LMN7OP8QR9STU0WXYZ"
         old_authcodes = self.user_dao.get_all_authcodes()
         authcodes = []
+
+        grade = int(grade)
+        count = int(count)
+        priv = int(priv)
+        life = int(life)
 
         if grade > 0:
             count *= 30
@@ -85,7 +85,7 @@ class ManagerService:
             bottom = Side(style="thin")
         )
 
-        for i in len(authcodes):
+        for i in range(len(authcodes)):
             rowidx = str((i % 30) + 3)
 
             if rowidx == "3":
@@ -101,20 +101,28 @@ class ManagerService:
 
             ws["B" + rowidx] = grade
             ws["C" + rowidx] = authcodes[i]
-            ws["D" + rowidx] = "일반" if priv == 0 else "관리자"
+            ws["D" + rowidx] = "일반" if priv == 1 else "관리자"
 
             ws["B" + rowidx].border = border
             ws["C" + rowidx].border = border
             ws["D" + rowidx].border = border
 
-        timestamp = datetime.now().timestamp()
-        wb.save(f"{timestamp}.xlsx")
+        fname = f"{datetime.now().timestamp()}.xlsx"
 
-        return send_file(
-            filename_or_fp = f"{timestamp}.xlsx",
-            attachment_filename = "인증번호.xlsx",
-            as_attachment= True
-        )
+        wb.save(fname)
+
+        fp = open(fname, "rb")
+        binary = base64.b64encode(fp.read()).decode("UTF-8")
+        fp.close()
+
+        os.remove(fname)
+
+        return jsonify({
+            "file":binary
+        })
+
+    def truncate_authcodes_service(self):
+        self.manager_dao.truncate_authcodes()
 
     def open_petition_service(self, petition_id:int):
         if self.petition_dao.reopen_petition(petition_id, self.config.expire_left) is not None:
@@ -122,19 +130,5 @@ class ManagerService:
         else:
             return "잘못된 접근입니다.", 403
 
-    def add_day_service(self, petition_id:int, add_day:int):
-        # 청원 만료기한을 늘림
-        # add_day에 음수가 들어올 시 처리 실패로 간주한다.
-        # 실패시 None, 성공시 현재로부터 만료까지 남은 날짜 반환
-        # petition_dao에 있는 것 사용
-        pass
-
-    def set_support_ratio_service(self, petition_id:int):
-        # 청원 동의인 비율 설정을 변경
-        # 실패시 None, 변경된 비율을 적용하여 산출된 동의인 수 임곗값 리턴
-        pass
-
-    def get_add_day_request_service(self, petition_id:int):
-        # 청원 만료기한 연장 요청 상황 확인,
-        # 실패시 None, 성공시 ( (req_id, comment), ... ) 반환
-        pass
+    def get_pass_line(self):
+        return (self.manager_dao.get_user_count() * 100) // self.config.pass_ratio

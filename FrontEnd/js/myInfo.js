@@ -1,6 +1,5 @@
 document.querySelector("#myInfo_btn").addEventListener("click", () => {
     if(priv){
-        document.getElementById("myInfo_email").placeholder = "현재 이메일: " + sessionStorage.getItem("email");
         document.getElementById("myInfo_nickname").placeholder = "현재 닉네임: " + sessionStorage.getItem("nickname");
         document.querySelector("#myInfo_modal").style.display = "block";
     }
@@ -12,18 +11,14 @@ document.querySelector("#myInfo_btn").addEventListener("click", () => {
 
 document.querySelector("#info_input_chkbx").addEventListener("change", () => {
     var nickname = document.querySelector("#myInfo_nickname");
-    var email = document.querySelector("#myInfo_email");
 
     if(document.getElementById("info_input_chkbx").checked){
         nickname.removeAttribute("disabled");
-        email.removeAttribute("disabled");
     }
     else{
         nickname.setAttribute("disabled", "");
-        email.setAttribute("disabled", "");
 
         nickname.value = "";
-        email.value = "";
     }
 });
 
@@ -32,26 +27,20 @@ document.querySelector("#change_pwd_btn").addEventListener("click", performChang
 document.querySelector("#withdraw_btn").addEventListener("click", performWithdraw);
 
 function performChangeInfo(){
-    var email = document.getElementById("myInfo_email").value;
     var nickname = document.getElementById("myInfo_nickname").value;
     
     if(priv){
-        if(!email || ! nickname){
-            alert("빈칸을 모두 채워주세요.");
+        if(!nickname){
+            alert("빈칸을 채워주세요.");
             return;
         }
-        else if(email.indexOf("@naver.com") == -1 && email.indexOf("@daum.net") == -1 && email.indexOf("@hanmail.net") == -1 
-            && email.indexOf("@korea.kr") == -1 && email.indexOf("@gmail.com") == -1 && email.indexOf("@kakao.com") == -1){
-            alert("지원하지 않는 이메일이거나, 이메일 형식이 잘못되었습니다.");
-        }
+
 
         var data2send = {
-            "email":email,
             "nickname":nickname
         };
 
         var done = () => {
-            sessionStorage.setItem("email", email);
             sessionStorage.setItem("nickname", nickname);
             alert("정보변경 성공!");
             location.reload();
@@ -105,11 +94,9 @@ function performWithdraw(){
         alert("비밀번호를 입력하지 않았습니다.");
     }
     else{
-        var done = () => {
+        sendApiRequest("withdraw", {"pwd":pwd}, () => {
             alert("탈퇴 성공!");
             performLogout();
-        };
-
-        sendApiRequest("withdraw", {"pwd":pwd}. done, true);
+        }, true);
     }
 }

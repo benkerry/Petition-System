@@ -1,4 +1,3 @@
-
 import config.config as cfg
 
 from dao.user_dao import UserDao
@@ -40,9 +39,11 @@ def create_app(test_config = None):
     petition_dao = PetitionDao(db)
     manager_dao = ManagerDao(db)
 
+    config.pass_line = (manager_dao.get_user_count() * 100) // config.pass_ratio
+
     # Business Layer
     user_service = UserService(user_dao, mailer)
-    petition_service = PetitionService(petition_dao, config, mailer)
+    petition_service = PetitionService(petition_dao, user_dao, config, mailer)
     manager_service = ManagerService(user_dao, petition_dao, manager_dao, config)
 
     services = Service

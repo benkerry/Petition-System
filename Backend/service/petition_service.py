@@ -1,21 +1,26 @@
-from dao import PetitionDao
+import threading
+from dao import PetitionDao, UserDao
 from .mail_service import Mailer
 from endpoints import Config
 from flask import jsonify
 
 class PetitionService:
-    def __init__(self, dao:PetitionDao, config:Config, mailer:Mailer):
+    def __init__(self, dao:PetitionDao, udao:UserDao, config:Config, mailer:Mailer):
         self.dao = dao
+        self.udao = udao
         self.config = config
         self.mailer = mailer
+        self.check_petitions()
 
     def get_petition_metadata_service(self, count = 0, petition_type = "newest"):
         return jsonify({"petitions":self.dao.get_petition_metadatas(count, petition_type)})
 
     def get_petition_service(self, petition_id:int):
         result = self.dao.get_petition(petition_id, self.config.pass_ratio)
-        result["expire_left"] = self.config.expire_left
-        return jsonify(result)
+        if not result:
+            return "열람할 수 없는 청원입니다.", 403
+        else:
+            return jsonify(result)
 
     def write_petition_service(self, uid:int, title:str, contents:str):
         if title != "" and contents != "":
@@ -25,7 +30,7 @@ class PetitionService:
     
     def support_petition_service(self, uid:int, petition_id:int):
         if self.dao.insert_support(uid, petition_id) is not None:
-            return "{petition_id}번 청원에 동의하셨습니다!", 200
+            return f"{petition_id}번 청원에 동의하셨습니다!", 200
         else:
             return "이미 동의한 청원이거나, 동의할 수 없는 청원입니다.", 400
 
@@ -36,8 +41,16 @@ class PetitionService:
             return "이미 신고하신 청원입니다.", 400
 
     def check_petitions(self):
-        # 매일 실행되어, 동의 수가 일정 이상인 청원의 Status Code를 갱신.
-        # 동의 수 미달성 상태로 일정 기간 지난 청원의 Status Code도 갱신.(열린 청원만)
-        # Status Code: 0 - 열림, 1 - 기간 만료 닫힘, 2 - 동의 목표 달성, 3 - 답변 완료, 4 - 관리자 직권 닫힘, 5 - 자동 신고 처리로 닫힘
-        # 통과된 청원들을 모든 유저에게 이메일로 보냄.
-        pass
+        passed_petitions = self.dao.check_petitions(self.config.pass_line)
+        print("All petitions checked!")
+
+        for i in passed_petitions:
+            title = "[청원 시스템 | 통과된 청원 안내] " + i["title"]
+            contents = "제목: " + i["title"] + "<br>통과일시: " + i["passed_at"] + "<br>내용<br><br>" + i["contents"]
+            to = self.udao.get_all_email()
+            self.mailer.send(title, contents, to)
+
+        if passed_petitions:
+            print("Passed Petition Sended to all users.")
+
+        threading.Timer(600, self.check_petitions)

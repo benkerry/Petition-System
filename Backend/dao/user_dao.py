@@ -1,4 +1,5 @@
 from sqlalchemy import text
+from datetime import datetime,timedelta
 
 class UserDao:
     def __init__(self, db):
@@ -7,7 +8,7 @@ class UserDao:
     def get_all_authcodes(self):
         result = []
         data = self.db.execute(text("""
-            SELECT authcode FROM authcodes
+            SELECT code FROM authcodes
         """)).fetchall()
 
         for i in data:
@@ -19,7 +20,7 @@ class UserDao:
         data = self.db.execute(text("""
             SELECT grade, code, priv
             FROM authcodes
-            WHERE stdid = :stdid
+            WHERE code = :authcode
         """), {
             "authcode":authcode
         }).fetchone()
@@ -37,10 +38,18 @@ class UserDao:
         return self.db.execute(text("""
             DELETE FROM authcodes WHERE code = :authcode
         """),{
-            "code":authcode
+            "authcode":authcode
         }).lastrowid
 
     def insert_user(self, email:str, hashed_pwd:str, nickname:str, grade:int, priv:str):
+        expire_at = None
+        grade = int(grade)
+
+        if grade > 0:
+            expire_at = str(int(datetime.now().strftime("%Y")) + 4 - grade) + "-04-01 00:00:00"
+        else:
+            expire_at = str(int(datetime.now().strftime("%Y")) + 5) + "-04-01 00:00:00"
+
         return self.db.execute(text("""
             INSERT INTO users(
                 email,
@@ -48,7 +57,8 @@ class UserDao:
                 nickname,
                 grade,
                 priv,
-                validated
+                validated,
+                expire_at
             )
             VALUES(
                 :email,
@@ -56,14 +66,16 @@ class UserDao:
                 :nickname,
                 :grade,
                 :priv,
-                0
+                0,
+                :expire_at
             )
         """), {
             "email":email,
             "hashed_pwd":hashed_pwd,
             "nickname":nickname,
             "grade":grade,
-            "priv":priv
+            "priv":priv,
+            "expire_at":expire_at
         }).lastrowid
 
     def delete_user(self, uid = -1, email = None):
@@ -84,16 +96,18 @@ class UserDao:
         else:
             return None
 
-    def delete_withdrawed_user(self):
-        return self.db.execuet(text("""
-            DELETE users
-            WHERE TIMESTAMPDIFF(day, withdraw_at, NOW()) > 13
-        """)).lastrowid
-
     def update_withdraw(self, uid:int):
+        self.db.execute(text("""
+            UPDATE users
+            SET withdrawed = 1
+            WHERE id = :uid
+        """), {
+            "uid":uid
+        })
+
         return self.db.execute(text("""
             UPDATE users
-            SET withdraw_at = NOW()
+            SET expire_at = DATE_ADD(NOW(), INTERVAL 14 DAY)
             WHERE id = :uid
         """),{
             "uid":uid
@@ -111,7 +125,7 @@ class UserDao:
                     nickname,
                     priv,
                     validated,
-                    withdraw_at
+                    withdrawed
                 FROM users
                 WHERE email = :email
             """), {
@@ -126,7 +140,7 @@ class UserDao:
                     nickname,
                     priv,
                     validated,
-                    withdraw_at
+                    withdrawed
                 FROM users
                 WHERE id = :id
             """), {
@@ -143,7 +157,7 @@ class UserDao:
                 "nickname":data[3],
                 "priv":data[4],
                 "validated":data[5],
-                "withdrawed": True if data[6] else False
+                "withdrawed": data[6]
             }
         else:
             return None
@@ -220,22 +234,14 @@ class UserDao:
             "email":email
         }).lastrowid
 
-    def update_user_email(self, uid:int, new_email:str):
-        return self.db.execute(text("""
-            UPDATE users
-            SET email = :new_email
-            WHERE id = :uid
-        """), {
-            "new_email":new_email,
-            "uid":uid
-        }).lastrowid
+    def delete_expired_user(self):
+        self.db.execute(text("""
+            DELETE FROM users
+            WHERE TIMESTAMPDIFF(SECOND, expire_at, NOW()) > 0
+        """))
 
-    def update_privilege(self, uid:int, priv:int):
-        # uid에 해당하는 유저의 권한을 변경함.
-        # 실패시 None, 성공시 전체 유저 수 반환.
-        pass
-
-    def process_promote(self):
-        # 모든 유저의 grade 값을 1씩 올린다.
-        # 실패시 None, 성공시 1
-        pass
+    def delete_expired_authcode(self):
+        self.db.execute(text("""
+            DELETE FROM authcodes
+            WHERE TIMESTAMPDIFF(SECOND, expire_at, NOW()) > 0
+        """))
