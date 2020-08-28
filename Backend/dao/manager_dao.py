@@ -82,3 +82,21 @@ class ManagerDao:
 
     def truncate_authcodes(self):
         self.db.execute(text("""TRUNCATE authcodes"""))
+
+    def insert_notice(self, uid:int, title:str, content:str):
+        return self.db.execute(text("""
+            INSERT INTO notices(
+                author_id,
+                title,
+                contents
+            )
+            VALUES(
+                :uid,
+                :title,
+                :contents
+            )
+        """), {
+            "uid":uid,
+            "title":title,
+            "contents":content
+        }).lastrowid

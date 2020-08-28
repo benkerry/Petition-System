@@ -1,0 +1,47 @@
+#write_notice_modal{
+    display:none;
+}
+
+#write_notice_modal h2{
+    margin:40px 0 180px;
+}
+
+.write_notice_modal_content{
+    width:300px;
+    height:800px;
+}
+
+#write_notice_form{
+    width:600px;
+    padding-top:30px;
+    position:absolute;
+
+    top:10%;
+    bottom:90%;
+    left:49%;
+    right:51%;
+    transform: translate(-50%, -50%);
+}
+
+#notice_title, #notice_content{
+    width:100%;
+    border:1px solid gray;
+    border-radius:12px;
+    padding:10px;
+}
+
+#notice_title{
+    height:50px;
+    font-size:25px;
+    margin-bottom:15px;
+}
+
+#notice_content{
+    height:450px;
+    font-size:15px;
+}
+
+#send_notice{
+    padding-left:10px;
+    padding-right:10px;
+}

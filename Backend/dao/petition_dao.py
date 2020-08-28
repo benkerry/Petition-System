@@ -257,9 +257,9 @@ class PetitionDao:
                 passed_at 
             FROM petitions 
             WHERE passed_at = :datetime_now
-        """, {
+        """), {
             "datetime_now":datetime_now
-        })).fetchall()
+        }).fetchall()
 
         result = list()
 

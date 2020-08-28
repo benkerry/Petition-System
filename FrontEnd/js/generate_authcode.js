@@ -66,6 +66,10 @@ function performGenerateAuthcode(){
             alert("발급 성공!");
             setCurrentAuthcodeCount();
 
+            document.getElementById("authcode_grade").value = "";
+            document.getElementById("authcode_count").value = "";
+            document.getElementById("authcode_life").value = "";
+
             a.style.display = "none";
             document.body.appendChild(a);
 

@@ -44,7 +44,7 @@ function performSetPassRatio(){
             else{
                 document.getElementById("current_pass_support").value =  Math.floor(user_count * (pass_ratio / 100)) + "명";
             }
-
+            document.getElementById("pass_ratio_to_set").value = "";
             alert("변경 성공!");
         }, true);
     }
@@ -63,6 +63,7 @@ function performSetExpireDay(){
         };
 
         sendApiRequest("set-expire-left", data2send, () => {
+            document.getElementById("expire_left_to_set").value = "";
             document.getElementById("current_expire_left").value = expire_left + "일";
         }, true);
     }

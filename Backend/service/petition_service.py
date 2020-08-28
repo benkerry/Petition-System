@@ -46,7 +46,7 @@ class PetitionService:
 
         for i in passed_petitions:
             title = "[청원 시스템 | 통과된 청원 안내] " + i["title"]
-            contents = "제목: " + i["title"] + "<br>통과일시: " + i["passed_at"] + "<br>내용<br><br>" + i["contents"]
+            contents = "제목: " + i["title"] + "<br>통과일시: " + i["passed_at"] + "<br>내용<br><br>" + i["contents"].replace("<br>", "\n")
             to = self.udao.get_all_email()
             self.mailer.send(title, contents, to)
 

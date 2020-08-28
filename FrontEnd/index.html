@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="css/petition_viewer.css">
         <link rel="stylesheet" href="css/report_petition.css">
         <link rel="stylesheet" href="css/generate_authcode.css">
+        <link rel="stylesheet" href="css/write_notice.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
@@ -76,7 +77,9 @@
                     </div>
                 </div>
                 <div class="sidebar_contents">
-                    <div id="write_petition">청원 작성하기</div>
+                    <div id="write_petition" class="sidebar_btns">청원 작성하기</div>
+                    <div id="notice" class="sidebar_btns">공지사항</div>
+                    <div id="manual" class="sidebar_btns">이용 안내</div>
                     <div id="myPetitions_list">
                         <h3>내가 작성한 청원</h3>
                     </div>
@@ -201,6 +204,9 @@
 
                     <h3>유저 관련 메뉴</h3>
                     <div id="generate_authcode" class="general_btn">인증번호 발급</div>
+
+                    <h3>공지사항</h3>
+                    <div id="write_notice" class="general_btn">공지사항 작성</div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -269,6 +275,18 @@
             </div>
             <div class="modal_layer"></div>
         </div>
+        <div id="write_notice_modal" class="modal manager_modal">
+            <div class="modal_content write_notice_modal_content">
+                <h2>공지 작성</h2>
+                <div id="write_notice_form">
+                    <input type="text" id="notice_title" placeholder="제목"><br>
+                    <textarea id="notice_content"></textarea>
+                    <div id="send_notice" class="general_btn">작성 완료</div>
+                    <div class="go_back">뒤로가기</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/master.js"></script>
         <script src="js/petition_viewer.js"></script>
@@ -281,5 +299,6 @@
         <script src="js/write_petition.js"></script>
         <script src="js/report_petition.js"></script>
         <script src="js/generate_authcode.js"></script>
+        <script src="js/write_notice.js"></script>
     </body>
 </html>

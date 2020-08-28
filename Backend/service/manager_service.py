@@ -7,13 +7,15 @@ from openpyxl import Workbook
 from openpyxl.styles.borders import Border, Side
 
 from endpoints import Config
+from .mail_service import Mailer
 from dao import UserDao, PetitionDao, ManagerDao
 
 class ManagerService:
-    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, manager_dao:ManagerDao, config:Config):
+    def __init__(self, user_dao:UserDao, petition_dao:PetitionDao, manager_dao:ManagerDao, mailer:Mailer, config:Config):
         self.user_dao = user_dao
         self.petition_dao = petition_dao
         self.manager_dao = manager_dao
+        self.mailer= mailer
         self.config = config
 
     def get_user_count(self):
@@ -123,6 +125,18 @@ class ManagerService:
 
     def truncate_authcodes_service(self):
         self.manager_dao.truncate_authcodes()
+
+    def write_notice_service(self, uid:int, title:str, content:str):
+        if title and content:
+            user_emails = self.user_dao.get_all_email()
+            self.manager_dao.insert_notice(uid, title, content.replace("\n", "<br>"))
+
+            if user_emails:
+                mail_title = "[청원 시스템 공지] " + title
+                self.mailer.send(mail_title, content, user_emails)
+            return "성공!", 200
+        else:
+            return "빈칸을 모두 채워주세요.", 400
 
     def open_petition_service(self, petition_id:int):
         if self.petition_dao.reopen_petition(petition_id, self.config.expire_left) is not None:

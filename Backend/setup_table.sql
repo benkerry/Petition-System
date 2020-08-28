@@ -27,6 +27,15 @@ CREATE TABLE petitions(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE notices(
+    id INT NOT NULL AUTO_INCREMENT,
+    author_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    contents TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT NOW(),
+    PRIMARY KEY(id)
+)
+
 CREATE TABLE supports(
     uid INT NOT NULL,
     petition_id INT NOT NULL

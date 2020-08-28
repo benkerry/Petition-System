@@ -223,3 +223,10 @@ def create_endpoints(app, services, config:Config):
             "pass_ratio":config.pass_ratio,
             "expire_left":config.expire_left
         })
+
+    @app.route("/write-notice", methods = ["POST"])
+    @login_required
+    @priv_required
+    def write_notice():
+        payload = request.json
+        return services.manager_service.write_notice_service(g.uid, payload["title"], payload["content"])
