@@ -1,0 +1,41 @@
+#notice_viewer_modal{
+    display:none;
+}
+
+#notice_viewer_modal h2{
+    width:700px;
+    margin:40px 0 180px;
+}
+
+.notice_viewer_modal_content{
+    width:300px;
+    height:650px;
+}
+
+#notice_viewer_form{
+    width:650px;
+    height:560px;
+    position:absolute;
+
+    top:56%;
+    bottom:44%;
+    left:50%;
+    right:50%;
+    transform:translate(-50%, -50%);
+}
+
+#notice_viewer_metadatas{
+    padding-bottom:10px;
+}
+
+#notice_viewer_nickname{
+    margin-bottom:10px;
+}
+
+#notice_viewer_content{
+    height:80%;
+    padding:10px;
+    background-color:#effaf4;
+    border:3px solid gray;
+    border-radius:12px;
+}

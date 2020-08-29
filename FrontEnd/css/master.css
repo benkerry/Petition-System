@@ -83,11 +83,11 @@ body{
     display:none;
 }
 
-#login:hover, #myInfo_btn:hover, #myInfo_btn_manager:hover, #managerMenu_btn:hover, #logout_btn:hover, #logout_btn_manager:hover, #write_petition:hover{
+#login:hover, #myInfo_btn:hover, #myInfo_btn_manager:hover, #managerMenu_btn:hover, #logout_btn:hover, #logout_btn_manager:hover, .sidebar_btns:hover{
     background-color:#E4E7E7;
 }
 
-#login:active, #myInfo_btn:active, #myInfo_btn_manager:active, #managerMenu_btn:active, #logout_btn:active, #logout_btn_manager:active, #write_petition:active{
+#login:active, #myInfo_btn:active, #myInfo_btn_manager:active, #managerMenu_btn:active, #logout_btn:active, #logout_btn_manager:active, .sidebar_btns:active{
     background-color:#C5C6C6;
 }
 
@@ -216,16 +216,19 @@ body{
 }
 
 #write_petition{
+    display:none;
+}
+
+.sidebar_btns{
     width:100%;
     text-align:center;
-    margin:15px 0 30px 0;
+    margin:15px 0 0 0;
     padding:5px 0 5px 0;
     border-radius:8px;
     cursor:pointer;
     text-align:center;
     background-color:white;
     border:1px solid gray;
-    display:none;
 }
 
 #myPetitions_list{

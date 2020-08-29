@@ -37,7 +37,7 @@ class UserService:
                 email = new_email
 
         if user['validated']:
-            return "이미 인증된 사용자입니다.", 400
+            return "이미 인증된 사용자입니다.", 403
 
         token = jwt.encode({
             'user_email': email,

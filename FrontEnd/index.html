@@ -15,11 +15,12 @@
         <link rel="stylesheet" href="css/report_petition.css">
         <link rel="stylesheet" href="css/generate_authcode.css">
         <link rel="stylesheet" href="css/write_notice.css">
+        <link rel="stylesheet" href="css/notice_viewer.css">
         <title>청원 시스템</title>
     </head>
     <body class="index_page">
         <div class="page_contents">
-            <div id="petitions">
+            <div id="petitions" class="main_contents">
                 <h1>청원 리스트</h1>
                 <div id="all_petitions" class="petitions">
                     <div id="petition_type_radios">
@@ -40,7 +41,7 @@
                             <input type="radio" id="by_content" name="petition_search_by"> 내용으로 검색
                         </div>
                     </div>
-                    <div id="all_petitions_list" style="overflow:auto;">
+                    <div id="all_petitions_list" class="main_lists" style="overflow:auto;">
                         <table id="all_petitions_list_table" summary="전체 청원 리스트 표입니다.">
                             <thead>
                                 <th id="petition_id">번호</th>
@@ -51,6 +52,19 @@
                             <tbody id="all_petitions_list_table_tbody"></tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+            <div id="notices" class="main_contents">
+                <h1>공지사항</h1>
+                <div id="notice_list" class="main_lists" style="overflow:auto;">
+                    <table id="notice_list_table">
+                        <thead id="notice_list_table_thead">
+                            <th id="notice_table_id">번호</th>
+                            <th id="notice_table_title">제목</th>
+                            <th id="notice_table_created_at">등록일시</th>
+                        </thead>
+                        <tbody id="notice_list_table_tbody"></tbody>
+                    </table>
                 </div>
             </div>
             <div class="sidebar">
@@ -77,9 +91,8 @@
                     </div>
                 </div>
                 <div class="sidebar_contents">
+                    <div id="toggle_main_content" class="sidebar_btns" value="notice">공지사항</div>
                     <div id="write_petition" class="sidebar_btns">청원 작성하기</div>
-                    <div id="notice" class="sidebar_btns">공지사항</div>
-                    <div id="manual" class="sidebar_btns">이용 안내</div>
                     <div id="myPetitions_list">
                         <h3>내가 작성한 청원</h3>
                     </div>
@@ -180,6 +193,21 @@
                     </div>
                     <div id="support_petition_btn" class="general_btn">청원에 지지 보내기</div>
                     <div id="report_petition_btn" class="general_btn">청원 신고</div>
+                </div>
+            </div>
+            <div class="modal_layer"></div>
+        </div>
+        <!---->
+        <div id="notice_viewer_modal" class="modal">
+            <div class="modal_content notice_viewer_modal_content">
+                <h2 id="notice_viewer_title">(공지 제목)</h2>
+                <div id="notice_viewer_form">
+                    <div id="notice_viewer_metadatas">
+                        <strong id="notice_viewer_created_at">(작성 시간)</strong><br>
+                    </div>
+                    <div id="notice_viewer_content">
+                        (공지 내용)
+                    </div>
                 </div>
             </div>
             <div class="modal_layer"></div>
@@ -300,5 +328,6 @@
         <script src="js/report_petition.js"></script>
         <script src="js/generate_authcode.js"></script>
         <script src="js/write_notice.js"></script>
+        <script src="js/notice_list.js"></script>
     </body>
 </html>

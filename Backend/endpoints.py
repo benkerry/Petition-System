@@ -176,13 +176,6 @@ def create_endpoints(app, services, config:Config):
         services.manager_service.truncate_authcodes_service()
         return "성공", 200
 
-    @app.route("/open-petition", methods = ["POST"])
-    @login_required
-    @priv_required
-    def open_petition():
-        payload = request.json
-        return services.manager_service.open_petition_service(payload["petition_id"])
-
     @app.route("/set-expire-left", methods = ["POST"])
     @login_required
     @priv_required
@@ -230,3 +223,12 @@ def create_endpoints(app, services, config:Config):
     def write_notice():
         payload = request.json
         return services.manager_service.write_notice_service(g.uid, payload["title"], payload["content"])
+
+    @app.route("/get-notice-metadata", methods = ["POST"])
+    def get_notice_metadata():
+        return services.manager_service.get_notice_metadata_service()
+
+    @app.route("/get-notice", methods = ["POST"])
+    def get_notice():
+        payload = request.json
+        return services.manager_service.get_notice(int(payload["nid"]))

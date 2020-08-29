@@ -138,11 +138,16 @@ class ManagerService:
         else:
             return "빈칸을 모두 채워주세요.", 400
 
-    def open_petition_service(self, petition_id:int):
-        if self.petition_dao.reopen_petition(petition_id, self.config.expire_left) is not None:
-            return "성공!", 200
+    def get_notice_metadata_service(self):
+        return jsonify({ "notices":self.manager_dao.get_notice_metadata() })
+
+    def get_notice(self, nid:int):
+        data = self.manager_dao.get_notice(nid)
+
+        if data == None:
+            return "존재하지 않는 공지입니다.", 403
         else:
-            return "잘못된 접근입니다.", 403
+            return jsonify(data)
 
     def get_pass_line(self):
         return (self.manager_dao.get_user_count() * 100) // self.config.pass_ratio

@@ -100,3 +100,44 @@ class ManagerDao:
             "title":title,
             "contents":content
         }).lastrowid
+
+    def get_notice_metadata(self):
+        data = self.db.execute(text("""
+            SELECT 
+                id,
+                title,
+                date_format(created_at, "%Y-%m-%dT%H:%i:%S")
+            FROM notices
+            ORDER BY created_at DESC
+        """))
+
+        result = []
+        for i in data:
+            result.append({
+                "id":i[0],
+                "title":i[1],
+                "created_at":i[2]
+            })
+
+        return result
+
+    def get_notice(self, nid:int):
+        data = self.db.execute(text("""
+            SELECT 
+                title,
+                date_format(created_at, "%Y-%m-%dT%H:%i:%S"),
+                contents
+            FROM notices
+            WHERE id = :nid
+        """), {
+            "nid":nid
+        }).fetchone()
+
+        if data:
+            return {
+                "title":data[0],
+                "created_at":data[1],
+                "content":data[2]
+            }
+        else:
+            return None
