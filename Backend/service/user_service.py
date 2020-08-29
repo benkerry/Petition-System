@@ -11,14 +11,14 @@ class UserService:
         self.mailer = mailer
         self.check_expired_users_n_authcodes()
 
-    def check_email(self, email:str):
-        support_mails = ["@korea.kr", "@daum.net", "@hanmail.net", "@korea.net", "@gmail.com", "@kakao.com"]
+    def is_valid_email(self, email:str):
+        support_mails = ["@korea.kr", "@daum.net", "@hanmail.net", "@naver.com", "@gmail.com", "@kakao.com"]
 
         for i in support_mails:
             if email.find(i) != -1:
-                return False
+                return True
 
-        return True
+        return False
 
     def send_validate_mail(self, email, new_email = "", pwd = "",  mode = "send"):
         mode = mode.lower()
@@ -59,7 +59,7 @@ class UserService:
         return "<script>alert(\"인증 성공!\");</script>"
 
     def regist_service(self, grade:int, authcode:str, email:str, pwd:str, pwd_chk:str, nickname:str):
-        if not self.check_email(email):
+        if not self.is_valid_email(email):
             return "지원하지 않는 이메일이거나, 이메일 형식이 잘못되었습니다.", 400
         elif pwd != pwd_chk:
             return "비밀번호와 비밀번호 확인 란의 값이 다릅니다.", 400

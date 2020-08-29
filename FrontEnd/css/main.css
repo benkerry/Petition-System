@@ -108,3 +108,18 @@
 #notice_table_created_at{
     width:20%;
 }
+
+#manual_and_privacy_policy{
+    margin-left:35px;
+}
+
+#manual{
+    /*display:none;*/
+}
+
+
+
+
+#petitions{
+    display:none;
+}

@@ -1,0 +1,30 @@
+#privacy_policy_modal{
+    display:none;
+}
+
+#privacy_policy_modal h2{
+    width:700px;
+    margin:40px 0 180px;
+}
+
+.privacy_policy_modal_content{
+    width:300px;
+    height:800px;
+}
+
+#privacy_policy_content{
+    width:600px;
+    height:80%;
+    padding:10px;
+    background-color:#ffffff;
+    border:1px solid gray;
+    border-radius:12px;
+
+    position:absolute;
+
+    top:53%;
+    bottom:47%;
+    left:50%;
+    right:50%;
+    transform:translate(-50%, -50%);
+}

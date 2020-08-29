@@ -1,5 +1,11 @@
 document.querySelector("#register_btn").addEventListener("click", () => {
     document.querySelector("#login_modal").style.display = "none";
+    document.querySelector("#privacy_policy_modal").style.display = "block";
+    document.querySelector("#register_next_btn").style.display = "block";
+});
+
+document.querySelector("#register_next_btn").addEventListener("click", () => {
+    document.querySelector("#privacy_policy_modal").style.display = "none";
     document.querySelector("#register_modal").style.display = "block";
 });
 

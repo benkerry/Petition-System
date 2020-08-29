@@ -31,6 +31,18 @@ sendApiRequest("get-petition-metadatas", { "petition_type":"newest" }, performNe
 
 document.querySelector("#petition_search_checkbox").addEventListener("change", performReady2Search);
 document.querySelector("#search_token").addEventListener("keydown", searchPetition);
+document.querySelector("#manual_and_privacy_policy").addEventListener("click", () => {
+    document.getElementById("petitions").style.display = "none";
+    document.getElementById("manual").style.display = "block";
+});
+document.querySelector("#privacy_policy_btn").addEventListener("click", () => {
+    document.getElementById("privacy_policy_modal").style.display = "block";
+    document.getElementById("register_next_btn").style.display = "none";
+});
+document.querySelector("#back_to_petition_list").addEventListener("click", () => {
+    document.getElementById("petitions").style.display = "block";
+    document.getElementById("manual").style.display = "none";
+})
 
 var petittionSearchByRdos = document.getElementsByName("petition_search_by");
 
