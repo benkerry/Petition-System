@@ -229,45 +229,50 @@ class PetitionDao:
         })
 
     def check_petitions(self, pass_line:int):
-        datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        user_cnt = self.db.execute(text("""
+            SELECT COUNT(*) FROM users WHERE withdrawed = 0
+        """)).fetchone()[0]
 
-        self.db.execute(text("""
-            UPDATE petitions SET passed_at = :datetime_now WHERE supports >= :pass_line AND status = 0
-        """), {
-            "datetime_now":datetime_now,
-            "pass_line":pass_line
-        })
+        if user_cnt >= 30:
+            datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        self.db.execute(text("""
-            UPDATE petitions SET status = 1 WHERE supports >= :pass_line AND status = 0
-        """), {
-            "pass_line":pass_line
-        })
+            self.db.execute(text("""
+                UPDATE petitions SET passed_at = :datetime_now WHERE supports >= :pass_line AND status = 0
+            """), {
+                "datetime_now":datetime_now,
+                "pass_line":pass_line
+            })
+
+            self.db.execute(text("""
+                UPDATE petitions SET status = 1 WHERE supports >= :pass_line AND status = 0
+            """), {
+                "pass_line":pass_line
+            })
+
+            data = self.db.execute(text("""
+                SELECT 
+                    title, 
+                    contents, 
+                    passed_at 
+                FROM petitions 
+                WHERE passed_at = :datetime_now
+            """), {
+                "datetime_now":datetime_now
+            }).fetchall()
+
+            result = list()
+            
+            for i in data:
+                result.append({
+                    "title":i[0],
+                    "contents":i[1],
+                    "passed_at":i[2]
+                })
 
         self.db.execute(text("""
             UPDATE petitions
             SET status = 2
             WHERE TIMESTAMPDIFF(DAY, expire_at, NOW()) > 0 AND status = 0
         """))
-
-        data = self.db.execute(text("""
-            SELECT 
-                title, 
-                contents, 
-                passed_at 
-            FROM petitions 
-            WHERE passed_at = :datetime_now
-        """), {
-            "datetime_now":datetime_now
-        }).fetchall()
-
-        result = list()
-
-        for i in data:
-            result.append({
-                "title":i[0],
-                "contents":i[1],
-                "passed_at":i[2]
-            })
 
         return result

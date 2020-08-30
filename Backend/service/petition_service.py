@@ -35,10 +35,13 @@ class PetitionService:
             return "이미 동의한 청원이거나, 동의할 수 없는 청원입니다.", 400
 
     def report_service(self, uid:int, petition_id:int, description:str):
-        if self.dao.insert_report(uid, petition_id, description) is not None:
-            return "신고가 접수되었습니다.", 200
+        if description:
+            if self.dao.insert_report(uid, petition_id, description) is not None:
+                return "신고가 접수되었습니다.", 200
+            else:
+                return "이미 신고하신 청원입니다.", 400
         else:
-            return "이미 신고하신 청원입니다.", 400
+            return "빈칸을 모두 채워주세요.", 200
 
     def check_petitions(self):
         passed_petitions = self.dao.check_petitions(self.config.pass_line)
@@ -53,4 +56,4 @@ class PetitionService:
         if passed_petitions:
             print("Passed Petition Sended to all users.")
 
-        threading.Timer(600, self.check_petitions)
+        threading.Timer(600, self.check_petitions).start()

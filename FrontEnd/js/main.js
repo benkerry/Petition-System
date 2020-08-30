@@ -34,6 +34,7 @@ document.querySelector("#search_token").addEventListener("keydown", searchPetiti
 document.querySelector("#manual_and_privacy_policy").addEventListener("click", () => {
     document.getElementById("petitions").style.display = "none";
     document.getElementById("manual").style.display = "block";
+    document.querySelector(".sidebar").style.height = "1500px";
 });
 document.querySelector("#privacy_policy_btn").addEventListener("click", () => {
     document.getElementById("privacy_policy_modal").style.display = "block";
@@ -42,6 +43,7 @@ document.querySelector("#privacy_policy_btn").addEventListener("click", () => {
 document.querySelector("#back_to_petition_list").addEventListener("click", () => {
     document.getElementById("petitions").style.display = "block";
     document.getElementById("manual").style.display = "none";
+    document.querySelector(".sidebar").style.height = "1100px";
 })
 
 var petittionSearchByRdos = document.getElementsByName("petition_search_by");
