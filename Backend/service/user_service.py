@@ -48,7 +48,7 @@ class UserService:
 
         title = "[청원 시스템] 가입 인증 메일입니다. 유효기간은 7일입니다."
         content = f"""
-        링크를 클릭하세요! >>> http://{self.config.svr_addr}/validate?token={token.decode("UTF-8")}
+        링크를 클릭하세요! >>> https://{self.config.svr_addr}/validate?token={token.decode("UTF-8")}
         링크 클릭 후 성공 메시지를 꼭 확인하시길 바랍니다.
         여러 번 인증을 시도해도 성공 메시지가 보이지 않는다면 먼저 서비스 로그인을 시도해 보시고,
         로그인이 되지 않는다면 developerkerry@naver.com으로 도움을 요청하세요."""
