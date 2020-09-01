@@ -38,6 +38,8 @@
   > svr_addr = [백엔드 서버의 URL]
 
   > JWT_SECRET_KEY = [임의의 문자열]
+  > pkey = [SSL 인증서 pkey 위치]
+  > cert = [SSL 인증서 Cert 위치]
 
   > mail_server = [SMTP Server ADDR]
   > port = [SMTP Port]
