@@ -1,5 +1,3 @@
-import sys
-
 from app import create_app
 from flask_script import Manager
 from flask_twisted import Twisted
@@ -9,7 +7,7 @@ if __name__ == "__main__":
     app = create_app()
 
     twisted = Twisted(app)
-    log.startLogging(sys.stdout)
+    log.startLogging(open("log", "w"))
     
     app.logger.info("Running the app...")
 
