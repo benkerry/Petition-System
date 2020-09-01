@@ -21,29 +21,29 @@
   3. Backend/config/ 디렉터리 하위에 config.pass_ratio 파일을 만들고, 청원 동의 임계 비율 초깃값을 첫 줄에 넣어주세요.
   4. Backend/config/ 디렉터리 하위에 config.py 파일을 만들고, 다음 정보를 채워주세요.
 
-  db = {
-      'user':[MySQL username],
-      'password':[MySQL Password],
-      'host':[MySQL Address],
-      'port':[MySQL Port],
-      'database':[MySQL DB Name]
-  }
+  > db = {
+  >     'user':[MySQL username],
+  >     'password':[MySQL Password],
+  >     'host':[MySQL Address],
+  >     'port':[MySQL Port],
+  >     'database':[MySQL DB Name]
+  > }
 
-  DB_URL = f"mysql+mysqlconnector://{db['user']}:{db['password']}@{db['host']}:{db['port']}/{db['database']}?charset=utf8"
+  > DB_URL = f"mysql+mysqlconnector://{db['user']}:{db['password']}@{db['host']}:{db['port']}/{db['database']}?charset=utf8"
 
-  JWT_SECRET_KEY = [임의의 문자열]
+  > JWT_SECRET_KEY = [임의의 문자열]
 
-  mail_server = [SMTP Server ADDR]
-  port = [SMTP Port]
-  email = [Your Email ADDR]
-  id_email = [Your Email ADDR]
-  authcode = [SMTP Password or Key]
+  > mail_server = [SMTP Server ADDR]
+  > port = [SMTP Port]
+  > email = [Your Email ADDR]
+  > id_email = [Your Email ADDR]
+  > authcode = [SMTP Password or Key]
 
-  fp = open("config/config.expire_left", 'r')
-  expire_left = int(fp.readline())
-  fp.close()
+  > fp = open("config/config.expire_left", 'r')
+  > expire_left = int(fp.readline())
+  > fp.close()
 
-  fp = open("config/config.pass_ratio", 'r')
-  pass_ratio = int(fp.readline())
-  fp.close()
+  > fp = open("config/config.pass_ratio", 'r')
+  > pass_ratio = int(fp.readline())
+  > fp.close()
 
