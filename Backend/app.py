@@ -11,6 +11,7 @@ from endpoints import create_endpoints, Config
 from OpenSSL import SSL
 from flask import Flask
 from flask_cors import CORS
+from flask.ext.twisted import Twisted
 from sqlalchemy import create_engine
 
 class Service:
@@ -55,4 +56,7 @@ def create_app(test_config = None):
     create_endpoints(app, services, config)
     return app
 
-create_app().run(host = "0.0.0.0", port = 80, ssl_context = (cfg.cert, cfg.pkey))
+app = create_app()
+twisted = Twisted(app)
+
+app.run(host = "0.0.0.0", port = 80, ssl_context = (cfg.cert, cfg.pkey))
