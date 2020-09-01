@@ -73,20 +73,24 @@
     padding:7px;
 }
 
+.main_lists table{
+    width:100%;
+}
+
 #petition_id{
-    width:125px;
+    width:7.5%;
 }
 
 #petition_title_table{
-    width:650px;
+    width:62.5%;
 }
 
 #petition_supports{
-    width:75px;
+    width:10%;
 }
 
 #petition_created_at{
-    width:200px;
+    width:20%;
 }
 
 #notices{
