@@ -150,4 +150,4 @@ class ManagerService:
             return jsonify(data)
 
     def get_pass_line(self):
-        return (self.manager_dao.get_user_count() * 100) // self.config.pass_ratio
+        return (self.manager_dao.get_user_count() *  self.config.pass_ratio) // 100

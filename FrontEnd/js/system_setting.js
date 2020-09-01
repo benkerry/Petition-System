@@ -42,7 +42,7 @@ function performSetPassRatio(){
                 document.getElementById("current_pass_support").value = "청원 동의 기능 사용 불가능";
             }
             else{
-                document.getElementById("current_pass_support").value =  Math.floor(user_count * (pass_ratio / 100)) + "명";
+                document.getElementById("current_pass_support").value =  Math.floor(user_count * pass_ratio / 100) + "명";
             }
             document.getElementById("pass_ratio_to_set").value = "";
             alert("변경 성공!");

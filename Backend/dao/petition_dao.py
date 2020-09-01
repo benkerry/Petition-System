@@ -229,9 +229,17 @@ class PetitionDao:
         })
 
     def check_petitions(self, pass_line:int):
+        # 테스트용
+        pass_line = 1
+
+        result = list()
+        
         user_cnt = self.db.execute(text("""
             SELECT COUNT(*) FROM users WHERE withdrawed = 0
         """)).fetchone()[0]
+
+        # 테스트용
+        user_cnt = 300
 
         if user_cnt >= 30:
             datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -259,8 +267,6 @@ class PetitionDao:
             """), {
                 "datetime_now":datetime_now
             }).fetchall()
-
-            result = list()
             
             for i in data:
                 result.append({

@@ -1,8 +1,8 @@
-import threading
 from dao import PetitionDao, UserDao
 from .mail_service import Mailer
 from endpoints import Config
 from flask import jsonify
+from threading import Thread, Timer
 
 class PetitionService:
     def __init__(self, dao:PetitionDao, udao:UserDao, config:Config, mailer:Mailer):
@@ -10,8 +10,9 @@ class PetitionService:
         self.udao = udao
         self.config = config
         self.mailer = mailer
-        self.check_petitions()
-
+        self.tr = Thread(target = self.check_petitions)
+        self.tr.start()
+        
     def get_petition_metadata_service(self, count = 0, petition_type = "newest"):
         return jsonify({"petitions":self.dao.get_petition_metadatas(count, petition_type)})
 
@@ -49,11 +50,10 @@ class PetitionService:
 
         for i in passed_petitions:
             title = "[청원 시스템 | 통과된 청원 안내] " + i["title"]
-            contents = "제목: " + i["title"] + "<br>통과일시: " + i["passed_at"] + "<br>내용<br><br>" + i["contents"].replace("<br>", "\n")
+            contents = "제목: " + i["title"] + "\n통과일시: " + str(i["passed_at"]) + "\n내용:\n\n" + i["contents"].replace("<br>", "\n")
             to = self.udao.get_all_email()
             self.mailer.send(title, contents, to)
 
         if passed_petitions:
             print("Passed Petition Sended to all users.")
-
-        threading.Timer(600, self.check_petitions).start()
+        Timer(6, self.check_petitions).start()

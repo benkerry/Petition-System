@@ -1,6 +1,6 @@
 import jwt
 import bcrypt
-import threading
+from threading import Thread, Timer
 from flask import current_app, jsonify
 from datetime import datetime, timedelta
 from dao import UserDao
@@ -9,7 +9,8 @@ class UserService:
     def __init__(self, dao:UserDao, mailer:Mailer):
         self.dao = dao
         self.mailer = mailer
-        self.check_expired_users_n_authcodes()
+        self.tr = Thread(target = self.check_expired_users_n_authcodes)
+        self.tr.start()
 
     def is_valid_email(self, email:str):
         support_mails = ["@korea.kr", "@daum.net", "@hanmail.net", "@naver.com", "@gmail.com", "@kakao.com"]
@@ -155,4 +156,4 @@ class UserService:
         self.dao.delete_expired_user()
         self.dao.delete_expired_authcode()
         print("Expired Users and Authcodes Checked!")
-        threading.Timer(600, self.check_expired_users_n_authcodes).start()
+        Timer(6, self.check_expired_users_n_authcodes).start()

@@ -237,7 +237,7 @@ class UserDao:
     def delete_expired_user(self):
         self.db.execute(text("""
             DELETE FROM users
-            WHERE TIMESTAMPDIFF(SECOND, expire_at, NOW()) > 0
+            WHERE TIMESTAMPDIFF(SECOND, expire_at, NOW()) > 0 AND withdrawed = 1
         """))
 
     def delete_expired_authcode(self):

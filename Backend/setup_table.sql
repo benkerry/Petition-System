@@ -34,7 +34,7 @@ CREATE TABLE notices(
     contents TEXT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW(),
     PRIMARY KEY(id)
-)
+);
 
 CREATE TABLE supports(
     uid INT NOT NULL,
