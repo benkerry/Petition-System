@@ -1,6 +1,8 @@
 # Gukwon-Petition
 >국원청원 시스템을 온전히 웹으로 사용할 수 있도록 재개발하는 프로젝트입니다.
 
+## Python 버전 = 3.8
+
 ## 사용된 패키지
 >- python: pyjwt
 >- python: bcrypt
