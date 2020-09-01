@@ -8,9 +8,10 @@ from service import UserService, PetitionService, ManagerService, Mailer
 
 from endpoints import create_endpoints, Config
 
+from OpenSSL import SSL
+
 from flask import Flask
 from flask_cors import CORS
-from flask_twisted import Twisted
 from sqlalchemy import create_engine
 
 class Service:
@@ -55,9 +56,6 @@ def create_app(test_config = None):
     create_endpoints(app, services, config)
     return app
 
-app = create_app()
-twisted = Twisted(app)
-ssl_data = (cfg.cert, cfg.pkey)
-
 if __name__ == "__main__":
-    app.run(host = "0.0.0.0", port = 80, ssl_context = ssl_data)
+    app = create_app()
+    app.run(host = "0.0.0.0", port = 80, ssl_context = (cfg.cert, cfg.pkey))

@@ -1,8 +1,16 @@
-from app import twisted, ssl_data
-from OpenSSL import SSL
-from twisted.python import log
-from twisted.application.service import Application
+import sys
+from app import create_app, cfg
 
-app = Application('twisted-flask')
-twisted.run(host = "0.0.0.0", port = 80, ssl_context = ssl_data)
-log.startLogging(open("log", "w"))
+from flask_script import Manager, Server
+from flask_twisted import Twisted
+from twisted.python import log
+from OpenSSL import SSL
+
+if __name__ == "__main__":
+    app = create_app()
+    twisted = Twisted(app)
+    log.startLogging(sys.stdout)
+
+    manager = Manager(app)
+    manager.add_command('runserver', Server(host = "0.0.0.0", port = 80, ssl_crt = cfg.cert, ssl_key = cfg.pkey))
+    manager.run()
