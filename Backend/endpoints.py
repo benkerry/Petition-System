@@ -3,9 +3,10 @@ from functools import wraps
 from flask import Response, request, current_app, jsonify, g
 
 class Config:
-    def __init__(self, pass_ratio, expire_left):
+    def __init__(self, pass_ratio, expire_left, svr_addr):
         self.pass_ratio = pass_ratio
         self.expire_left = expire_left
+        self.svr_addr = svr_addr
         self.pass_line = 0
 
 def login_required(f):
