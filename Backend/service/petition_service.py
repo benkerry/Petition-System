@@ -56,4 +56,4 @@ class PetitionService:
 
         if passed_petitions:
             print("Passed Petition Sended to all users.")
-        Timer(6, self.check_petitions).start()
+        Timer(600, self.check_petitions).start()

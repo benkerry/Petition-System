@@ -157,4 +157,4 @@ class UserService:
         self.dao.delete_expired_user()
         self.dao.delete_expired_authcode()
         print("Expired Users and Authcodes Checked!")
-        Timer(6, self.check_expired_users_n_authcodes).start()
+        Timer(600, self.check_expired_users_n_authcodes).start()
