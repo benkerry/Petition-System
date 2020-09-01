@@ -7,6 +7,7 @@ click==7.1.2
 constantly==15.1.0
 et-xmlfile==1.0.1
 Flask==1.1.2
+Flask-Cors==3.0.9
 Flask-Script==2.0.6
 Flask-Twisted==0.1.2
 hyperlink==20.0.1
