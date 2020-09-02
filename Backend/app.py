@@ -44,6 +44,8 @@ def create_app(test_config = None):
     mailer = Mailer(cfg.mail_server, cfg.port, cfg.email, cfg.id_email, cfg.authcode)
     mailer.run()
 
+    logger = Logger()
+
     # Persistenace Layer
     user_dao = UserDao(db)
     petition_dao = PetitionDao(db)
@@ -52,8 +54,8 @@ def create_app(test_config = None):
     config.pass_line = (manager_dao.get_user_count() * 100) // config.pass_ratio
 
     # Business Layer
-    user_service = UserService(user_dao, mailer, config)
-    petition_service = PetitionService(petition_dao, user_dao, config, mailer)
+    user_service = UserService(user_dao, mailer, config, logger)
+    petition_service = PetitionService(petition_dao, user_dao, config, mailer, logger)
     manager_service = ManagerService(user_dao, petition_dao, manager_dao, mailer, config)
 
     services = Service
