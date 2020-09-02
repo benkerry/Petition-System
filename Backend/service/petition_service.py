@@ -5,13 +5,14 @@ from flask import jsonify
 from threading import Thread, Timer
 
 class PetitionService:
-    def __init__(self, dao:PetitionDao, udao:UserDao, config:Config, mailer:Mailer):
+    def __init__(self, dao:PetitionDao, udao:UserDao, config:Config, mailer:Mailer, logger):
         self.dao = dao
         self.udao = udao
         self.config = config
         self.mailer = mailer
         self.tr = Thread(target = self.check_petitions)
         self.tr.start()
+        self.logger = logger
         
     def get_petition_metadata_service(self, count = 0, petition_type = "newest"):
         return jsonify({"petitions":self.dao.get_petition_metadatas(count, petition_type)})
@@ -46,7 +47,7 @@ class PetitionService:
 
     def check_petitions(self):
         passed_petitions = self.dao.check_petitions(self.config.pass_line)
-        print("All petitions checked!")
+        self.logger.log("All petitions checked!")
 
         for i in passed_petitions:
             title = "[청원 시스템 | 통과된 청원 안내] " + i["title"]
@@ -55,5 +56,5 @@ class PetitionService:
             self.mailer.send(title, contents, to)
 
         if passed_petitions:
-            print("Passed Petition Sended to all users.")
+            self.logger.log("Passed Petition Sended to all users.")
         Timer(600, self.check_petitions).start()

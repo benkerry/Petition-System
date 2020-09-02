@@ -17,6 +17,14 @@ from sqlalchemy import create_engine
 class Service:
     pass
 
+class Logger:
+    def __init__(self):
+        self.logfp = open("log.txt", "w")
+
+    def log(self, contents:str):
+        self.logfp.write(contents)
+        self.logfp.flush()
+
 def create_app(test_config = None):
     app = Flask(__name__)
     app.config['JWT_SECRET_KEY'] = cfg.JWT_SECRET_KEY

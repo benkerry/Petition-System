@@ -108,7 +108,7 @@ function performLogout(){
 function sendApiRequest(endpoint, data2send, done, isLoginRequirAction){
     if(isLoginRequirAction){
         $.ajax({
-            url: "http://localhost/" + endpoint,
+            url: "https://localhost/" + endpoint,
             type: "POST",
             contentType: "application/json",
             beforeSend: (xhr) => { xhr.setRequestHeader("token", sessionStorage.getItem("token")) },
@@ -120,7 +120,7 @@ function sendApiRequest(endpoint, data2send, done, isLoginRequirAction){
     }
     else{
         $.ajax({
-            url: "http://localhost/" + endpoint,
+            url: "https://localhost/" + endpoint,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(data2send)
