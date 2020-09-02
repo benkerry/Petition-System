@@ -65,8 +65,10 @@ class ManagerService:
         priv = int(priv)
         life = int(life)
 
-        if grade > 0:
+        if grade > 0 and grade < 4:
             count *= 30
+        elif grade != 0:
+            return "잘못된 접근입니다.", 400
 
         while len(authcodes) < count:
             authcode = ""

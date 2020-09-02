@@ -52,7 +52,7 @@ function performRegister(){
     else if(pwd.length < 8){
         alert("비밀번호가 너무 짧습니다. 8자 이상이어야 합니다.")
     }
-    else if(grade < 1 || grade > 3){
+    else if(grade < 0 || grade > 3){
         alert("학번 입력값을 확인해 주세요.");
     }
     else if(authcode.length != 6){
