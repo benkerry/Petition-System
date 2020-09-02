@@ -6,13 +6,12 @@ from datetime import datetime, timedelta
 from dao import UserDao
 from .mail_service import Mailer
 class UserService:
-    def __init__(self, dao:UserDao, mailer:Mailer, config, logger):
+    def __init__(self, dao:UserDao, mailer:Mailer, config):
         self.dao = dao
         self.mailer = mailer
         self.config = config
         self.tr = Thread(target = self.check_expired_users_n_authcodes)
         self.tr.start()
-        self.logger = logger
 
     def is_valid_email(self, email:str):
         support_mails = ["@korea.kr", "@daum.net", "@hanmail.net", "@naver.com", "@gmail.com", "@kakao.com"]
@@ -157,5 +156,5 @@ class UserService:
     def check_expired_users_n_authcodes(self):
         self.dao.delete_expired_user()
         self.dao.delete_expired_authcode()
-        self.logger.log("Expired Users and Authcodes Checked!")
+        print("Expired Users and Authcodes Checked!")
         Timer(600, self.check_expired_users_n_authcodes).start()
