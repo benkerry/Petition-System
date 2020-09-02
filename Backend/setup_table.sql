@@ -11,7 +11,7 @@ CREATE TABLE users(
     PRIMARY KEY(id),
     UNIQUE  KEY nickname(nickname),
     UNIQUE KEY email(email)
-);
+) DEFAULT CHARSET=UTF8;
 
 CREATE TABLE petitions(
     id INT NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE petitions(
     status INT NOT NULL DEFAULT 0,
     passed_at DATETIME,
     PRIMARY KEY(id)
-);
+) DEFAULT CHARSET=UTF8;
 
 CREATE TABLE notices(
     id INT NOT NULL AUTO_INCREMENT,
@@ -34,12 +34,12 @@ CREATE TABLE notices(
     contents TEXT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW(),
     PRIMARY KEY(id)
-);
+) DEFAULT CHARSET=UTF8;
 
 CREATE TABLE supports(
     uid INT NOT NULL,
     petition_id INT NOT NULL
-);
+) DEFAULT CHARSET=UTF8;
 
 CREATE TABLE authcodes(
     grade INT NOT NULL,
@@ -47,11 +47,11 @@ CREATE TABLE authcodes(
     priv INT NOT NULL,
     expire_at DATETIME NOT NULL,
     UNIQUE KEY code(code)
-);
+) DEFAULT CHARSET=UTF8;
 
 CREATE TABLE reports(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uid INT NOT NULL,
     petition_id INT NOT NULL,
     description TEXT NOT NULL
-);
+) DEFAULT CHARSET=UTF8;
